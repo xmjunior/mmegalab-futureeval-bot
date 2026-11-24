@@ -1,0 +1,38 @@
+name: ARENA free Groq historical cohort
+on:
+  push:
+    branches: [verify/arena-groq-cohort]
+permissions:
+  contents: read
+# Serialize actual writers to the pre-existing shared journal, including the paid study.
+concurrency:
+  group: champion-promo-single-panel
+  cancel-in-progress: false
+jobs:
+  groq:
+    if: github.repository == 'xmjunior/mmegalab-futureeval-bot'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: cc13bf9f9979a745e4e28ec1376c40df26187202
+          path: groq-transport
+          persist-credentials: false
+      - name: Check the shared cohort and the Groq journal protocol
+        run: |
+          python -m pip install --disable-pip-version-check 'requests==2.34.2'
+          python -m unittest discover -s research/arena -p test_groq_cohort.py -v
+          python research/promo/closed_cohort.py dry
+      - name: Run twelve historical cases on the verified Groq Free account
+        env:
+          PYTHONPATH: ${{ github.workspace }}/groq-transport
+          GITHUB_TOKEN: ${{ github.token }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GROQ_FREE_ACCOUNT_CONFIRMED: "true"
+        run: python research/arena/groq_cohort.py run
