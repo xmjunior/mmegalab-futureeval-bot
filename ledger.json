@@ -747,9 +747,17 @@
       "design_sha256": "9d758176607cdd7740b50c5897c38b271650834dbf01d449f1a9f10c6e9cecb7",
       "models": {
         "blind": {
+          "issued_utc": "2026-11-24T23:19:40.543441+00:00",
           "model": "openai/gpt-oss-120b",
+          "p": 0.42,
           "prompt_sha256": "7ac37c6e02b7c13364d11151586c3c6afe88ed9429e1ddae2346fa080f30ddba",
-          "status": "leased"
+          "response_sha256": "8f6a82b5e61d1f7b50ea05e4148d6ad1f16cc90300afdb8676222346eb60a4bc",
+          "sha256": "c918269220c26d54530388a8957c55b32759d8fdd7bb5435d46c10b26270e27f",
+          "status": "sealed",
+          "tokens": {
+            "completion_tokens": 42,
+            "prompt_tokens": 210
+          }
         }
       },
       "resolution": null
@@ -761,7 +769,7 @@
     "issued": 1,
     "model_coverage": {
       "anchored": 0,
-      "blind": 0
+      "blind": 1
     },
     "paired": 0,
     "promotion": false,
