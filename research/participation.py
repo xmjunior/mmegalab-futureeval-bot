@@ -1,4 +1,5 @@
 """Account operations audit. GET only. Never persist question text, predictions, comments, or public aggregates."""
+import argparse
 import json
 import os
 import time
@@ -110,7 +111,9 @@ def audit(slug, key, userid, created, now):
         for c in pages("/comments/",post=post_id,author=userid):
             if c.get("author_id",userid) != userid:
                 raise ValueError("Incorrect author in filtered results")
-            comments.append({k:c.get(k) for k in ("id","created_at","is_private","included_forecast")}|{"post":post_id})
+            comments.append({"id":c["id"], "created_at":utc(c.get("created_at")), "post":post_id,
+                             "is_private":c.get("is_private") if isinstance(c.get("is_private"),bool) else None,
+                             "included_forecast":bool(c.get("included_forecast"))})
     boards = read(f"/leaderboards/project/{pid}/",primary_only="true",with_entries="true")
     ranking = []
     for b in boards:
@@ -136,7 +139,17 @@ created = utc(me.get("date_joined"))
 now = datetime.now(UTC).isoformat()
 out = {"observed_at":now,"account":{k:me.get(k) for k in ("id","username","is_bot","is_primary_bot","date_joined")},
        "projects":{}}
-for name,slug in (("FutureEval","fall-futureeval-2026"),("MiniBench","minibench"),("MarketPulse","market-pulse-26q4")):
+args = argparse.ArgumentParser()
+args.add_argument("--prior-minibench-file", type=Path, help="JSON list of previously observed MiniBench slugs")
+opts = args.parse_args()
+projects = [("FutureEval","fall-futureeval-2026"),("MiniBench","minibench"),("MarketPulse","market-pulse-26q4")]
+if opts.prior_minibench_file:
+    import re
+    slugs = json.loads(opts.prior_minibench_file.read_text())
+    if not isinstance(slugs,list) or len(slugs)>10 or not all(isinstance(s,str) and re.fullmatch(r"minibench-[a-z0-9-]{4,60}",s) for s in slugs):
+        raise ValueError("Invalid historical MiniBench list")
+    projects += [(s,s) for s in sorted(set(slugs))]
+for name,slug in projects:
     try:
         out["projects"][name]=audit(slug,name,me["id"],created or now,now)
     except (HTTPError,URLError,TimeoutError,ValueError,RuntimeError,KeyError,TypeError) as e:
