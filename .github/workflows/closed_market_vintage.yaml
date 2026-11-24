@@ -10,9 +10,9 @@ jobs:
     timeout-minutes: 4
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with: {ref: 8df3c813c80cc5931a00816cf6835dac5c91b7c7, persist-credentials: false}
+        with: {ref: 0cede7564325469e4b00ae72ab97d2cb5b297356, persist-credentials: false}
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with: {ref: 5ba764b6bafa61fcaef03022a4ff36835401d4ac, path: frozen-market, persist-credentials: false}
+        with: {ref: f2a09239ee817f82d794f625b19dcc792e2068af, path: frozen-market, persist-credentials: false}
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -22,4 +22,4 @@ jobs:
       - name: Compare original distributions with ALFRED releases available before each cutoff
         env:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
-        run: python research/market_vintage_check.py frozen-market
+        run: python research/market_vintage_check.py frozen-market --fallback-smoke
