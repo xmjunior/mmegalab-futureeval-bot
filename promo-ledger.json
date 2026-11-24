@@ -17,12 +17,26 @@
     "groq": {
       "lease_nonce": "c7403c2288bc42d99ca1ab1565da4596",
       "max_micro_usd": 0,
-      "records": {},
+      "records": {
+        "ust-promo-v1-20261202-2y": 0.5142857142857142,
+        "ust-promo-v1-20261202-spread": 0.3142857142857143,
+        "ust-promo-v1-20261209-2y": 0.5,
+        "ust-promo-v1-20261209-spread": 0.36363636363636365
+      },
+      "request": {
+        "free_tier_evidence": "owner_verified_free_tier",
+        "input_tokens": 577,
+        "issued_at": "2026-11-24T23:13:55.550915+00:00",
+        "model": "openai/gpt-oss-120b",
+        "output_sha256": "101ba1581e7831674f10cc13377952881498c15f28be1dc0b956af02e4bdb6e1",
+        "output_tokens": 309,
+        "prompt_sha256": "feb6205b0bfd71fb34eeb9e304505cf5dccb6d4dff4d105d1d769e264b7c755a"
+      },
       "requests": {
         "single_panel_request": 0
       },
       "started_at": "2026-11-24T23:13:52.904954+00:00",
-      "status": "reserved"
+      "status": "completed"
     },
     "openai": {
       "evidence_at": "2026-11-24T21:36:46+00:00",
