@@ -324,7 +324,10 @@ class FallTemplateBot2026(ForecastBot):
         logger.info(f"Reasoning for URL {question.page_url}: {reasoning}")
         # The forecast prompt already specifies a machine-readable final line.
         last_line = reasoning.strip().splitlines()[-1].strip().replace("**", "")
-        match = re.fullmatch(r"Probability:\s*(\d+(?:\.\d+)?)%[.]?", last_line, re.I)
+        match = re.fullmatch(
+            r"(?:Final answer:\s*)?Probability:\s*(\d+(?:\.\d+)?)%(?:,\s*0-100)?[.]?",
+            last_line, re.I,
+        )
         if match:
             parsed = BinaryPrediction(prediction_in_decimal=float(match[1]) / 100)
             return ReasonedPrediction(
@@ -387,11 +390,9 @@ class FallTemplateBot2026(ForecastBot):
             {self._get_conditional_disclaimer_if_necessary(question)}
             You write your rationale remembering that (1) good forecasters put extra weight on the status quo outcome since the world changes slowly most of the time, and (2) good forecasters leave some moderate probability on most options to account for unexpected outcomes.
 
-            The last thing you write is your final probabilities for the N options in this order {question.options} as:
-            Option_A: Probability_A
-            Option_B: Probability_B
-            ...
-            Option_N: Probability_N
+            End with one line per option in this order: {question.options}.
+            Use the exact option name, a colon, then its probability as a percentage.
+            The percentages must sum to 100%. Give no further text after these lines.
             """
         )
         return await self._multiple_choice_prompt_to_forecast(question, prompt)
@@ -413,6 +414,17 @@ class FallTemplateBot2026(ForecastBot):
         )
         reasoning = await self.get_llm("default", "llm").invoke(prompt)
         logger.info(f"Reasoning for URL {question.page_url}: {reasoning}")
+        lines = [line.strip().replace("**", "") for line in reasoning.splitlines() if line.strip()]
+        final = lines[-len(question.options):]
+        options = []
+        for option, line in zip(question.options, final):
+            match = re.fullmatch(rf"(?:[-*]\s*)?{re.escape(option)}\s*:\s*(\d+(?:\.\d+)?)%", line, re.I)
+            if not match:
+                break
+            options.append({"option_name": option, "probability": float(match[1]) / 100})
+        if len(options) == len(question.options):
+            parsed = PredictedOptionList.model_validate({"predicted_options": options})
+            return ReasonedPrediction(prediction_value=parsed, reasoning=reasoning)
         predicted_option_list: PredictedOptionList = await structure_output(
             text_to_structure=reasoning,
             output_type=PredictedOptionList,
@@ -489,6 +501,59 @@ class FallTemplateBot2026(ForecastBot):
         )
         return await self._numeric_prompt_to_forecast(question, prompt)
 
+    @staticmethod
+    def _parse_percentile_lines(reasoning: str, question) -> list[Percentile] | None:
+        # Read only a complete final block in the format requested from the forecaster.
+        # If it used a different layout or units, let the framework parser handle it.
+        lines = [line.strip().replace("**", "") for line in reasoning.splitlines()
+                 if line.strip() and line.strip() not in {'"', '```'}]
+        levels = (10, 20, 40, 60, 80, 90)
+        if len(lines) < len(levels):
+            return None
+        result = []
+        for level, line in zip(levels, lines[-len(levels):]):
+            match = re.fullmatch(rf"(?:[-*]\s*)?Percentile\s+{level}%?\s*:\s*(.+)", line, re.I)
+            if not match:
+                return None
+            raw = match[1].strip()
+            if isinstance(question, DateQuestion):
+                if not re.fullmatch(r"\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}Z)?", raw):
+                    return None
+                value = datetime.fromisoformat(raw).replace(tzinfo=timezone.utc).timestamp()
+            else:
+                if not re.fullmatch(r"[+-]?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?", raw):
+                    return None
+                value = float(raw.replace(",", ""))
+            result.append(Percentile(percentile=level / 100, value=value))
+        return result
+
+    async def _validated_distribution(self, question, reasoning, percentiles):
+        try:
+            forecast = NumericDistribution.from_question(percentiles, question)
+        except ValueError as exc:
+            # Only the forecaster may revise invalid outcomes. Keep the SDK bounds checks.
+            feedback = str(exc).split("[type=")[0][:1200]
+            unit = getattr(question, "unit_of_measure", "") or "the question's stated units"
+            repair = clean_indents(f"""
+                Your distribution did not validate for this question: {question.question_text}
+                Resolution criteria: {question.resolution_criteria}
+                Your original answer: {reasoning}
+                Validation feedback: {feedback}
+                The forecast axis runs from {question.lower_bound} to {question.upper_bound}.
+                Return a revised forecast in {unit}. Anchor it to the expected outcome.
+                Use the same unit and scale for all six outcomes. Check the outcome values
+                are increasing and compatible with the axis. For dates use YYYY-MM-DD.
+                Output exactly six lines, one each for 10, 20, 40, 60, 80 and 90,
+                in this format: Percentile 10: VALUE
+            """)
+            revision = await self.get_llm("default", "llm").invoke(repair)
+            revised = self._parse_percentile_lines(revision, question)
+            if revised is None:
+                raise ValueError("The revised distribution did not contain six percentile lines") from exc
+            forecast = NumericDistribution.from_question(revised, question)
+            reasoning += "\n\nRevised forecast after validation:\n" + revision
+        return ReasonedPrediction(prediction_value=forecast, reasoning=reasoning)
+
     async def _numeric_prompt_to_forecast(
         self,
         question: NumericQuestion,
@@ -496,6 +561,9 @@ class FallTemplateBot2026(ForecastBot):
     ) -> ReasonedPrediction[NumericDistribution]:
         reasoning = await self.get_llm("default", "llm").invoke(prompt)
         logger.info(f"Reasoning for URL {question.page_url}: {reasoning}")
+        direct = self._parse_percentile_lines(reasoning, question)
+        if direct is not None:
+            return await self._validated_distribution(question, reasoning, direct)
         parsing_instructions = clean_indents(
             f"""
             The text given to you is trying to give a forecast distribution for a numeric question.
@@ -518,11 +586,7 @@ class FallTemplateBot2026(ForecastBot):
             additional_instructions=parsing_instructions,
             num_validation_samples=self._structure_output_validation_samples,
         )
-        prediction = NumericDistribution.from_question(percentile_list, question)
-        logger.info(
-            f"Forecasted URL {question.page_url} with prediction: {prediction.declared_percentiles}."
-        )
-        return ReasonedPrediction(prediction_value=prediction, reasoning=reasoning)
+        return await self._validated_distribution(question, reasoning, percentile_list)
 
     ##################################### DATE QUESTIONS #####################################
 
@@ -592,6 +656,9 @@ class FallTemplateBot2026(ForecastBot):
     ) -> ReasonedPrediction[NumericDistribution]:
         reasoning = await self.get_llm("default", "llm").invoke(prompt)
         logger.info(f"Reasoning for URL {question.page_url}: {reasoning}")
+        direct = self._parse_percentile_lines(reasoning, question)
+        if direct is not None:
+            return await self._validated_distribution(question, reasoning, direct)
         parsing_instructions = clean_indents(
             f"""
             The text given to you is trying to give a forecast distribution for a date question.
@@ -618,11 +685,7 @@ class FallTemplateBot2026(ForecastBot):
             )
             for percentile in date_percentile_list
         ]
-        prediction = NumericDistribution.from_question(percentile_list, question)
-        logger.info(
-            f"Forecasted URL {question.page_url} with prediction: {prediction.declared_percentiles}."
-        )
-        return ReasonedPrediction(prediction_value=prediction, reasoning=reasoning)
+        return await self._validated_distribution(question, reasoning, percentile_list)
 
     def _create_resolved_question_parsing_message(self) -> str:
         return "- If the text concludes that the question has already resolved *in the past* (i.e. it treats the question as decided rather than something to forecast), please DO NOT return a parsed output, even if a final forecast is also given. Instead indicate that the answer is not explicitly given in the text.\n"
@@ -632,6 +695,7 @@ class FallTemplateBot2026(ForecastBot):
     ) -> str:
         message = (
             "- The text may contain multiple percentile distributions (e.g. forecasts for several related questions/entities, or intermediate drafts before a final answer). You must return exactly ONE distribution: the single final distribution that answers the question stated above.\n"
+            "- Convert percentile labels from percentages to fractions: 10 means 0.10 and 90 means 0.90. Do not rescale the outcome values.\n"
             "- Never merge or concatenate percentile lists that refer to different entities, options, or scenarios. Each percentile should appear at most once in your output.\n"
             "- If there are multiple final distributions and you cannot tell which one answers the question stated above, do not guess or combine them. Instead indicate that the answer is not explicitly given in the text."
         )
