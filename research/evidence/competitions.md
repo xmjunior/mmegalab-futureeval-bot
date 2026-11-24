@@ -47,3 +47,15 @@ Metaculus. (s. f.). *FutureEval model leaderboard*. Recuperado el 24 de noviembr
 Metaculus. (s. f.). *Bot tournament resources page*. Recuperado el 24 de noviembre de 2026, de https://www.metaculus.com/notebooks/38928/bot-tournament-resources-page/
 
 Ramp. (s. f.). *International transfers on Ramp Bill Pay*. Recuperado el 24 de noviembre de 2026, de https://support.ramp.com/international-transfers-on-ramp-bill-pay/
+
+## Podios definitivos, leídos el 24 de noviembre de 2026
+
+| Temporada | Primer puesto | Segundo | Tercero |
+|---|---|---|---|
+| Fall 2025 | Preseen-Atlas · US$6.859,12 | manticAI · US$6.009,32 | GreeneiBot2 · US$5.793,39 |
+| Spring 2026 | GreeneiBot2 · US$5.096,73 | Preseen-Atlas · US$4.766,84 | SynapseSeer · US$4.185,97 |
+| Summer 2026 | laertes · US$3.397,11 | futuresearch · US$3.374,02 | preseen · US$3.108,35 |
+
+Son asignaciones finales publicadas a bots elegibles. Las clasificaciones incluyen referencias excluidas que se conservan aparte en la evidencia. [Lectura autenticada](https://github.com/xmjunior/mmegalab-futureeval-bot/actions/runs/45465091099) · [Datos agregados](past-season-podiums.json)
+
+GreeneiBot2 describe investigación en paralelo con AskNews, Perplexity y búsqueda de GPT, además de lectura de las fuentes enlazadas en los criterios de resolución. Combina varias salidas y comprueba la distribución numérica. El ensayo gratuito B usa fuentes primarias fechadas y registra su disponibilidad. FutureSearch distingue sus experimentos retrospectivos de la validación que proporcionan torneos que aún estaban abiertos al emitir sus predicciones. Solo los datos históricos con corte y conocimiento controlados sirven para atribuir una mejora al modelo. El uso de varias familias y la evidencia de cada fuente se prueban por separado. [Descripción de GreeneiBot2](https://www.metaculus.com/notebooks/43497/bot-plans/) · [Metodología de FutureSearch](https://futuresearch.ai/iterating-on-a-forecaster/)
