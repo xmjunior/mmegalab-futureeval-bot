@@ -746,6 +746,11 @@
       },
       "design_sha256": "9d758176607cdd7740b50c5897c38b271650834dbf01d449f1a9f10c6e9cecb7",
       "models": {
+        "anchored": {
+          "model": "openai/gpt-oss-120b",
+          "prompt_sha256": "8e93e3ecb6bad2c822bb8eed339e74a1e02b8412fbb935030e83428934ee64ac",
+          "status": "leased"
+        },
         "blind": {
           "issued_utc": "2026-11-24T23:19:40.543441+00:00",
           "model": "openai/gpt-oss-120b",
