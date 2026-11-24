@@ -1,0 +1,22 @@
+name: Read completed tournament podiums
+on:
+  push:
+    branches: [verify/champion-past-podiums]
+permissions:
+  contents: read
+jobs:
+  results:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: python research/podiums.py
+        env:
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: completed-futureeval-leaderboards
+          path: past-season-podiums.json
+          retention-days: 30
