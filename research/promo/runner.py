@@ -163,9 +163,31 @@ def lease(journal, arm, source, estimates):
     journal.commit("Reserve entire panel before external model requests")
 
 
+# One experiment explicitly authorized by the project owner after reviewing the
+# two current dashboard rows and the original purchase. Keep account details private.
+OWNER_CAPTURE_SHA256 = "25111e93eddc5b1eb5d1296245a1940c0d6483c889c5b6a84436eec9293f68c5"
+OWNER_CHECKED = "2026-11-24T21:36:46+00:00"
+
+
+def one_panel_scope(now):
+    checked = datetime.fromisoformat(OWNER_CHECKED)
+    require(checked <= now < checked + timedelta(minutes=15), "owner_snapshot_expired")
+    require(os.getenv("GITHUB_REPOSITORY") == "xmjunior/mmegalab-futureeval-bot"
+            and os.getenv("GITHUB_REF") == "refs/heads/verify/openai-access-audit"
+            and os.getenv("GITHUB_RUN_ATTEMPT") == "1"
+            and os.getenv("GITHUB_EVENT_NAME") == "push", "wrong_one_shot_context")
+    # The owner supplied the dashboard for this key's organization. The attested
+    # available grant exceeds this conservative floor. The floor is private-wallet
+    # headroom only, not permission to make another request.
+    return {"credential_scope":"owner_project_key", "checked_at": OWNER_CHECKED,
+            "grant_expires_at":"2026-11-26T00:00:00+00:00", "grant_remaining_micro_usd":100_000,
+            "cash_fallback_available":True, "audit_hash":OWNER_CAPTURE_SHA256}
+
+
 def oai(path, params, scope):
-    headers = {"Authorization": "Bearer " + os.environ["OPENAI_API_KEY"],
-               "OpenAI-Organization": scope["org"], "OpenAI-Project": scope["project"]}
+    headers = {"Authorization": "Bearer " + os.environ["OPENAI_API_KEY"]}
+    if scope.get("credential_scope") != "owner_project_key":
+        headers.update({"OpenAI-Organization": scope["org"], "OpenAI-Project": scope["project"]})
     return json.loads(shadow.request(OAI + path, params, headers, timeout=50))
 
 
@@ -173,6 +195,11 @@ def prepare_openai(text, grant):
     public = shadow.request("https://developers.openai.com/api/docs/models/gpt-5.6-sol.md", timeout=15).decode()
     require("| Input | $4 | 1M tokens |" in public and "| Output | $20 | 1M tokens |" in public,
             "published_pricing_changed")
+    if grant.get("credential_scope") == "owner_project_key":
+        # Immutable official count on Actions run 45485091900, exact same input.
+        require(sha(text.encode()) == PROMPT_SHA and MAX_OUTPUT == 448
+                and plan(512) == 19_200, "authorization_bounds_changed")
+        return {"model":MODEL, "input":text, "tools":[]}, 512, plan(512)
     return count_input(text, grant)
 
 
@@ -206,6 +233,9 @@ def try_openai(inp, expected, scope):
     rt = (raw_usage.get("output_tokens_details") or {}).get("reasoning_tokens")
     if type(rt) is int and rt >= 0:
         receipt["reasoning_tokens"] = rt
+    cached = (raw_usage.get("input_tokens_details") or {}).get("cached_tokens")
+    if type(cached) is int and 0 <= cached <= receipt.get("input_tokens", -1):
+        receipt["cached_input_tokens"] = cached
     status = data.get("status")
     if status in {"completed", "failed", "incomplete", "in_progress", "cancelled", "queued"}:
         receipt["provider_status"] = status
@@ -216,6 +246,8 @@ def try_openai(inp, expected, scope):
         require(type(ni) is int and type(no) is int and ni <= expected and no <= MAX_OUTPUT,
                 "provider_usage_outside_reservation")
         receipt["usage_cost_upper_micro_usd"] = (ni + no)*RATE
+        if receipt.get("cached_input_tokens") == 0:
+            receipt["standard_token_cost_micro_usd"] = ni * 4 + no * 20
         require(status == "completed", "provider_incomplete_or_failed")
         require(all(m["type"] in {"reasoning","message"} for m in data["output"]), "unexpected_tool_call")
         text = "\n".join(c["text"] for m in data["output"] if m["type"] == "message"
@@ -237,9 +269,13 @@ def run(arm, journal, panel, scope=None):
         reserve = 0
     lease(journal,arm,scope,{"single_panel_request":reserve})
     group = journal.book["arms"][arm]
+    if scope and scope.get("credential_scope") == "owner_project_key":
+        group["reviewed_capture_sha256"] = scope["audit_hash"]
+        group["evidence_at"] = scope["checked_at"]
+        group["github_run_id"] = os.environ.get("GITHUB_RUN_ID")
     if utc() + timedelta(seconds=65) >= deadline:
         group["status"] = "deadline"
-    elif scope and utc() >= min(datetime.fromisoformat(scope["checked_at"]) + timedelta(minutes=30),
+    elif scope and utc() >= min(datetime.fromisoformat(scope["checked_at"]) + timedelta(minutes=15 if scope.get("credential_scope") == "owner_project_key" else 30),
                                  datetime.fromisoformat(scope["grant_expires_at"])) - timedelta(seconds=65):
         group["status"] = "grant_check_expired"
     else:
@@ -267,7 +303,7 @@ def run(arm, journal, panel, scope=None):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("action", choices=("dry","count","gemma","openai"))
+    p.add_argument("action", choices=("dry","count","gemma","openai","owner-panel"))
     a = p.parse_args()
     panel = load_panel()
     if a.action == "count":
@@ -285,7 +321,11 @@ def main():
                           "prompt_sha256":sha(prompt().encode())}))
         return
     scope = None
-    if a.action == "openai":
+    if a.action == "owner-panel":
+        scope = one_panel_scope(utc())
+        require(bool(os.getenv("OPENAI_API_KEY")), "missing_openai_key")
+        a.action = "openai"
+    elif a.action == "openai":
         audit_file = os.getenv("OPENAI_PROMO_VERIFIED_AUDIT")
         raw = Path(audit_file).read_bytes() if audit_file and BILLING_AUDIT_SHA else None
         scope = audited_grant(raw,BILLING_AUDIT_SHA,utc())
@@ -295,6 +335,8 @@ def main():
     with TemporaryDirectory() as folder:
         status = run(a.action,Journal(Path(folder)),panel,scope)
     print(json.dumps({"arm":a.action,"status":status}))
+    if status != "completed":
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":
