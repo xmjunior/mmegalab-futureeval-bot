@@ -1,0 +1,71 @@
+{
+  "cases": 4,
+  "pending": 4,
+  "promotion_allowed": false,
+  "resolved": 0,
+  "schema": "megalab-arena-score-v1",
+  "scores": {
+    "C": {
+      "mean_brier": null,
+      "mean_log_loss_nats": null,
+      "paired_scored": 0,
+      "scores_by_case": {},
+      "submitted": 4
+    },
+    "calibrated_reference": {
+      "mean_brier": null,
+      "mean_log_loss_nats": null,
+      "paired_scored": 0,
+      "scores_by_case": {},
+      "submitted": 4
+    },
+    "codex-work-session": {
+      "mean_brier": null,
+      "mean_log_loss_nats": null,
+      "paired_scored": 0,
+      "scores_by_case": {},
+      "submitted": 4
+    },
+    "coin": {
+      "mean_brier": null,
+      "mean_log_loss_nats": null,
+      "paired_scored": 0,
+      "scores_by_case": {},
+      "submitted": 4
+    },
+    "gemini-web-4-neon": {
+      "mean_brier": null,
+      "mean_log_loss_nats": null,
+      "paired_scored": 0,
+      "scores_by_case": {},
+      "submitted": 4
+    },
+    "model_mean": {
+      "mean_brier": null,
+      "mean_log_loss_nats": null,
+      "paired_scored": 0,
+      "scores_by_case": {},
+      "submitted": 4
+    },
+    "model_reference_mean": {
+      "mean_brier": null,
+      "mean_log_loss_nats": null,
+      "paired_scored": 0,
+      "scores_by_case": {},
+      "submitted": 4
+    },
+    "openai": {
+      "mean_brier": null,
+      "mean_log_loss_nats": null,
+      "paired_scored": 0,
+      "scores_by_case": {},
+      "submitted": 4
+    }
+  },
+  "seal_sha256": "32c886ed36e4e1f3c9c9860fcb7fc5db5df805bda9dca4f17b17fb74c43d1fde",
+  "target_dates": [
+    "2026-12-02",
+    "2026-12-09"
+  ],
+  "void": 0
+}
