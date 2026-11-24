@@ -4,6 +4,7 @@ import csv
 import io
 import json
 import math
+import os
 import re
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
@@ -170,12 +171,24 @@ def _fred(code: str, vintage: date):
     qs = urlencode({"id": code, "cosd": (vintage - timedelta(days=810)).isoformat(),
                     "vintage_date": vintage.isoformat()})
     url = "https://alfred.stlouisfed.org/graph/alfredgraph.csv?" + qs
-    rows = csv.DictReader(io.StringIO(_get(url).decode()))
-    field = code + "_" + vintage.strftime("%Y%m%d")
-    if not rows.fieldnames or field not in rows.fieldnames:
-        raise ValueError(f"ALFRED did not deliver the requested {code} vintage")
-    return {date.fromisoformat(row["observation_date"]): float(row[field])
-            for row in rows if row.get(field) not in (None, "", ".")}, url
+    try:
+        rows = csv.DictReader(io.StringIO(_get(url).decode()))
+        field = code + "_" + vintage.strftime("%Y%m%d")
+        if not rows.fieldnames or field not in rows.fieldnames:
+            raise ValueError(f"ALFRED did not deliver the requested {code} vintage")
+        data = {date.fromisoformat(row["observation_date"]): float(row[field])
+                for row in rows if row.get(field) not in (None, "", ".")}
+        if len(data) < 160 or max(data) > vintage or _weekdays(max(data) + timedelta(days=1), vintage) > 2:
+            raise ValueError("Incomplete or stale vintage")
+        return data, url
+    except (OSError, ValueError, KeyError):
+        if not os.getenv("FRED_API_KEY"):
+            raise
+        from alfred_vintage import fred_vintage
+        day = vintage.isoformat()
+        data = fred_vintage(code, day, (vintage - timedelta(days=810)).isoformat())
+        public_source = "https://alfred.stlouisfed.org/series?seid=" + quote(code) + "&vintage_date=" + day
+        return {date.fromisoformat(d): float(v) for d, v in data.items()}, public_source
 
 
 @lru_cache(maxsize=8)
