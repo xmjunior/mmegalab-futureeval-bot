@@ -1,0 +1,287 @@
+"""Point-in-time Market Pulse 26Q4 market data and numeric spot-score benchmark."""
+
+import csv
+import io
+import json
+import math
+import re
+from concurrent.futures import ThreadPoolExecutor
+from dataclasses import dataclass
+from datetime import date, datetime, time, timedelta, timezone
+from functools import lru_cache
+from urllib.parse import quote, urlencode
+from urllib.request import Request, urlopen
+from zoneinfo import ZoneInfo
+
+import numpy as np
+
+SPECS = {
+    46007: ("spread", "CL=F", "ES=F"),
+    46008: ("spread", "GC=F", "ES=F"),
+    46010: ("level", "BAMLH0A0HYM2"),
+    46011: ("spread", "NQ=F", "ES=F"),
+    46012: ("spread", "NVDA", "AAPL"),
+    46013: ("spread", "NVDA", "MSFT"),
+    46014: ("level", "DGS10"),
+    46015: ("maximum", "VIX"),
+}
+WIDTHS = (1.0, 1.25, 1.5)
+NY = ZoneInfo("America/New_York")
+CBOE = "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv"
+LEVELS = (0.1, 0.25, 0.5, 0.75, 0.9)
+
+
+def period_end(label: str, spot: datetime) -> datetime:
+    match = re.fullmatch(
+        r"([A-Za-z]{3})\s+(\d{1,2})\s*[-–—]\s*(?:([A-Za-z]{3})\s+)?(\d{1,2})(?:\s*\([^)]*\))?",
+        label.strip(),
+    )
+    if not match or spot.tzinfo is None:
+        raise ValueError(f"Unrecognized period: {label!r}")
+    left, start, right, end = match.groups()
+    start_month = datetime.strptime(left, "%b").month
+    end_month = datetime.strptime(right or left, "%b").month
+    start_year = spot.year + (1 if spot.month == 12 and start_month == 1 else 0)
+    start_day = date(start_year, start_month, int(start))
+    end_day = date(start_year + int(end_month < start_month), end_month, int(end))
+    if not 5 <= (end_day - start_day).days <= 20 or abs((start_day - spot.date()).days) > 7:
+        raise ValueError(f"Unexpected dates for {label!r}, spot={spot.isoformat()}")
+    return datetime.combine(end_day, time(16), NY).astimezone(timezone.utc)
+
+
+# Frozen outcome labels, extracted from the corresponding public Metaculus group post
+# (https://www.metaculus.com/questions/<post_id>/) on 2026-11-24. This is the entire
+# resolved numeric cohort for the eight price series on that date, including losses.
+# Results are only read by the scorer after the forecast has been built.
+_CLOSED = [
+    (46007, 46200, 'Oct 12 - Oct 23', '2026-10-12T03:00:00Z', -25, 25, 200, 14.98),
+    (46007, 46201, 'Oct 26 - Nov 6', '2026-10-26T03:00:00Z', -25, 25, 200, -8.68),
+    (46007, 46202, 'Nov 9 - Nov 20', '2026-11-09T04:00:00Z', -25, 25, 200, -1.23),
+    (46008, 46206, 'Oct 12 - Oct 23', '2026-10-12T03:00:00Z', -10, 10, 200, -2.398),
+    (46008, 46207, 'Oct 26 - Nov 6', '2026-10-26T03:00:00Z', -10, 10, 200, 5.037),
+    (46008, 46208, 'Nov 9 - Nov 20', '2026-11-09T04:00:00Z', -10, 10, 200, -7.421),
+    (46010, 46212, 'Oct 12 - Oct 23', '2026-10-12T03:00:00Z', 1.745, 3.745, 200, 3.38),
+    (46010, 46213, 'Oct 26 - Nov 6', '2026-10-26T03:00:00Z', 1.745, 3.745, 200, 3.42),
+    (46010, 46709, 'Nov 9-20 (wider range)', '2026-11-06T13:00:00Z', 1.745, 4.255, 251, 3.76),
+    (46011, 46218, 'Oct 12 - Oct 23', '2026-10-12T03:00:00Z', -5, 5, 200, -3.856),
+    (46011, 46219, 'Oct 26 - Nov 6', '2026-10-26T03:00:00Z', -5, 5, 200, -3.615),
+    (46011, 46220, 'Nov 9 - Nov 20', '2026-11-09T04:00:00Z', -5, 5, 200, -0.923),
+    (46012, 46224, 'Oct 12 - Oct 23', '2026-10-12T03:00:00Z', -15, 15, 200, -11.28),
+    (46012, 46225, 'Oct 26 - Nov 6', '2026-10-26T03:00:00Z', -15, 15, 200, -9.99),
+    (46013, 46230, 'Oct 12 - Oct 23', '2026-10-12T03:00:00Z', -15, 15, 200, -6.02),
+    (46013, 46231, 'Oct 26 - Nov 6', '2026-10-26T03:00:00Z', -15, 15, 200, -12.69),
+    (46014, 46236, 'Oct 12 - Oct 23', '2026-10-12T03:00:00Z', 4.255, 6.255, 200, 5.0),
+    (46014, 46237, 'Oct 26 - Nov 6', '2026-10-26T03:00:00Z', 4.255, 6.255, 200, 4.86),
+    (46014, 46238, 'Nov 9 - Nov 20', '2026-11-09T04:00:00Z', 4.255, 6.255, 200, 4.92),
+    (46015, 46242, 'Oct 12 - Oct 23', '2026-10-12T03:00:00Z', 10, 50, 200, 22.31),
+    (46015, 46243, 'Oct 26 - Nov 6', '2026-10-26T03:00:00Z', 10, 50, 200, 28.36),
+    (46015, 46244, 'Nov 9 - Nov 20', '2026-11-09T04:00:00Z', 10, 50, 200, 40.03),
+]
+HISTORY = []
+for _post, _id, _label, _spot, _low, _high, _bins, _result in _CLOSED:
+    _utc = datetime.fromisoformat(_spot)
+    HISTORY.append(dict(post_id=_post, question_id=_id, label=_label, spot=_utc,
+                        resolve=period_end(_label, _utc), low=_low, high=_high,
+                        outcome=_result, bins=_bins, source=f"https://www.metaculus.com/questions/{_post}/"))
+
+
+def _get(url: str) -> bytes:
+    request = Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; MarketPulse26Q4/1.0)"})
+    with urlopen(request, timeout=18) as response:
+        data = response.read(8_000_001)
+    if len(data) > 8_000_000:
+        raise ValueError("Market source exceeds expected size")
+    return data
+
+
+@lru_cache(maxsize=64)
+def _yahoo(symbol: str):
+    path = "/v8/finance/chart/" + quote(symbol, safe="") + "?range=5y&interval=1d"
+    last_error = None
+    for host in ("query2.finance.yahoo.com", "query1.finance.yahoo.com"):
+        try:
+            result = json.loads(_get("https://" + host + path))["chart"]["result"][0]
+            if result["meta"]["symbol"] != symbol:
+                raise ValueError("Instrument identity mismatch")
+            quotes = result["indicators"]
+            closes = quotes["quote"][0]["close"] if symbol.endswith("=F") else quotes["adjclose"][0]["adjclose"]
+            tz = ZoneInfo(result["meta"]["exchangeTimezoneName"])
+            series = {datetime.fromtimestamp(t, tz).date(): float(v)
+                      for t, v in zip(result["timestamp"], closes, strict=True)
+                      if v is not None and math.isfinite(v) and v > 0}
+            return series, "https://finance.yahoo.com/quote/" + quote(symbol, safe="") + "/history/"
+        except (OSError, ValueError, KeyError, TypeError, IndexError) as exc:
+            last_error = exc
+    raise RuntimeError(f"Historical quote data unavailable for {symbol}") from last_error
+
+
+@lru_cache(maxsize=64)
+def _fred(code: str, vintage: date):
+    qs = urlencode({"id": code, "cosd": (vintage - timedelta(days=810)).isoformat(),
+                    "vintage_date": vintage.isoformat()})
+    url = "https://alfred.stlouisfed.org/graph/alfredgraph.csv?" + qs
+    rows = csv.DictReader(io.StringIO(_get(url).decode()))
+    field = code + "_" + vintage.strftime("%Y%m%d")
+    if not rows.fieldnames or field not in rows.fieldnames:
+        raise ValueError(f"ALFRED did not deliver the requested {code} vintage")
+    return {date.fromisoformat(row["observation_date"]): float(row[field])
+            for row in rows if row.get(field) not in (None, "", ".")}, url
+
+
+@lru_cache(maxsize=1)
+def _vix():
+    rows = csv.DictReader(io.StringIO(_get(CBOE).decode("utf-8-sig")))
+    return {datetime.strptime(r["DATE"], "%m/%d/%Y").date(): (float(r["CLOSE"]), float(r["HIGH"]))
+            for r in rows if r.get("CLOSE") and r.get("HIGH")}, CBOE
+
+
+@dataclass
+class MarketEstimate:
+    source_date: date
+    sources: tuple[str, ...]
+    sample_size: int
+    center: float
+    outcomes: np.ndarray
+    naive: np.ndarray
+
+    def quantiles(self, width: float = 1.0) -> dict[float, float]:
+        if width not in WIDTHS:
+            raise ValueError("Unvalidated distribution width")
+        values = self.center + width * (np.quantile(self.outcomes, LEVELS) - self.center)
+        return dict(zip(LEVELS, map(float, values), strict=True))
+
+
+def _weekdays(first: date, last: date) -> int:
+    return sum((first + timedelta(days=n)).weekday() < 5 for n in range((last-first).days + 1))
+
+
+def model(post_id: int, as_of: datetime, spot: datetime, resolve: datetime) -> MarketEstimate:
+    if any(dt.tzinfo is None for dt in (as_of, spot, resolve)) or not as_of <= spot < resolve:
+        raise ValueError("Invalid as-of / spot / target order")
+    if post_id not in SPECS:
+        raise ValueError(f"No verified market feed for {post_id}")
+    kind, *symbols = SPECS[post_id]
+    # Excluding today's entire bar prevents using a session's eventual closing price
+    # at an intraday cutoff. At a Sunday-night/Monday-UTC spot, Friday is available.
+    cutoff = as_of.astimezone(NY).date() - timedelta(days=1)
+    if kind == "level":
+        quotes, source = _fred(symbols[0], cutoff)
+        dates = sorted(d for d in quotes if d <= cutoff)[-505:]
+        values = np.array([quotes[d] for d in dates])
+        sources = (source,)
+    elif kind == "maximum":
+        quotes, source = _vix()
+        dates = sorted(d for d in quotes if d <= cutoff)[-505:]
+        values = np.array([quotes[d][0] for d in dates])
+        highs = np.array([quotes[d][1] for d in dates])
+        sources = (source,)
+    else:
+        a, source_a = _yahoo(symbols[0])
+        b, source_b = _yahoo(symbols[1])
+        dates = sorted(d for d in a.keys() & b.keys() if d <= cutoff)[-505:]
+        values = np.array([a[d] for d in dates])
+        other = np.array([b[d] for d in dates])
+        sources = (source_a, source_b)
+    if len(dates) < 160 or _weekdays(dates[-1] + timedelta(days=1), cutoff) > 2:
+        raise ValueError(f"Insufficient or stale prices for {post_id} as of {as_of.isoformat()}")
+    target_day = resolve.astimezone(NY).date()
+    # The reporting periods start on the UTC spot date for regular groups. For a
+    # replaced FRED question, the level horizon is measured from the last vintage.
+    start = spot.astimezone(timezone.utc).date()
+    horizon = _weekdays(start, target_day)
+    lag = _weekdays(dates[-1] + timedelta(days=1), start - timedelta(days=1))
+    if kind == "level":
+        horizon += lag
+    if not 4 <= horizon <= 25 or lag > 15:
+        raise ValueError("Outside the supported biweekly horizon")
+    left = np.arange(len(values) - horizon - (lag if kind == "maximum" else 0))
+    right = left + horizon
+    if kind == "spread":
+        historical = 100 * (values[right]/values[left] - other[right]/other[left])
+        daily = 100 * (np.diff(np.log(values)) - np.diff(np.log(other)))
+        center = 0.0
+    elif kind == "level":
+        historical = values[right] - values[left]
+        daily = np.diff(values)
+        center = float(values[-1])
+    else:
+        offsets = np.arange(1 + lag, horizon + lag + 1)
+        historical = np.max(highs[left[:, None] + offsets], axis=1) / values[left]
+        # Both candidates start at the latest VIX. Compare conditioning on similar
+        # starting levels against using peak multiples from the full rolling sample.
+        naive = historical * values[-1]
+        nearest = np.argsort(np.abs(np.log(values[left] / values[-1])))[:max(80, len(left)//3)]
+        outcomes = historical[nearest] * values[-1]
+        return MarketEstimate(dates[-1], sources, len(nearest), float(np.median(outcomes)), outcomes, naive)
+    long_vol = np.std(daily[-252:], ddof=1)
+    short_vol = np.std(daily[-30:], ddof=1)
+    if not np.isfinite(long_vol) or long_vol <= 0:
+        raise ValueError("Missing return variance")
+    multiplier = float(np.clip(np.sqrt(short_vol / long_vol), 0.7, 2.0))
+    # Zero directional drift is fixed in advance. The plain benchmark uses the same
+    # as-of returns and horizon, without the short/long regime adjustment.
+    changes = historical - np.median(historical)
+    return MarketEstimate(dates[-1], sources, len(left), center, center + multiplier * changes, center + changes)
+
+
+def _mass(quantiles: dict[float, float], low: float, high: float, outcome: float, bins: int) -> float:
+    # Reconstruct the same question-specific, standardized CDF used by publication for
+    # these linear, open-both-ends Market Pulse subquestions. The peer term is
+    # common to both forecasts and cancels when comparing log scores.
+    from forecasting_tools import NumericDistribution, Percentile
+    dist = NumericDistribution(
+        declared_percentiles=[Percentile(percentile=prob, value=val) for prob, val in sorted(quantiles.items())],
+        open_lower_bound=True, open_upper_bound=True, lower_bound=low, upper_bound=high,
+        zero_point=None, cdf_size=bins+1,
+    )
+    cdf = [point.percentile for point in dist.get_cdf()]
+    if outcome < low:
+        return cdf[0]
+    if outcome > high:
+        return 1-cdf[-1]
+    index = min(bins-1, int(math.floor((outcome-low)*bins/(high-low))))
+    return cdf[index+1] - cdf[index]
+
+
+def benchmark(history=None) -> dict:
+    cohort = HISTORY if history is None else history
+    cases = []
+    def evaluate(row):
+        estimate = model(row['post_id'], row['spot'] - timedelta(seconds=1), row['spot'], row['resolve'])
+        args = row['low'], row['high'], row['outcome'], row['bins']
+        naive = dict(zip(LEVELS, np.quantile(estimate.naive, LEVELS)))
+        baseline = _mass(naive, *args)
+        return dict(post_id=row['post_id'], question_id=row['question_id'], spot=row['spot'].isoformat(),
+                    source_date=estimate.source_date.isoformat(), outcome=row['outcome'], sample_size=estimate.sample_size,
+                    baseline_mass=baseline, widths={w: math.log(_mass(estimate.quantiles(w), *args)/baseline) for w in WIDTHS})
+    failed = {}
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        futures = [(row, pool.submit(evaluate, row)) for row in cohort]
+        for row, future in futures:
+            try:
+                cases.append(future.result())
+            except Exception as error:
+                failed.setdefault(str(row['post_id']), []).append(
+                    dict(question_id=row['question_id'], error=f"{type(error).__name__}: {error}")
+                )
+    by_group = {}
+    allowed = {}
+    for post_id in SPECS:
+        subset = sorted((x for x in cases if x['post_id']==post_id), key=lambda x:x['spot'])
+        if str(post_id) in failed or len(subset) < 3:
+            allowed[str(post_id)] = []
+            by_group[str(post_id)] = dict(n=len(subset), omitted=failed.get(str(post_id), []))
+            continue
+        development = subset[:-1]
+        gains = {w: sum(x['widths'][w] for x in development)/len(development) for w in WIDTHS}
+        # Freeze candidate widths from development only. The downstream named model
+        # is blinded to dates, asset identities and labels, then scored on the last spot.
+        allowed[str(post_id)] = [w for w in WIDTHS if gains[w] > 0]
+        by_group[str(post_id)] = dict(n=len(subset), development_mean_log_gain=gains,
+                                      held_out_question=subset[-1]['question_id'])
+    return dict(cases=cases, by_group=by_group, eligible=[int(k) for k,v in allowed.items() if v],
+                allowed_widths=allowed, failed=failed)
+
+
+if __name__ == '__main__':
+    print(json.dumps(benchmark(), indent=2))
