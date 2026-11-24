@@ -13,8 +13,9 @@ from prize_publication import PublicationError, VerifiedPrizeClient, finish_priz
 
 
 TEST_AREA = "bot-testing-area"
-# Discovery is read-only. A later reviewed commit can pin one unanswered pair.
-PINNED = None
+# Read-only discovery run 45465427673 verified empty forecast and private comment history.
+# Only this question in the exclusive, unscored project is eligible for a write.
+PINNED = (32977, 43322, 43324)
 
 
 def in_test_area(question):

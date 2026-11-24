@@ -10,7 +10,7 @@ from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
 import requests
-from forecasting_tools import BinaryQuestion, BinaryReport, MetaculusClient
+from forecasting_tools import BinaryQuestion, BinaryReport, ConditionalQuestion, MetaculusClient
 
 from prize_publication import ProviderAuditHandler, PublicationError, VerifiedPrizeClient, finish_prize_run
 
@@ -159,6 +159,18 @@ class PublicationTests(unittest.TestCase):
             with self.assertRaisesRegex(PublicationError,"Incomplete"):
                 finish_prize_run([],self.client)
         self.assertEqual(len(self.service.posts),1)
+
+    def test_conditional_result_requires_both_published_branch_ids(self):
+        yes = BinaryQuestion.model_construct(id_of_question=94, id_of_post=12)
+        no = BinaryQuestion.model_construct(id_of_question=95, id_of_post=12)
+        question = ConditionalQuestion.model_construct(id_of_question=1200, id_of_post=12,
+                                                       question_yes=yes, question_no=no)
+        report = SimpleNamespace(question=question, errors=[])
+        self.client.verified = {94, 95}
+        finish_prize_run([report], self.client)
+        self.client.verified = {94}
+        with self.assertRaises(PublicationError):
+            finish_prize_run([report], self.client)
 
     def test_only_safe_provider_events_pass_public_handler(self):
         log = logging.Logger("test-exclusive")

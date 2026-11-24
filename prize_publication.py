@@ -11,7 +11,7 @@ import sys
 import time
 
 import requests
-from forecasting_tools import MetaculusClient
+from forecasting_tools import ConditionalQuestion, MetaculusClient
 
 
 def open_audit_stream():
@@ -148,10 +148,26 @@ class VerifiedPrizeClient(MetaculusClient):
                 return
             offset += len(comments)
 
+    @staticmethod
+    def forecast_targets(question):
+        if isinstance(question, ConditionalQuestion):
+            return (question.question_yes, question.question_no)
+        return (question,)
+
     def get_all_open_questions_from_tournament(self, *args, **kwargs):
         questions = super().get_all_open_questions_from_tournament(*args, **kwargs)
         by_post = {}
-        for q in questions:
+        targets = []
+        for question in questions:
+            parts = self.forecast_targets(question)
+            targets.extend(parts)
+            if len(parts) == 2 and any(p.already_forecasted for p in parts):
+                for part in parts:
+                    if not part.already_forecasted:
+                        self.incomplete_previous.add(part.id_of_question)
+                        print(f"Conditional branch lacks prior forecast question={part.id_of_question} "
+                              f"post={part.id_of_post}", file=self.audit)
+        for q in targets:
             if getattr(q, "options", None):
                 raw = (q.api_json or {}).get("question", {})
                 self.category_order[q.id_of_question] = raw.get("all_options_ever") or q.options
@@ -299,8 +315,8 @@ def finish_prize_run(reports, client):
         elif r.errors:
             print(f"SDK error question={r.question.id_of_question} post={r.question.id_of_post} "
                   f"code=incomplete_report count={len(r.errors)}", file=client.audit)
-    expected = {r.question.id_of_question for r in returned}
-    missing = expected != client.verified or len(expected) != len(returned)
+    targets = [q.id_of_question for r in returned for q in client.forecast_targets(r.question)]
+    missing = set(targets) != client.verified or len(set(targets)) != len(targets)
     print(f"Completed verification: confirmed={len(client.verified)} failed={failed} "
           f"report_errors={warnings} inconsistent={int(missing)} "
           f"previous_unconfirmed={len(client.incomplete_previous)} legacy_unverified={len(client.unverified_legacy)}", file=client.audit)
