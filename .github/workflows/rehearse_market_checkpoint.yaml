@@ -1,0 +1,50 @@
+name: Start one isolated historical Market Pulse rehearsal after the seasonal window
+on:
+  push:
+    branches: [ops/market-sealed-rehearsal-20261124]
+permissions:
+  actions: write
+  contents: read
+concurrency:
+  group: market-sealed-rehearsal-20261124
+  cancel-in-progress: false
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 69
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Require the two-runner interruption test, exact research SHA and a free seasonal lane
+        run: |
+          python -u - <<'PYCODE'
+          from research.recover_window import GH, SEASON, request, runs, stamp, wait_until
+          ref = "research/market-pulse-checkpoints"
+          expected = "5ba764b6bafa61fcaef03022a4ff36835401d4ac"
+          if not "2026-11-24T20:00" <= stamp() < "2026-11-24T21:07":
+              raise SystemExit("One-time sealed-validation slot has expired")
+          wait_until("20:53:02")
+          if any(x["status"] != "completed" for x in runs(SEASON)):
+              wait_until("21:03:02")
+          if any(x["status"] != "completed" for x in runs(SEASON)):
+              raise SystemExit("Seasonal still running; real reviewer calls withheld")
+          if request(GH, "/git/ref/heads/"+ref)["object"]["sha"] != expected:
+              raise ValueError("Unexpected research revision")
+          simulation = request(GH, "/actions/runs/45476388331")
+          if simulation["head_sha"] != expected or simulation["conclusion"] != "success":
+              raise ValueError("Missing same-revision two-runner recovery test")
+          jobs = request(GH, "/actions/runs/45476388331/jobs")["jobs"]
+          required = {"simulate-interruption", "simulate-recovery"}
+          if {j["name"] for j in jobs if j["conclusion"] == "success"} != required:
+              raise ValueError("The recovery simulation was incomplete")
+          prior = [r for r in runs("market_pulse.yaml") if r["head_sha"] == expected
+                   and r["head_branch"] == ref and r["event"] == "workflow_dispatch"]
+          if prior:
+              print("A historical rehearsal of this revision has already been dispatched.")
+          else:
+              request(GH, "/actions/workflows/market_pulse.yaml/dispatches", data={"ref":ref})
+              print("Accepted a single historical + no-write rehearsal at", stamp(), "ref",ref,"SHA",expected)
+          PYCODE
+        env:
+          GH_TOKEN: ${{ github.token }}
