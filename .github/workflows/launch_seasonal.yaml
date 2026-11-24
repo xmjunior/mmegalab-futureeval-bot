@@ -1,0 +1,18 @@
+name: Start existing seasonal workflow
+on:
+  push:
+    branches: [ops/launch-seasonal]
+permissions:
+  actions: write
+  contents: read
+jobs:
+  launch-existing-seasonal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Dispatch unchanged competition workflow on main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/run_bot_on_tournament.yaml/dispatches" -f ref=main
+          echo "Seasonal dispatched on the default branch"
