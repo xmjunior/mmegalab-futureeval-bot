@@ -2,7 +2,35 @@
   "baseline_commit": "0459814720cd51c3effa7cfa412cec8aefcdb105",
   "cases": {
     "ust10-v1-2026-W48": {
-      "attempts": [],
+      "attempts": [
+        {
+          "at": "2026-11-24T18:50:27.122302+00:00",
+          "key": "gemma-4-31b-it/research",
+          "model": "gemma-4-31b-it",
+          "prompt_sha256": "2518ab4bce1771ab2f212d964217485b91e308c260d0e76cdaff6326c522ee49",
+          "retry_at": "2026-11-24T19:50:52.522953+00:00",
+          "seconds": 25.4,
+          "status": "http_503"
+        },
+        {
+          "at": "2026-11-24T18:50:52.523579+00:00",
+          "key": "gemma-4-26b-a4b-it/research",
+          "model": "gemma-4-26b-a4b-it",
+          "prompt_sha256": "2518ab4bce1771ab2f212d964217485b91e308c260d0e76cdaff6326c522ee49",
+          "retry_at": "2026-11-24T19:50:52.704046+00:00",
+          "seconds": 0.18,
+          "status": "http_503"
+        },
+        {
+          "at": "2026-11-24T18:50:52.704629+00:00",
+          "key": "nvidia/nemotron-3-ultra-550b-a55b:free/research",
+          "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+          "prompt_sha256": "2518ab4bce1771ab2f212d964217485b91e308c260d0e76cdaff6326c522ee49",
+          "retry_at": "2026-11-24T19:50:52.805518+00:00",
+          "seconds": 0.1,
+          "status": "http_429"
+        }
+      ],
       "cache": {},
       "evidence": {
         "10y_minus_2y_pp": "0.29",

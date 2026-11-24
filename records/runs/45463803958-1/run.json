@@ -1,0 +1,10 @@
+{
+  "TREASURY": "success",
+  "MINI": "failure",
+  "AUDIT": "success",
+  "RESEARCH_SHA": "bd49fabb6a4deb9a5323158c44d2d36981aa0fb6",
+  "GITHUB_SHA": "4f77caef857a691a365464c61c69cc6a430371a9",
+  "GITHUB_EVENT_NAME": "push",
+  "GITHUB_RUN_ID": "45463803958",
+  "GITHUB_RUN_ATTEMPT": "1"
+}
