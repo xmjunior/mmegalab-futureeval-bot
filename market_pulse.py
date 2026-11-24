@@ -6,6 +6,7 @@ import json
 import logging
 import math
 import os
+import subprocess
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -237,7 +238,7 @@ async def validate(account, history=None):
         raise RuntimeError("No free hosted provider returned valid decisions; no forecasts can be published")
     if not routes_by_group:
         raise RuntimeError("Hosted forecasts failed the held-out baseline; publication disabled")
-    proof = {"code_sha": os.getenv("GITHUB_SHA"), "project": PROJECT,
+    proof = {"code_sha": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(), "project": PROJECT,
              "routes_by_group": routes_by_group, "routes": sorted({n for ns in routes_by_group.values() for n in ns}),
              "allowed_widths": {g:widths[g] for g in routes_by_group},
              "q3_evidence_sha256": hashlib.sha256(Path(__file__).with_name("market_pulse_q3.json").read_bytes()).hexdigest(),
