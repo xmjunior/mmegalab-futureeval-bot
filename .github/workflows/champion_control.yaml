@@ -28,11 +28,11 @@ concurrency:
   group: ${{ github.event_name == 'workflow_run' && 'champion-recovery-seeds' || github.event_name == 'workflow_dispatch' && inputs.mode == 'recovery' && 'champion-recovery-clock' || github.event_name == 'workflow_dispatch' && inputs.mode == 'recovery_check' && 'champion-recovery-inspection' || 'champion-v2-observations' }}
   cancel-in-progress: false
 env:
-  RECOVERY_SHA: "4a2105aaf9c489e8184f1d5c33f28631b3d90513"
+  RECOVERY_SHA: "8b6e3f028991fe112e2aae1998afb0f1656dcc7c"
   RECOVERY_MODE: ${{ inputs.mode }}
   RECOVERY_CYCLE: ${{ inputs.recovery_cycle || '0' }}
   RECOVERY_ERRORS: ${{ inputs.recovery_errors || '0' }}
-  RESEARCH_SHA: "0c137bff6200e4c0b48abd8871ae782b3a36c466"
+  RESEARCH_SHA: "8b6e3f028991fe112e2aae1998afb0f1656dcc7c"
 jobs:
   evaluate:
     if: (github.event_name != 'workflow_dispatch' || !startsWith(inputs.mode, 'recovery')) && (github.ref_name == 'main' || (github.event_name == 'push' && github.ref_name == 'verify/champion-v2-control')) && github.event_name != 'workflow_run' && (github.event_name != 'schedule' || github.event.schedule == '17 7,19 * * *')
