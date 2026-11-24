@@ -71,6 +71,7 @@ class VerifiedPrizeClient(MetaculusClient):
         self.audit = audit_stream
         self.pending = contextvars.ContextVar("pending_forecast", default=None)
         self.category_order = {}
+        self.deadlines = {}
         self.verified = set()
         self.incomplete_previous = set()
         self.unverified_legacy = set()
@@ -154,6 +155,23 @@ class VerifiedPrizeClient(MetaculusClient):
             return (question.question_yes, question.question_no)
         return (question,)
 
+    @staticmethod
+    def deadline(question):
+        raw = (getattr(question, "api_json", None) or {}).get("question") or {}
+        candidates = (getattr(question, "close_time", None), raw.get("actual_close_time"),
+                      raw.get("scheduled_close_time"))
+        ends = []
+        for value in candidates:
+            try:
+                dt = datetime.fromisoformat(value) if isinstance(value, str) else value
+                if isinstance(dt, datetime):
+                    if dt.tzinfo is None:
+                        dt = dt.replace(tzinfo=timezone.utc)
+                    ends.append(dt.timestamp())
+            except (ValueError, OverflowError):
+                continue
+        return min(ends, default=math.inf)
+
     def get_all_open_questions_from_tournament(self, *args, **kwargs):
         questions = super().get_all_open_questions_from_tournament(*args, **kwargs)
         by_post = {}
@@ -168,6 +186,7 @@ class VerifiedPrizeClient(MetaculusClient):
                         print(f"Conditional branch lacks prior forecast question={part.id_of_question} "
                               f"post={part.id_of_post}", file=self.audit)
         for q in targets:
+            self.deadlines[q.id_of_question] = self.deadline(q)
             if getattr(q, "options", None):
                 raw = (q.api_json or {}).get("question", {})
                 self.category_order[q.id_of_question] = raw.get("all_options_ever") or q.options
@@ -203,7 +222,7 @@ class VerifiedPrizeClient(MetaculusClient):
                     self.incomplete_previous.add(q.id_of_question)
                     print(f"Existing forecast has no verified private rationale: "
                           f"question={q.id_of_question} post={post_id}", file=self.audit)
-        return questions
+        return sorted(questions, key=lambda q: (self.deadline(q), q.id_of_question or 0))
 
     @staticmethod
     def _same_forecast_time(start, last):
@@ -253,7 +272,10 @@ class VerifiedPrizeClient(MetaculusClient):
                        ensure_ascii=False, separators=(",", ":")).encode()
         ).hexdigest()[:24]
         # Marker binds group subquestions to the exact payload and original reasoning.
-        text = f"Forecast receipt {question_id}/{signature}\n\n{comment_text}"
+        # A conditional or grouped post has no single native forecast to attach.
+        # Preserve the exact question-specific forecast in its private note too.
+        stated = json.dumps(payload, ensure_ascii=False, allow_nan=False, separators=(",", ":"))
+        text = f"Forecast receipt {question_id}/{signature}\n\n{comment_text}\n\nSubmitted forecast for question {question_id}:\n```json\n{stated}\n```"
         body = {"forecasts": [{"question": question_id, **payload}],
                 "comments": [{"on_post": post_id, "text": text, "is_private": True,
                               "included_forecast": True}]}
@@ -289,18 +311,44 @@ class VerifiedPrizeClient(MetaculusClient):
             if not order or not set(probabilities).issubset(order):
                 raise PublicationError("Category order could not be verified")
             expected = [probabilities.get(label) for label in order]
-        if len(values) != len(expected) or any(
-                (v is None) != (e is None)
-                or (v is not None and not math.isclose(v, e, rel_tol=1e-7, abs_tol=1e-9))
-                for v, e in zip(values, expected)):
+        if not self._same_values(values, expected):
             raise PublicationError("Unexpected persisted forecast")
-        comment_id = next((int(c["id"]) for c in self._my_comments(post_id)
-                           if c.get("text") == text), None)
-        if not comment_id:
+        comment = next((c for c in self._my_comments(post_id) if c.get("text") == text), None)
+        if not comment or not comment.get("id"):
             raise PublicationError("Matching private rationale unconfirmed")
+        attached = self.attachment_matches(comment, values, payload)
+        if attached is False:
+            raise PublicationError("Private comment attaches a different forecast")
         self.verified.add(question_id)
-        print(f"Verified publication question={question_id} post={post_id} comment={comment_id} "
-              f"response={status or 'interrupted'} stored_values={len(values)} private=true", file=self.audit)
+        deadline = self.deadlines.get(question_id, math.inf)
+        margin = int(deadline - time.time()) if math.isfinite(deadline) else "unknown"
+        print(f"Verified publication question={question_id} post={post_id} comment={int(comment['id'])} "
+              f"response={status or 'interrupted'} stored_values={len(values)} private=true "
+              f"native_attachment={'verified' if attached else 'unavailable'} "
+              f"forecast_in_comment=true seconds_to_close={margin}", file=self.audit)
+
+    @staticmethod
+    def _same_values(values, expected):
+        return (isinstance(values, list) and len(values) == len(expected) and all(
+            (v is None and e is None) or (type(v) in (int, float) and type(e) in (int, float)
+                                         and math.isclose(v, e, rel_tol=1e-7, abs_tol=1e-9))
+            for v, e in zip(values, expected)))
+
+    @classmethod
+    def attachment_matches(cls, comment, own_values, payload):
+        """Return None when the server omits the native attachment or returns a flag."""
+        obj = comment.get("included_forecast")
+        if not isinstance(obj, dict):
+            return None
+        if "probability_yes" in payload:
+            p = obj.get("probability_yes")
+            attached = [1 - p, p] if type(p) in (int, float) else []
+        elif "continuous_cdf" in payload:
+            attached = obj.get("continuous_cdf")
+        else:
+            attached = obj.get("probability_yes_per_category")
+        return cls._same_values(attached, own_values)
+
 
 
 def finish_prize_run(reports, client):

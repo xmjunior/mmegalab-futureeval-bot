@@ -86,6 +86,8 @@ class PublicationTests(unittest.TestCase):
         self.assertIn("confirmed=1",self.audit.getvalue())
         self.assertNotIn("SEALED",self.audit.getvalue())
         self.assertNotIn("0.62",self.audit.getvalue())
+        self.assertIn('{"probability_yes":0.62}', self.service.comments[0]["text"])
+        self.assertIn("forecast_in_comment=true", self.audit.getvalue())
 
     def test_open_group_cdf_and_categorical_sdk_payload_methods(self):
         for mode in ("numeric","multiple_choice"):
@@ -159,6 +161,26 @@ class PublicationTests(unittest.TestCase):
             with self.assertRaisesRegex(PublicationError,"Incomplete"):
                 finish_prize_run([],self.client)
         self.assertEqual(len(self.service.posts),1)
+
+    def test_closest_actual_or_scheduled_deadline_first_missing_last(self):
+        def q(qid, scheduled=None, actual=None):
+            return SimpleNamespace(id_of_question=qid, id_of_post=12, already_forecasted=False,
+                api_json={"question":{"scheduled_close_time": scheduled, "actual_close_time": actual}})
+        sample = [q(14), q(15,"2026-11-27T01:00:00Z"), q(18,"2026-11-25T02:00:00+01:00"),
+                  q(16,"2026-11-27T02:00:00Z","2026-11-25T01:00:00Z"), q(13,"bad date")]
+        with patch.object(MetaculusClient, "get_all_open_questions_from_tournament", return_value=sample):
+            result = self.client.get_all_open_questions_from_tournament("test")
+        self.assertEqual([q.id_of_question for q in result], [16, 18, 15, 13, 14])
+
+    def test_native_attachment_and_group_fallback(self):
+        binary = {"probability_yes": 0.62}
+        expected = [0.38, 0.62]
+        self.assertTrue(self.client.attachment_matches({"included_forecast": binary}, expected, binary))
+        self.assertFalse(self.client.attachment_matches(
+            {"included_forecast":{"probability_yes":0.2}}, expected, binary))
+        self.assertIsNone(self.client.attachment_matches({"included_forecast":None}, expected, binary))
+        cdf = {"continuous_cdf":[0.0, 0.5, 1.0]}
+        self.assertTrue(self.client.attachment_matches({"included_forecast":cdf}, cdf["continuous_cdf"], cdf))
 
     def test_conditional_result_requires_both_published_branch_ids(self):
         yes = BinaryQuestion.model_construct(id_of_question=94, id_of_post=12)
