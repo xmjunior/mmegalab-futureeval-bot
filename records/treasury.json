@@ -1,0 +1,148 @@
+{
+  "baseline_commit": "0459814720cd51c3effa7cfa412cec8aefcdb105",
+  "cases": {
+    "ust10-v1-2026-W48": {
+      "attempts": [],
+      "cache": {},
+      "evidence": {
+        "10y_minus_2y_pp": "0.29",
+        "as_of": "2026-11-24T18:43:29.371134+00:00",
+        "disjoint_intervals": 22,
+        "five_observation_10y_change_pp": "-0.20",
+        "lag_observations": 10,
+        "last_10y_percent": "4.92",
+        "last_2y_percent": "4.63",
+        "latest_observation": "2026-11-23",
+        "median_move_pp": "0.025",
+        "moves_above_threshold_offset": 16,
+        "source_documents": {
+          "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value=2026": "f35efb4345af62c6115c0b5b8c4c45083de6a57e4093ea9f4a27f5f8dc1625ab"
+        },
+        "window_start": "2026-01-02"
+      },
+      "horizon_days": 14,
+      "id": "ust10-v1-2026-W48",
+      "issued_at": "2026-11-24T18:43:29.371134+00:00",
+      "question": {
+        "background_info": "The last available observation before issue was 4.92% on 2026-11-23. The US Treasury publishes the daily par yield curve.",
+        "fine_print": "Use only the official US Treasury daily Treasury par yield curve XML. Cancel if the seven-calendar-day window has no observed rate. Lock the first outcome recorded after a two-day publication lag.",
+        "question_text": "Will the US Treasury 10-year par yield exceed 4.87% on the first reported observation dated on or after 2026-12-08?",
+        "resolution_criteria": "YES if the US Treasury daily BC_10YEAR is strictly above 4.87% on the first available observation dated 2026-12-08 through 2026-12-14, inclusive. Equality resolves NO."
+      },
+      "resolution": null,
+      "source": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value=2026",
+      "strategies": {
+        "A": {
+          "reason": "no_valid_hosted_response",
+          "status": "unavailable"
+        },
+        "B": {
+          "reason": "no_valid_hosted_response",
+          "status": "unavailable"
+        },
+        "C": {
+          "p": 0.6923076923076923,
+          "reason": "disjoint_calendar_matched_changes_beta_2_2",
+          "status": "issued",
+          "timestamp": "2026-11-24T18:43:37.581895+00:00"
+        },
+        "D": {
+          "reason": "two_model_families_required",
+          "status": "unavailable"
+        },
+        "E": {
+          "reason": "disagreement_unobservable",
+          "status": "unavailable"
+        },
+        "F": {
+          "input": "B",
+          "reason": "predeclared_horizon_and_analog_count",
+          "status": "unavailable"
+        },
+        "champion": {
+          "reason": "no_valid_hosted_response",
+          "status": "unavailable"
+        },
+        "coin": {
+          "p": 0.5,
+          "reason": "uninformative",
+          "status": "issued",
+          "timestamp": "2026-11-24T18:43:37.581883+00:00"
+        }
+      },
+      "target": "2026-12-08",
+      "threshold_percent": "4.87"
+    }
+  },
+  "schema": 1,
+  "summary": {
+    "arms": {
+      "A": {
+        "brier": null,
+        "mean_forecast_minus_event_rate": null,
+        "nats_log_loss": null,
+        "paired_brier_improvement": null,
+        "paired_with_champion_n": 0,
+        "resolved_n": 0
+      },
+      "B": {
+        "brier": null,
+        "mean_forecast_minus_event_rate": null,
+        "nats_log_loss": null,
+        "paired_brier_improvement": null,
+        "paired_with_champion_n": 0,
+        "resolved_n": 0
+      },
+      "C": {
+        "brier": null,
+        "mean_forecast_minus_event_rate": null,
+        "nats_log_loss": null,
+        "paired_brier_improvement": null,
+        "paired_with_champion_n": 0,
+        "resolved_n": 0
+      },
+      "D": {
+        "brier": null,
+        "mean_forecast_minus_event_rate": null,
+        "nats_log_loss": null,
+        "paired_brier_improvement": null,
+        "paired_with_champion_n": 0,
+        "resolved_n": 0
+      },
+      "E": {
+        "brier": null,
+        "mean_forecast_minus_event_rate": null,
+        "nats_log_loss": null,
+        "paired_brier_improvement": null,
+        "paired_with_champion_n": 0,
+        "resolved_n": 0
+      },
+      "F": {
+        "brier": null,
+        "mean_forecast_minus_event_rate": null,
+        "nats_log_loss": null,
+        "paired_brier_improvement": null,
+        "paired_with_champion_n": 0,
+        "resolved_n": 0
+      },
+      "champion": {
+        "brier": null,
+        "mean_forecast_minus_event_rate": null,
+        "nats_log_loss": null,
+        "paired_brier_improvement": null,
+        "paired_with_champion_n": 0,
+        "resolved_n": 0
+      },
+      "coin": {
+        "brier": null,
+        "mean_forecast_minus_event_rate": null,
+        "nats_log_loss": null,
+        "paired_brier_improvement": null,
+        "paired_with_champion_n": 0,
+        "resolved_n": 0
+      }
+    },
+    "cases_issued": 1,
+    "cases_resolved": 0
+  }
+}
