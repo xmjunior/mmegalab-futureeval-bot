@@ -32,7 +32,7 @@ env:
   RECOVERY_MODE: ${{ inputs.mode }}
   RECOVERY_CYCLE: ${{ inputs.recovery_cycle || '0' }}
   RECOVERY_ERRORS: ${{ inputs.recovery_errors || '0' }}
-  RESEARCH_SHA: "8b6e3f028991fe112e2aae1998afb0f1656dcc7c"
+  RESEARCH_SHA: "9e3cecf3189ffcc70e3b3f9b6db1137b4a09ac6f"
 jobs:
   evaluate:
     if: (github.event_name != 'workflow_dispatch' || !startsWith(inputs.mode, 'recovery')) && (github.ref_name == 'main' || (github.event_name == 'push' && github.ref_name == 'verify/champion-v2-control')) && github.event_name != 'workflow_run' && (github.event_name != 'schedule' || github.event.schedule == '17 7,19 * * *')
@@ -85,6 +85,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
       - name: Evaluate the frozen MiniBench challenger on resolved own forecasts
         id: minibench
         continue-on-error: true
