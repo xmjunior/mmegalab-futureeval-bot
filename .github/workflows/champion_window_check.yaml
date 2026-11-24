@@ -1,0 +1,23 @@
+name: Validate tournament recovery by opening time
+on:
+  push:
+    branches: [verify/openai-access-audit]
+    paths: ['.github/workflows/champion_window_check.yaml']
+permissions: {contents: read, actions: read}
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 8b6e3f028991fe112e2aae1998afb0f1656dcc7c
+          persist-credentials: false
+      - name: Regression checks for windows, duplicates and recovery
+        working-directory: research
+        run: python -m unittest test_watchdog test_recovery_clock
+      - name: Verify current tournament windows without dispatch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
+        run: python research/watchdog.py
