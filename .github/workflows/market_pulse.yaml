@@ -1,0 +1,156 @@
+name: Market Pulse 26Q4 spot updates
+on:
+  schedule:
+    - cron: "43 2,19 * 11,12 *"
+  push:
+    branches: [release/market-pulse-26q4]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: market-pulse-33131
+  cancel-in-progress: false
+env:
+  MARKET_CODE_SHA: "ba21e72fa116b21c12bfcf41e81fc969a4262f74"
+  ALLOW_CPU_FALLBACK: 'false'
+jobs:
+  qualify:
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'push' && github.ref_name == 'release/market-pulse-26q4')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      ready: ${{ steps.proof.outputs.ready }}
+    steps:
+      - name: Check tournament end date
+        id: season
+        run: |
+          if [[ "$(date -u +%Y%m%d)" < "20270101" ]]; then
+            echo "active=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.season.outputs.active == 'true'
+        with:
+          ref: ${{ env.MARKET_CODE_SHA }}
+          persist-credentials: false
+      - name: Verify deployed source
+        if: steps.season.outputs.active == 'true'
+        run: test "$(git rev-parse HEAD)" = "$MARKET_CODE_SHA"
+      - uses: actions/cache/restore@v4
+        id: cache
+        if: steps.season.outputs.active == 'true'
+        with:
+          path: market-proof.json
+          key: market-pulse-proof-v1-${{ env.MARKET_CODE_SHA }}
+      - name: Find successful branch validation at the same commit
+        id: search
+        if: steps.season.outputs.active == 'true' && steps.cache.outputs.cache-hit != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          id=$(gh api --method GET "repos/$GITHUB_REPOSITORY/actions/artifacts" -f name=market-pulse-validation -f per_page=100 \
+            --jq '.artifacts[] | select(.expired == false and .workflow_run.head_branch == "verify/market-pulse-26q4") | [.workflow_run.head_sha, .workflow_run.id] | @tsv' \
+            | awk -v sha="$MARKET_CODE_SHA" '$1 == sha && !found {print $2; found=1}')
+          if [ -n "$id" ]; then
+            result=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$id" --jq .conclusion)
+            if [ "$result" = success ]; then echo "run=$id" >> "$GITHUB_OUTPUT"; fi
+          fi
+          if [ -z "$id" ]; then
+            last=$(gh api --method GET "repos/$GITHUB_REPOSITORY/actions/runs" -f branch=verify/market-pulse-26q4 -f per_page=8 \
+              --jq '[.workflow_runs[] | select(.name == "Market Pulse 26Q4 validation" and .conclusion == "failure")][0].updated_at // empty')
+            if [ -n "$last" ] && [ "$(date -u -d "$last" +%s)" -gt "$(date -u -d '60 minutes ago' +%s)" ]; then
+              echo "defer=true" >> "$GITHUB_OUTPUT"
+              echo "Recent validation failed. Leave publication locked and retry at the next scheduled window."
+            fi
+          fi
+      - name: Read tournament availability while waiting for hosted validation
+        if: steps.search.outputs.defer == 'true'
+        env:
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
+        run: |
+          python - <<'PYTHON'
+          import json, os, urllib.request
+          req = urllib.request.Request("https://www.metaculus.com/api/posts/46010/",
+                                       headers={"Authorization": "Token " + os.environ["METACULUS_TOKEN"]})
+          with urllib.request.urlopen(req, timeout=30) as response:
+              post = json.load(response)
+          assert post["projects"]["default_project"]["id"] == 33131
+          rows = post["group_of_questions"]["questions"]
+          print("Deferred; publication locked; open eligible subquestions:", sum(q["status"] == "open" for q in rows))
+          print("Next opening:", min((q["open_time"] for q in rows if q["status"] == "upcoming"), default="none"))
+          PYTHON
+      - uses: actions/download-artifact@v4
+        if: steps.search.outputs.run != ''
+        with:
+          name: market-pulse-validation
+          run-id: ${{ steps.search.outputs.run }}
+          github-token: ${{ github.token }}
+      - uses: actions/setup-python@v5
+        if: steps.season.outputs.active == 'true' && steps.cache.outputs.cache-hit != 'true' && steps.search.outputs.run == '' && steps.search.outputs.defer != 'true'
+        with:
+          python-version: "3.11"
+      - uses: astral-sh/setup-uv@v10.3.0
+        if: steps.season.outputs.active == 'true' && steps.cache.outputs.cache-hit != 'true' && steps.search.outputs.run == '' && steps.search.outputs.defer != 'true'
+        with:
+          version: "0.13.1"
+      - name: Qualify against sealed history and run a no-write prospective test
+        if: steps.season.outputs.active == 'true' && steps.cache.outputs.cache-hit != 'true' && steps.search.outputs.run == '' && steps.search.outputs.defer != 'true'
+        run: |
+          uv sync --locked --no-dev
+          uv run --locked --no-dev python market_pulse.py validate
+        env:
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      - name: Verify the historical and dry-run proof
+        id: proof
+        if: steps.season.outputs.active == 'true' && steps.search.outputs.defer != 'true'
+        run: |
+          python - <<'PY'
+          import hashlib, json, os, pathlib
+          proof = json.loads(pathlib.Path("market-proof.json").read_text())
+          assert proof["code_sha"] == os.environ["MARKET_CODE_SHA"] and proof["project"] == 33131
+          assert proof["dry"] is True and proof["routes"] and proof["historical"]
+          assert proof["q3_evidence_sha256"] == hashlib.sha256(pathlib.Path("market_pulse_q3.json").read_bytes()).hexdigest()
+          PY
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache/save@v4
+        if: steps.proof.outputs.ready == 'true' && steps.cache.outputs.cache-hit != 'true'
+        with:
+          path: market-proof.json
+          key: market-pulse-proof-v1-${{ env.MARKET_CODE_SHA }}
+      - uses: actions/upload-artifact@v4
+        if: steps.proof.outputs.ready == 'true'
+        with:
+          name: market-pulse-qualified
+          path: market-proof.json
+          retention-days: 3
+          if-no-files-found: error
+  spot-updates:
+    needs: qualify
+    if: needs.qualify.outputs.ready == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.MARKET_CODE_SHA }}
+          persist-credentials: false
+      - run: test "$(git rev-parse HEAD)" = "$MARKET_CODE_SHA"
+      - uses: actions/download-artifact@v4
+        with:
+          name: market-pulse-qualified
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          version: "0.13.1"
+      - run: uv sync --locked --no-dev
+      - name: Update eligible numeric groups with new market evidence
+        run: uv run --locked --no-dev python market_pulse.py live
+        env:
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
