@@ -14,6 +14,16 @@
       "started_at": "2026-11-24T19:45:52.911831+00:00",
       "status": "stopped_no_retry"
     },
+    "groq": {
+      "lease_nonce": "c7403c2288bc42d99ca1ab1565da4596",
+      "max_micro_usd": 0,
+      "records": {},
+      "requests": {
+        "single_panel_request": 0
+      },
+      "started_at": "2026-11-24T23:13:52.904954+00:00",
+      "status": "reserved"
+    },
     "openai": {
       "evidence_at": "2026-11-24T21:36:46+00:00",
       "github_run_id": "45493080434",
