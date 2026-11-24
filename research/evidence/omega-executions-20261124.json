@@ -1,0 +1,148 @@
+{
+  "date_utc": "2026-11-24",
+  "runs": [
+    {
+      "id": 45507374128,
+      "name": "Forecast on new AI tournament questions",
+      "head_sha": "1479a3c3108859407820608f3c45b81f634b5a8a",
+      "head_branch": "release/futureeval",
+      "event": "push",
+      "conclusion": "success",
+      "html_url": "https://github.com/xmjunior/mmegalab-futureeval-bot/actions/runs/45507374128"
+    },
+    {
+      "id": 45506791838,
+      "name": "Replay independent MEGALAB ARENA",
+      "head_sha": "b7ae51518d9ea78add74cd6b02ba9685576efbb2",
+      "head_branch": "research/champion-v2",
+      "event": "push",
+      "conclusion": "success",
+      "html_url": "https://github.com/xmjunior/mmegalab-futureeval-bot/actions/runs/45506791838"
+    },
+    {
+      "id": 45507556486,
+      "name": "ARENA free Groq historical cohort",
+      "head_sha": "352f2a0543315f35b13bda88cab8c198fc919bd5",
+      "head_branch": "verify/arena-groq-cohort",
+      "event": "push",
+      "conclusion": "success",
+      "html_url": "https://github.com/xmjunior/mmegalab-futureeval-bot/actions/runs/45507556486"
+    },
+    {
+      "id": 45507727821,
+      "name": "Seal the independent Groq Treasury panel",
+      "head_sha": "a152a4eb29a23cf5c1a00a38a04e35e025141bf4",
+      "head_branch": "verify/arena-groq-treasury",
+      "event": "push",
+      "conclusion": "success",
+      "html_url": "https://github.com/xmjunior/mmegalab-futureeval-bot/actions/runs/45507727821"
+    },
+    {
+      "id": 45508973781,
+      "name": "Champion research and competition control",
+      "head_sha": "7b03d44dbf010f8388ac641cc045d8235b2af1f2",
+      "head_branch": "verify/champion-v2-control",
+      "event": "push",
+      "conclusion": "success",
+      "html_url": "https://github.com/xmjunior/mmegalab-futureeval-bot/actions/runs/45508973781"
+    },
+    {
+      "id": 45511482637,
+      "name": "Reproduce OMEGA research",
+      "head_sha": "8e136d7a1d54b8af4ec86fcc544b5326d786a26e",
+      "head_branch": "research/omega-infinity",
+      "event": "push",
+      "conclusion": "success",
+      "html_url": "https://github.com/xmjunior/mmegalab-futureeval-bot/actions/runs/45511482637"
+    },
+    {
+      "id": 45511542948,
+      "name": "Settle independent OMEGA benchmarks",
+      "head_sha": "78ddd559413f15d8d636b3b0c725c945f1bcd551",
+      "head_branch": "verify/omega-settlement",
+      "event": "push",
+      "conclusion": "success",
+      "html_url": "https://github.com/xmjunior/mmegalab-futureeval-bot/actions/runs/45511542948"
+    },
+    {
+      "id": 45511651830,
+      "name": "OMEGA Market Pulse closed numerical review",
+      "head_sha": "802b0efb57b8930bc2ff4e374eeb976e50f71004",
+      "head_branch": "research/omega-infinity",
+      "event": "push",
+      "conclusion": "success",
+      "html_url": "https://github.com/xmjunior/mmegalab-futureeval-bot/actions/runs/45511651830"
+    },
+    {
+      "id": 45511652009,
+      "name": "Reproduce OMEGA research",
+      "head_sha": "802b0efb57b8930bc2ff4e374eeb976e50f71004",
+      "head_branch": "research/omega-infinity",
+      "event": "push",
+      "conclusion": "success",
+      "html_url": "https://github.com/xmjunior/mmegalab-futureeval-bot/actions/runs/45511652009"
+    }
+  ],
+  "first_eligible_tournament_control": {
+    "futureeval": {
+      "accepted": 2,
+      "opportunities": 4,
+      "private_comments": 2,
+      "ranking": null
+    },
+    "minibench": {
+      "accepted": 0,
+      "opportunities": 0
+    },
+    "market_pulse": {
+      "accepted": 0,
+      "opportunities": 0
+    },
+    "observed_at": "2026-11-24T23:19:47Z",
+    "control_commit": "f33e092fa3310bb2730ebb3e0d47a59890342449"
+  },
+  "market_closed_numeric_review": {
+    "job_id": 138860597856,
+    "artifact_sha256": "de0f709c143c14c3088a7c61c300b6dc833d345e83277319ddacd519c77652d8",
+    "receipt": {
+      "abstentions": 3,
+      "cases": [
+        {
+          "id": 46212,
+          "prompt_sha256": "4d702a46f2615ade2b77c316feaf553c8064ae1bbe99aaebaa70a02f36fbbd8c",
+          "usage": {
+            "completion_tokens": 92,
+            "prompt_tokens": 288
+          },
+          "width": null
+        },
+        {
+          "id": 46213,
+          "prompt_sha256": "f31a0dc3e0a526ffca3aaec5e80d879a6531e3a5c3cc35a73d19626708f5fd0c",
+          "usage": {
+            "completion_tokens": 96,
+            "prompt_tokens": 287
+          },
+          "width": null
+        },
+        {
+          "id": 46709,
+          "prompt_sha256": "f51037ad3daec5a20f4ca66ca1106af7d86d3cec8f661f61191a6f66f2b7c648",
+          "usage": {
+            "completion_tokens": 116,
+            "prompt_tokens": 288
+          },
+          "width": null
+        }
+      ],
+      "fixture_sha256": "990759d77e91146d9d87a76db019b7dfb52d45c0cb73ac85d4b45728b1f507c6",
+      "hosted_requests_attempted": 3,
+      "model": "groq/openai/gpt-oss-120b",
+      "numeric_decisions": 0,
+      "published": 0,
+      "status": "completed"
+    },
+    "decision": "retain abstention and publication guards; three abstentions on closed inputs show valid transport only",
+    "new_paid_inference_usd": 0
+  }
+}
