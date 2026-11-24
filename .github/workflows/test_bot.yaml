@@ -9,7 +9,7 @@ on:
         options: ["1", "2", "5", "10"]
         default: "1"
   push:
-    branches: [verify/futureeval]
+    branches: [verify/futureeval, verify/futureeval-expanded]
 
 permissions:
   contents: read
@@ -21,7 +21,7 @@ concurrency:
 jobs:
   forecast_job:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
         with:
@@ -46,7 +46,7 @@ jobs:
       - name: Run bot
         run: uv run --locked --no-dev python main.py --mode test_questions --test-size "$TEST_SIZE"
         env:
-          TEST_SIZE: ${{ inputs.test_size || '1' }}
+          TEST_SIZE: ${{ inputs.test_size || (github.ref_name == 'verify/futureeval-expanded' && '10') || '1' }}
           METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}

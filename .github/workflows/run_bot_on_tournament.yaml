@@ -3,42 +3,44 @@ name: Forecast on new AI tournament questions
 on:
   workflow_dispatch:
   schedule:
-    - cron: "7,27,47 * * * *" # every 20 min, offset off the hour. Make sure to skip already-forecasted questions!
+    - cron: "11,31,51 * * * *"
 
-# Add concurrency group to prevent parallel runs
+permissions:
+  contents: read
+
 concurrency:
-  group: ${{ github.workflow }}
+  group: futureeval-seasonal
   cancel-in-progress: false
 
-
-# Daily job to run the simple forecast bot
 jobs:
   forecast_job:
-    runs-on: ubuntu-latest # determines the machine that will run the job - keep as is
-    steps: # sets up the steps that will be run in order
-      # setup repository with all necessary dependencies - keep as is
-      - name: Check out repository
-        uses: actions/checkout@v4
+    if: github.ref == 'refs/heads/main'
+    env:
+      # Set true only after the required participation form has been submitted.
+      FUTUREEVAL_REGISTERED: 'false'
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Install uv
-        uses: astral-sh/setup-uv@v10.3.0
+      - uses: astral-sh/setup-uv@v10.3.0
         with:
           version: "0.13.1"
       - name: Install dependencies
-        run: uv sync --locked
-      - name: Run bot
-        run: |
-          uv run python main.py
-        # this reads the environment variables from the github repository.
-        # Store under Settings --> Secrets and variables --> Actions
+        run: uv sync --locked --no-dev
+      - name: Check seasonal questions while participation is pending
+        if: env.FUTUREEVAL_REGISTERED != 'true'
+        run: uv run --locked --no-dev python main.py --mode seasonal-check
         env:
-          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }} # replace this with the name of the variable under which you stored your own Metaculus token
-          PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
-          EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
+      - name: Forecast on unanswered seasonal FutureEval questions
+        if: env.FUTUREEVAL_REGISTERED == 'true'
+        run: uv run --locked --no-dev python main.py --mode seasonal
+        env:
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          ASKNEWS_CLIENT_ID: ${{ secrets.ASKNEWS_CLIENT_ID }}
-          ASKNEWS_SECRET: ${{ secrets.ASKNEWS_SECRET }}

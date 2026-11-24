@@ -787,14 +787,24 @@ if __name__ == "__main__":
     parser.add_argument(
         "--mode",
         type=str,
-        choices=["tournament", "metaculus_cup", "test_questions"],
+        choices=["seasonal-check", "seasonal", "tournament", "metaculus_cup", "test_questions"],
         default="tournament",
         help="What to forecast on (default: tournament)",
     )
     parser.add_argument("--test-size", type=int, choices=range(1, 11), default=1,
                         help="Number of testing-area questions for a dry run")
     args = parser.parse_args()
-    run_mode: Literal["tournament", "metaculus_cup", "test_questions"] = args.mode
+    run_mode: Literal["seasonal-check", "seasonal", "tournament", "metaculus_cup", "test_questions"] = args.mode
+
+    client = MetaculusClient()
+    if client.get_current_user_id() <= 0:
+        raise RuntimeError("Metaculus did not return an authenticated user")
+    logger.info("Metaculus authentication verified")
+    if run_mode == "seasonal-check":
+        questions = client.get_all_open_questions_from_tournament(client.CURRENT_AI_COMPETITION_ID)
+        logger.info("FutureEval seasonal monitor: %d open, %d unanswered; publication disabled",
+                    len(questions), sum(not q.already_forecasted for q in questions))
+        raise SystemExit(0)
 
     check_environment(strict=True)
     publish_to_metaculus = run_mode != "test_questions"
@@ -802,6 +812,7 @@ if __name__ == "__main__":
 
     free_model = FreeForecastLlm()
     template_bot = FallTemplateBot2026(
+        metaculus_client=client,
         research_reports_per_question=1,
         predictions_per_research_report=1,
         use_research_summary_to_forecast=False,
@@ -824,6 +835,7 @@ if __name__ == "__main__":
     # piggyback on the forecasting_tools SDK constants and need updating
     # whenever those rotate seasons.
     TOURNAMENT_URLS = {
+        "seasonal": "https://www.metaculus.com/tournament/fall-futureeval-2026/",
         "tournament": "https://www.metaculus.com/tournament/fall-futureeval-2026/",
         "metaculus_cup": "https://www.metaculus.com/tournament/metaculus-cup-fall-2026/",
         "test_questions": "https://www.metaculus.com/tournament/bot-testing-area/",
@@ -832,22 +844,18 @@ if __name__ == "__main__":
     # Dispatch on mode. Each branch produces a list of ForecastReport (or
     # exceptions, since return_exceptions=True) which then flows into the
     # summary printers below.
-    client = template_bot.metaculus_client
-    if client.get_current_user_id() <= 0:
-        raise RuntimeError("Metaculus did not return an authenticated user")
-    logger.info("Metaculus authentication verified")
-    if run_mode == "tournament":
-        seasonal_tournament_reports = asyncio.run(
+    if run_mode in {"seasonal", "tournament"}:
+        forecast_reports = asyncio.run(
             template_bot.forecast_on_tournament(
                 client.CURRENT_AI_COMPETITION_ID, return_exceptions=True
             )
         )
-        minibench_reports = asyncio.run(
-            template_bot.forecast_on_tournament(
-                client.CURRENT_MINIBENCH_ID, return_exceptions=True
-            )
-        )
-        forecast_reports = seasonal_tournament_reports + minibench_reports
+        if run_mode == "tournament":
+            forecast_reports.extend(asyncio.run(
+                template_bot.forecast_on_tournament(
+                    client.CURRENT_MINIBENCH_ID, return_exceptions=True
+                )
+            ))
     elif run_mode == "metaculus_cup":
         # The Metaculus Cup may be uninitialized near the start of a season
         # (Jan/May/Sep). MetaculusClient.ACX_2025_TOURNAMENT = 32564 and
@@ -866,14 +874,23 @@ if __name__ == "__main__":
         if binary is None or len(questions) < args.test_size:
             raise RuntimeError("Not enough open testing-area questions for this test")
         sample = [binary, *(q for q in questions if q is not binary)][:args.test_size]
-        forecast_reports = asyncio.run(template_bot.forecast_questions(sample))
-        if len(forecast_reports) != len(sample) or any(r.errors for r in forecast_reports):
-            raise RuntimeError("Incomplete testing-area forecast")
-        first = forecast_reports[0]
-        if not isinstance(first, BinaryReport) or not 0 < first.prediction < 1:
-            raise RuntimeError("Expected a valid binary probability")
-        logger.info("Validated dry run: question=%s probability=%.4f reports=%s",
-                    first.question.id_of_question, first.prediction, len(forecast_reports))
+        forecast_reports = []
+        # Stop at each checkpoint on error, and process each selected question only once.
+        for target in sorted({min(n, len(sample)) for n in (1, 2, 5, 10)}):
+            batch = sample[len(forecast_reports):target]
+            logger.info("Testing-area checkpoint %d/%d; %d new questions",
+                        target, len(sample), len(batch))
+            reports = asyncio.run(template_bot.forecast_questions(batch))
+            if len(reports) != len(batch) or any(r.errors for r in reports):
+                raise RuntimeError("Incomplete testing-area forecast")
+            if not forecast_reports:
+                first = reports[0]
+                if not isinstance(first, BinaryReport) or not 0 < first.prediction < 1:
+                    raise RuntimeError("Expected a valid binary probability")
+                logger.info("Validated dry run: question=%s probability=%.4f reports=1",
+                            first.question.id_of_question, first.prediction)
+            forecast_reports.extend(reports)
+            logger.info("Validated %d/%d testing-area reports", len(forecast_reports), len(sample))
 
     template_bot.log_report_summary(forecast_reports)
     print_run_summary_banner(
