@@ -1,0 +1,18 @@
+{
+  "observed_at": "2026-11-24T19:40:50.509790+00:00",
+  "google_models": {
+    "status": "verified",
+    "gemma_models_visible": [
+      "models/gemma-4-26b-a4b-it",
+      "models/gemma-4-31b-it"
+    ],
+    "billing_tier": "not_reported_by_models_api"
+  },
+  "openrouter_key": {
+    "status": "verified",
+    "free_tier": true,
+    "daily_free_requests_remaining": "not_reported_by_key_api"
+  },
+  "asknews_credential_configured": false,
+  "asknews_entitlement": "not_verified"
+}

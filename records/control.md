@@ -1,6 +1,6 @@
 # Control de competiciones de megalab-mario-bot
 
-Observación UTC: 2026-11-24T19:01:18.632747+00:00. [Ejecución 45465600763](https://github.com/xmjunior/mmegalab-futureeval-bot/actions/runs/45465600763) por `push`. [Código del control](https://github.com/xmjunior/mmegalab-futureeval-bot/commit/fa7ec20514fdc65e9d1e4a72a2449067728f3ba7).
+Observación UTC: 2026-11-24T19:41:19.683733+00:00. [Ejecución 45472740071](https://github.com/xmjunior/mmegalab-futureeval-bot/actions/runs/45472740071) por `push`. [Código del control](https://github.com/xmjunior/mmegalab-futureeval-bot/commit/37bfed3d0e3e16a33292babfc59870e9cbc80f5c).
 
 | Torneo | Participación en la API | Pronósticos aceptados | Oportunidades desde el alta | Puesto | Peer Score | Comentarios privados vinculados |
 |---|---|---:|---:|---:|---:|---:|
@@ -12,5 +12,7 @@ La cobertura compara preguntas aceptadas con ventanas que coincidieron con la vi
 
 MiniBench C: 0 pares resueltos. Treasury: 0 casos propios resueltos. Consulta los JSON de cada registro para ver fechas, resultados de los pasos y fallos del proveedor.
 
-[Diseños, pruebas y recuperación](https://github.com/xmjunior/mmegalab-futureeval-bot/tree/fa7ec20514fdc65e9d1e4a72a2449067728f3ba7/research) · [Pronósticos prospectivos y auditorías](https://github.com/xmjunior/mmegalab-futureeval-bot/tree/research/champion-observations/records)
+Panel propio de Treasury. 0 de 4 casos resueltos, 3 estrategias registradas. [Probabilidades, Brier y pérdida logarítmica](https://github.com/xmjunior/mmegalab-futureeval-bot/blob/research/champion-observations/records/promo-score.json).
+
+[Diseños, pruebas y recuperación](https://github.com/xmjunior/mmegalab-futureeval-bot/tree/37bfed3d0e3e16a33292babfc59870e9cbc80f5c/research) · [Pronósticos prospectivos y auditorías](https://github.com/xmjunior/mmegalab-futureeval-bot/tree/research/champion-observations/records)
 
