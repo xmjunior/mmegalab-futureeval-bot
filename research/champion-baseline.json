@@ -1,0 +1,30 @@
+{
+  "baseline_sha": "0459814720cd51c3effa7cfa412cec8aefcdb105",
+  "bot": "megalab-mario-bot",
+  "market_engine_sha": "ba21e72fa116b21c12bfcf41e81fc969a4262f74",
+  "git_blob_ids": {
+    "main.py": "1bb18ad45de8305efab8a52b7fe949f0ef410674",
+    "bot_helpers.py": "d401c2a31c75cd6a560c712110781d6263ae0622",
+    "local_forecast.py": "df91e1b4265e643e91ba6d795eb7391ff24d9e3c",
+    "pyproject.toml": "843ea97ff021be8ef91a6d121d952017a963c5fb",
+    "uv.lock": "4a31c63341f118ff90c4c0a398669d990c28b9b8",
+    ".github/workflows/run_bot_on_tournament.yaml": "5d5105e4146e39a6efa32dfd50c7b0436b7131a9",
+    ".github/workflows/run_bot_on_minibench.yaml": "9de256d77337b256b067ad3336ad822ad9e5baa8",
+    ".github/workflows/market_pulse.yaml": "b9b940922c017b4fa448ac996b78a8cd363413cb",
+    ".github/workflows/test_bot.yaml": "ed5dba343a9f57bff69b5fb618a2d842e8bd0ed3"
+  },
+  "prompt_source": "main.py, FallTemplateBot2026 against the above git blob",
+  "routes": [
+    "gemini/gemma-4-31b-it",
+    "gemini/gemma-4-26b-a4b-it",
+    "openrouter/openrouter/free"
+  ],
+  "provider_temperature": 0.2,
+  "research_and_forecast": "one research report, one forecast; all roles use the same hosted fallback sequence",
+  "cpu_in_live": false,
+  "skip_previously_forecasted_questions": true,
+  "per_question_submission_policy": "one in the seasonal and MiniBench tournaments; Market Pulse uses its pinned separate spot engine",
+  "external_holdout_design_sha256": "ea10115001704fd47c085a5d01d5f1c1dd375bddd03d30a2f0049cc82c53f5ab",
+  "promotion": "manual decision only after prospective paired evidence and competition eligibility; zero spend",
+  "scope_of_comparison": "Economic experiments compare numerical components, not an entire seasonal bot. Automated evaluations must keep paired denominators, missing calls and time of issue."
+}
