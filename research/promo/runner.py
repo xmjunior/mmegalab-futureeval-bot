@@ -186,7 +186,7 @@ def one_panel_scope(now):
 
 def oai(path, params, scope):
     headers = {"Authorization": "Bearer " + os.environ["OPENAI_API_KEY"]}
-    if scope.get("credential_scope") != "owner_project_key":
+    if scope.get("credential_scope") not in {"owner_project_key", "owner_cohort_project_key"}:
         headers.update({"OpenAI-Organization": scope["org"], "OpenAI-Project": scope["project"]})
     return json.loads(shadow.request(OAI + path, params, headers, timeout=50))
 

@@ -1,0 +1,31 @@
+name: ARENA blinded historical cohort
+on:
+  push:
+    branches: [verify/arena-closed-grant]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: champion-promo-single-panel
+  cancel-in-progress: false
+jobs:
+  calibration:
+    if: github.repository == 'xmjunior/mmegalab-futureeval-bot'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - name: Verify the study and score the frozen baselines
+        run: |
+          python -m unittest discover -s research/promo
+          python research/promo/closed_cohort.py dry
+      - name: Run the pre-registered model comparison under the shared reservation
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python research/promo/closed_cohort.py run

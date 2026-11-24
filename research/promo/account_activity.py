@@ -60,14 +60,10 @@ def inspect(now):
     try:
         total = costs_since_snapshot(key, now)
     except HTTPError as exc:
-        return {"organization_activity": "access_denied" if exc.code in (401, 403) else "http_error",
-                "http_status": exc.code}
-    except (OSError, ValueError, KeyError, TypeError, ArithmeticError):
-        return {"organization_activity": "unavailable_or_invalid"}
-    # A billing reading does not bound asynchronous/parallel usage, nor identify the grant.
-    # Only release a boolean below the threshold already made public, never organization totals.
-    return {"organization_activity": "reported",
-            "total_day_cost_within_project_authorization": total <= Decimal("5.50"),
+        return {"organization_activity": f"http_{exc.code}"}
+    except (OSError, ValueError, TypeError, KeyError, ArithmeticError) as exc:
+        return {"organization_activity": runner.shadow.safe_status(exc)}
+    return {"organization_activity": "positive_costs_reported" if total > 0 else "no_positive_costs_reported",
             "pending_external_usage_upper_bound": "unavailable_from_costs_endpoint"}
 
 
