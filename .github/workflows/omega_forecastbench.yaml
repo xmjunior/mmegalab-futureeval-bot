@@ -1,0 +1,58 @@
+name: ForecastBench independent shadow rounds
+on:
+  schedule:
+    - cron: "11 5,17 * * 0"
+  workflow_call:
+  workflow_dispatch:
+  push:
+    branches: [verify/omega-forecastbench]
+permissions:
+  contents: write
+  statuses: write
+concurrency:
+  group: omega-forecastbench-shadow-ledger
+  cancel-in-progress: false
+env:
+  SCIENCE_SHA: dada8e4225bfc5282d5ba50a87b54ce21754b1a1
+jobs:
+  shadow:
+    if: github.repository == 'xmjunior/mmegalab-futureeval-bot' && (github.ref_name == 'main' || github.ref_name == 'verify/omega-forecastbench' || github.ref_name == 'verify/champion-v2-control')
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.SCIENCE_SHA }}
+          path: science
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: research/omega-forecastbench-shadow
+          path: records
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify issue integrity and replay the isolated publication tests
+        run: |
+          test "$(git -C science rev-parse HEAD)" = "$SCIENCE_SHA"
+          python -m unittest discover -s science/research/omega/forecastbench_shadow_ops -v
+          python -m unittest discover -s science/research/omega/forecastbench_shadow -v
+      - name: Verify the GitHub clock and status permission on the verification branch
+        if: github.event_name == 'push' && github.ref_name == 'verify/omega-forecastbench'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          expected="https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          result=$(gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f state=success -f context=megalab/shadow-clock-self-test -f target_url="$expected" \
+            -f description='GitHub clock test, zero forecasts' --jq '[.creator.login,.created_at] | @tsv')
+          test "${result%%$'\t'*}" = 'github-actions[bot]'
+          echo "$result"
+      - name: Reserve and publish eligible rounds or score previously attested rounds
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python science/research/omega/forecastbench_shadow_ops/record.py \
+            --ledger records --driver science/research/omega/forecastbench_shadow/shadow.py

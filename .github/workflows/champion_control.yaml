@@ -344,8 +344,15 @@ jobs:
     permissions:
       contents: write
     uses: ./.github/workflows/omega_settlement.yaml
+  forecastbench-shadow:
+    needs: evaluate
+    if: ${{ !cancelled() && (needs.evaluate.result == 'success' || needs.evaluate.result == 'failure') }}
+    permissions:
+      contents: write
+      statuses: write
+    uses: ./.github/workflows/omega_forecastbench.yaml
   recovery-bundle:
-    needs: [record, omega-forward, omega-settlement]
+    needs: [record, omega-forward, omega-settlement, forecastbench-shadow]
     if: ${{ !cancelled() && (needs.record.result == 'success' || needs.record.result == 'failure') }}
     permissions:
       contents: read
