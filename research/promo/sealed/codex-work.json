@@ -1,0 +1,15 @@
+{
+  "arm": "codex-work-session",
+  "surface": "Codex in ChatGPT Work; GPT-6 family. Exact API model and snapshot not exposed.",
+  "origin": "Single fresh response by the forecasting subagent, without web research or external inference. Reference probabilities visible in all arms.",
+  "observed_utc": "2026-11-24T19:35:39.341259+00:00",
+  "case_preregistration": "4cd8725625727e87e1980aaa726e083a66973e39",
+  "common_prompt_sha256": "feb6205b0bfd71fb34eeb9e304505cf5dccb6d4dff4d105d1d769e264b7c755a",
+  "api_spend_usd": 0,
+  "probabilities": {
+    "ust-promo-v1-20261202-2y": 0.49,
+    "ust-promo-v1-20261202-spread": 0.34,
+    "ust-promo-v1-20261209-2y": 0.49,
+    "ust-promo-v1-20261209-spread": 0.38
+  }
+}

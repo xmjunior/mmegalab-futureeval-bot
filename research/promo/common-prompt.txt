@@ -1,0 +1,11 @@
+You are forecasting a public, independent research panel authored on 2026-11-24. Use only the evidence below. Do not browse, retrieve other data, use tools, or provide trading advice. For each binary question give a probability strictly between 0 and 1; equality to a threshold resolves NO. A case resolves on the first official US Treasury observation on or after its target within six subsequent calendar days. Yields are expressed in percent, spreads in percentage points. The outcomes are correlated. Use the identical information available to the other arms. Return one JSON object mapping the four exact IDs to probabilities, with no other keys.
+
+As of 2026-11-23, the US Treasury 2Y yield was 4.63%, the 10Y 4.92%, and the 10Y minus 2Y spread 0.29 pp. The disjoint drift analogues below come from changes ending no later than 2026-11-23. C denotes the reference probability with Beta(2,2) smoothing.
+
+ust-promo-v1-20261202-2y. Will the 2-year Treasury par yield, in percent be strictly greater than 4.65 on the first official observation dated on or after 2026-12-02? Analogues at 7 observations: 16 successes out of 31. C=0.514286.
+
+ust-promo-v1-20261202-spread. Will the 10-year minus 2-year Treasury par yield spread, in percentage points be strictly greater than 0.30 on the first official observation dated on or after 2026-12-02? Analogues at 7 observations: 9 successes out of 31. C=0.314286.
+
+ust-promo-v1-20261209-2y. Will the 2-year Treasury par yield, in percent be strictly greater than 4.65 on the first official observation dated on or after 2026-12-09? Analogues at 12 observations: 9 successes out of 18. C=0.500000.
+
+ust-promo-v1-20261209-spread. Will the 10-year minus 2-year Treasury par yield spread, in percentage points be strictly greater than 0.30 on the first official observation dated on or after 2026-12-09? Analogues at 12 observations: 6 successes out of 18. C=0.363636.
