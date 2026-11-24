@@ -102,7 +102,7 @@ def sealed_arms(folder, panel, journal):
             "unexpected provider journal",
         )
         for name, row in data["arms"].items():
-            require(name in {"gemma", "openai"}, "unexpected provider arm")
+            require(name in {"gemma", "openai", "groq"}, "unexpected provider arm")
             if row["status"] == "completed":
                 add(
                     name,
