@@ -32,7 +32,7 @@ env:
   RECOVERY_MODE: ${{ inputs.mode }}
   RECOVERY_CYCLE: ${{ inputs.recovery_cycle || '0' }}
   RECOVERY_ERRORS: ${{ inputs.recovery_errors || '0' }}
-  RESEARCH_SHA: "37bfed3d0e3e16a33292babfc59870e9cbc80f5c"
+  RESEARCH_SHA: "0c137bff6200e4c0b48abd8871ae782b3a36c466"
 jobs:
   evaluate:
     if: (github.event_name != 'workflow_dispatch' || !startsWith(inputs.mode, 'recovery')) && (github.ref_name == 'main' || (github.event_name == 'push' && github.ref_name == 'verify/champion-v2-control')) && github.event_name != 'workflow_run' && (github.event_name != 'schedule' || github.event.schedule == '17 7,19 * * *')
@@ -73,6 +73,8 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY || secrets.MEGALAB }}
+          HAS_OPENAI_PROJECT_KEY: ${{ secrets.OPENAI_API_KEY != '' || secrets.MEGALAB_OPENAI_API_KEY != '' || secrets.OPENAI_PROJECT_API_KEY != '' || secrets.OPENAI_API_KEY_MEGALAB != '' }}
           ASKNEWS_API_KEY: ${{ secrets.ASKNEWS_API_KEY }}
           ASKNEWS_CLIENT_ID: ${{ secrets.ASKNEWS_CLIENT_ID }}
           ASKNEWS_SECRET: ${{ secrets.ASKNEWS_SECRET }}
