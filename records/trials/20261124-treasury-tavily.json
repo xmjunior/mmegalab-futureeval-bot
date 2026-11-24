@@ -1,4 +1,13 @@
 {
+  "after": {
+    "included": 1000,
+    "key_limit": 700,
+    "key_used": 0,
+    "paygo_limit": null,
+    "paygo_used": 0,
+    "plan": "Researcher",
+    "used": 5
+  },
   "at": "2026-11-24T20:43:13.711330+00:00",
   "before": {
     "included": 1000,
@@ -9,9 +18,11 @@
     "plan": "Researcher",
     "used": 5
   },
+  "candidates": 3,
   "commit": "8014c699fb4e80cc59d369ca9e0354048b6226a4",
   "cutoff": "2026-11-23",
   "free_credit_cap": 1,
+  "http": 200,
   "purpose": "Retrieve an official dated monetary-policy source for the prospective Treasury panel.",
   "query": {
     "auto_parameters": false,
@@ -29,5 +40,8 @@
   },
   "research_only": true,
   "run": "45483690885",
-  "status": "reserved"
+  "search_credits": 1,
+  "sources": [],
+  "status": "no_eligible_source",
+  "usage_after_http": 200
 }
