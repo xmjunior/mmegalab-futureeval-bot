@@ -707,7 +707,29 @@ if __name__ == "__main__":
     # Configure the bot. The `llms=` block below is commented out to use
     # whichever default models forecasting-tools picks based on your env vars;
     # uncomment and edit to pin specific models.
-    template_bot = FallTemplateBot2026(
+free_model = GeneralLlm(
+    model="openrouter/openrouter/free",
+    temperature=0.2,
+    timeout=90,
+    allowed_tries=3,
+)
+
+template_bot = FallTemplateBot2026(
+    research_reports_per_question=1,
+    predictions_per_research_report=3,
+    use_research_summary_to_forecast=True,
+    publish_reports_to_metaculus=publish_to_metaculus,
+    folder_to_save_reports_to=None,
+    skip_previously_forecasted_questions=True,
+    extra_metadata_in_explanation=True,
+    llms={
+        "default": free_model,
+        "summarizer": free_model,
+        "researcher": free_model,
+        "parser": free_model,
+    },
+)
+
         research_reports_per_question=1,
         predictions_per_research_report=5,
         use_research_summary_to_forecast=False,
