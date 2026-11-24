@@ -1,11 +1,11 @@
 name: Champion research and competition control
-run-name: ${{ github.event_name == 'workflow_dispatch' && format('Champion {0}', inputs.mode || 'control') || github.event_name == 'schedule' && format('Champion schedule {0}', github.event.schedule) || github.workflow }}
+run-name: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'recovery' && format('Champion recovery cycle {0} errors {1}', inputs.recovery_cycle, inputs.recovery_errors) || github.event_name == 'workflow_dispatch' && format('Champion {0}', inputs.mode || 'control') || github.event_name == 'schedule' && format('Champion schedule {0}', github.event.schedule) || github.workflow }}
 on:
   schedule:
     - cron: "17 7,19 * * *"
     - cron: "27 * * * *"
   workflow_run:
-    workflows: ["Market Pulse 26Q4 spot updates"]
+    workflows: ["Forecast on new AI tournament questions", "Forecast on MiniBench", "Market Pulse 26Q4 spot updates"]
     types: [completed]
   workflow_dispatch:
     inputs:
@@ -25,10 +25,10 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'recovery' && 'champion-recovery-clock' || github.event_name == 'workflow_dispatch' && inputs.mode == 'recovery_check' && 'champion-recovery-inspection' || 'champion-v2-observations' }}
+  group: ${{ github.event_name == 'workflow_run' && 'champion-recovery-seeds' || github.event_name == 'workflow_dispatch' && inputs.mode == 'recovery' && 'champion-recovery-clock' || github.event_name == 'workflow_dispatch' && inputs.mode == 'recovery_check' && 'champion-recovery-inspection' || 'champion-v2-observations' }}
   cancel-in-progress: false
 env:
-  RECOVERY_SHA: "514444e4d9524922ee177a896fa700cbc06f6875"
+  RECOVERY_SHA: "4a2105aaf9c489e8184f1d5c33f28631b3d90513"
   RECOVERY_MODE: ${{ inputs.mode }}
   RECOVERY_CYCLE: ${{ inputs.recovery_cycle || '0' }}
   RECOVERY_ERRORS: ${{ inputs.recovery_errors || '0' }}
@@ -180,7 +180,7 @@ jobs:
           if incomplete: raise SystemExit('Incomplete checks: '+', '.join(incomplete))
           PY
   coverage:
-    if: (github.event_name != 'workflow_dispatch' || !startsWith(inputs.mode, 'recovery')) && (github.ref_name == 'main' || (github.event_name == 'push' && github.ref_name == 'verify/champion-v2-control'))
+    if: (github.event_name != 'workflow_run' || (github.event.workflow_run.name == 'Market Pulse 26Q4 spot updates' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.head_repository.full_name == github.repository && (github.event.workflow_run.event == 'schedule' || github.event.workflow_run.event == 'workflow_dispatch'))) && (github.event_name != 'workflow_dispatch' || !startsWith(inputs.mode, 'recovery')) && (github.ref_name == 'main' || (github.event_name == 'push' && github.ref_name == 'verify/champion-v2-control'))
     runs-on: ubuntu-latest
     timeout-minutes: 8
     permissions:
@@ -269,3 +269,19 @@ jobs:
         run: |
           test "$(git rev-parse HEAD)" = "$RECOVERY_SHA"
           python research/recovery_clock.py wake
+  recovery-seed:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_run' && github.event.action == 'completed' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.head_repository.full_name == github.repository && (github.event.workflow_run.event == 'schedule' || github.event.workflow_run.event == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    permissions: {contents: read, actions: write}
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RECOVERY_SHA }}
+          persist-credentials: false
+      - name: Seed recovery only from a trusted original workflow completion
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$RECOVERY_SHA"
+          python research/recovery_clock.py seed
