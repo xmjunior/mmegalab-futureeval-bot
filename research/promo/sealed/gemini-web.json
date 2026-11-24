@@ -1,0 +1,15 @@
+{
+  "arm": "gemini-web-4-neon",
+  "surface": "Gemini web, 4 Neon, An\u00e1lise mais profunda; signed-in Pro subscription. Provider does not expose the API snapshot.",
+  "origin": "One web submission, same question text and evidence. The response returned a JSON object with four probabilities. No citations or search tool invocation displayed. No reroll.",
+  "observed_utc": "2026-11-24T19:37:01.039249+00:00",
+  "case_preregistration": "4cd8725625727e87e1980aaa726e083a66973e39",
+  "common_prompt_sha256": "feb6205b0bfd71fb34eeb9e304505cf5dccb6d4dff4d105d1d769e264b7c755a",
+  "api_spend_usd": 0,
+  "probabilities": {
+    "ust-promo-v1-20261202-2y": 0.5,
+    "ust-promo-v1-20261202-spread": 0.33,
+    "ust-promo-v1-20261209-2y": 0.49,
+    "ust-promo-v1-20261209-spread": 0.38
+  }
+}
