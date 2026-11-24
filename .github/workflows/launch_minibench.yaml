@@ -7,7 +7,7 @@ permissions:
   contents: read
 jobs:
   launch-existing-minibench:
-    if: github.event.head_commit.message != 'Check the verified recovery environment once without inference'
+    if: github.event.head_commit.message != 'Check the verified recovery environment once without inference' && github.event.head_commit.message != 'Activate the verified 50-minute GitHub recovery clock once'
     runs-on: ubuntu-latest
     timeout-minutes: 4
     steps:
@@ -31,3 +31,21 @@ jobs:
           gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/champion_control.yaml/dispatches" --input - <<'JSON'
           {"ref":"main","inputs":{"mode":"recovery_check"}}
           JSON
+  activate-verified-clock:
+    if: github.event.head_commit.message == 'Activate the verified 50-minute GitHub recovery clock once' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Confirm the owner timer and start one chain only
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          test "$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)" = "3b960f873aed0c02191a4a4db177215cd48f14a1"
+          gh api "repos/$GITHUB_REPOSITORY/environments/forecast-recovery" | jq -e '.id == 28433629372 and ([.protection_rules[] | select(.type == "wait_timer") | .wait_timer] == [50]) and (all(.protection_rules[]; .type != "required_reviewers"))' >/dev/null
+          active=$(gh api --method GET "repos/$GITHUB_REPOSITORY/actions/workflows/champion_control.yaml/runs" -f branch=main -f event=workflow_dispatch -f per_page=100 --jq '[.workflow_runs[] | select(.status != "completed" and (.display_title | startswith("Champion recovery cycle "))) ] | length')
+          if [ "$active" != 0 ]; then echo "Recovery already active"; exit 0; fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/champion_control.yaml/dispatches" --input - <<'JSON'
+          {"ref":"main","inputs":{"mode":"recovery","recovery_cycle":"0","recovery_errors":"0"}}
+          JSON
+          echo "Recovery start accepted"
