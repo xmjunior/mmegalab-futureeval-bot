@@ -39,8 +39,22 @@ def main():
         lambda p: {"free_tier": p["data"].get("is_free_tier"),
                    "daily_free_requests_remaining": "not_reported_by_key_api"}
     ) if router else {"status": "unconfigured"}
+    tavily = os.getenv("TAVILY_API_KEY", "").strip()
+    snapshot["tavily"] = status(
+        "https://api.tavily.com/usage", {"Authorization": "Bearer " + tavily},
+        lambda p: {"key_limit": p["key"]["limit"], "key_used": p["key"]["usage"],
+                   "plan": p["account"]["current_plan"], "included": p["account"]["plan_limit"],
+                   "account_used": p["account"]["plan_usage"], "paygo_used": p["account"]["paygo_usage"]}
+    ) if tavily.startswith("tvly-") else {"status": "unexpected_format" if tavily else "unconfigured"}
+    snapshot["openai_project_credential_configured"] = os.getenv("HAS_OPENAI_PROJECT_KEY") == "true"
     snapshot["asknews_credential_configured"] = bool(os.getenv("ASKNEWS_API_KEY") or
         (os.getenv("ASKNEWS_CLIENT_ID") and os.getenv("ASKNEWS_SECRET")))
+    asknews = os.getenv("ASKNEWS_API_KEY", "").strip()
+    if asknews:
+        snapshot["asknews_rate_limits"] = status(
+            "https://api.asknews.app/v1/profiles/me/limits", {"Authorization": "Bearer " + asknews},
+            lambda p: {"request_rate_capacity": p["request_rate_capacity"]}
+        )
     snapshot["asknews_entitlement"] = "not_verified"
     Path("provider-status.json").write_text(json.dumps(snapshot, indent=2) + "\n")
     print(json.dumps(snapshot))
