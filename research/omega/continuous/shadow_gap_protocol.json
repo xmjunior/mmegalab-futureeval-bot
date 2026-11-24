@@ -1,0 +1,7 @@
+{
+  "registered_utc": "2026-11-24T23:19:08Z",
+  "status": "separate prospective exploratory cohort following required abstention under continuous/protocol.json; not a retrospective change or a scored comparison",
+  "data": "Reuse sealed real ALFRED vintage 2026-11-23, official US unemployment rate, last 120 calendar months. Never interpolate missing values. Eligible with at most one interior missing month, both most recent months observed.",
+  "origins_and_targets": "Issue by 2026-11-26 UTC. Three targets at +1, +3, +6 calendar months beyond the last published observation. Resolve against the first ALFRED release. No competition questions.",
+  "arms": "Two predeclared quantile distributions: empirical h-month differences with both endpoints observed, de-medianed around current level; the same sample scaled by sqrt(recent 30 over long standard deviation of valid one-month changes) clipped to [0.7,2.0]. No CQR fitted on the gap cohort. The 5 knots, exponential tails, bounded support and 99-grid CRPS/log/Brier rules remain unchanged. No automatic promotion."
+}
