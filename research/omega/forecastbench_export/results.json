@@ -1,0 +1,51 @@
+{
+  "round": "2025-10-26",
+  "offline_only": true,
+  "raw_forecasts_issued_by": "ForecastBench",
+  "model": "GPT-5-Mini-2025-08-07 (zero shot)",
+  "full_round_closed_rows": {
+    "coverage": {
+      "market": {
+        "complete_questions": 117,
+        "total_questions": 250,
+        "required_95pct": 238,
+        "present_slots": 117,
+        "requested_slots": 250,
+        "pass": false
+      },
+      "dataset": {
+        "complete_questions": 0,
+        "total_questions": 250,
+        "required_95pct": 238,
+        "present_slots": 1220,
+        "requested_slots": 1996,
+        "pass": false
+      }
+    },
+    "export_eligible_here": false,
+    "present_forecasts": 1337
+  },
+  "small_resolved_fixture": {
+    "coverage": {
+      "market": {
+        "complete_questions": 20,
+        "total_questions": 20,
+        "required_95pct": 19,
+        "present_slots": 20,
+        "requested_slots": 20,
+        "pass": true
+      },
+      "dataset": {
+        "complete_questions": 20,
+        "total_questions": 20,
+        "required_95pct": 19,
+        "present_slots": 20,
+        "requested_slots": 20,
+        "pass": true
+      }
+    },
+    "schema_pass": true,
+    "present_forecasts": 40
+  },
+  "outbound_submissions": 0
+}

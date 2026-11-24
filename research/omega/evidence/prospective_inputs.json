@@ -1,0 +1,173 @@
+{
+  "series": "FM.D.U2.EUR.4F.KR.DFR.LEV",
+  "source": "https://data-api.ecb.europa.eu/service/data/FM/D.U2.EUR.4F.KR.DFR.LEV",
+  "unit": "percent per annum",
+  "calendar_sources": [
+    "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.pr250424~2643533670.en.html",
+    "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html"
+  ],
+  "source_response_sha256": "a345dcda70ed16f5229aa97d2aceaaad3d7d76c3289f6a082a8ec9751473f6dd",
+  "measurements": [
+    {
+      "meeting": "2024-01-25",
+      "before_date": "2024-01-24",
+      "after_date": "2024-02-01",
+      "before_rate": "4",
+      "after_rate": "4"
+    },
+    {
+      "meeting": "2024-03-07",
+      "before_date": "2024-03-06",
+      "after_date": "2024-03-14",
+      "before_rate": "4",
+      "after_rate": "4"
+    },
+    {
+      "meeting": "2024-04-11",
+      "before_date": "2024-04-10",
+      "after_date": "2024-04-18",
+      "before_rate": "4",
+      "after_rate": "4"
+    },
+    {
+      "meeting": "2024-06-06",
+      "before_date": "2024-06-05",
+      "after_date": "2024-06-13",
+      "before_rate": "4",
+      "after_rate": "3.75"
+    },
+    {
+      "meeting": "2024-07-18",
+      "before_date": "2024-07-17",
+      "after_date": "2024-07-25",
+      "before_rate": "3.75",
+      "after_rate": "3.75"
+    },
+    {
+      "meeting": "2024-09-12",
+      "before_date": "2024-09-11",
+      "after_date": "2024-09-19",
+      "before_rate": "3.75",
+      "after_rate": "3.5"
+    },
+    {
+      "meeting": "2024-10-17",
+      "before_date": "2024-10-16",
+      "after_date": "2024-10-24",
+      "before_rate": "3.5",
+      "after_rate": "3.25"
+    },
+    {
+      "meeting": "2024-12-12",
+      "before_date": "2024-12-11",
+      "after_date": "2024-12-19",
+      "before_rate": "3.25",
+      "after_rate": "3"
+    },
+    {
+      "meeting": "2025-01-30",
+      "before_date": "2025-01-29",
+      "after_date": "2025-02-06",
+      "before_rate": "3",
+      "after_rate": "2.75"
+    },
+    {
+      "meeting": "2025-03-06",
+      "before_date": "2025-03-05",
+      "after_date": "2025-03-13",
+      "before_rate": "2.75",
+      "after_rate": "2.5"
+    },
+    {
+      "meeting": "2025-04-17",
+      "before_date": "2025-04-16",
+      "after_date": "2025-04-24",
+      "before_rate": "2.5",
+      "after_rate": "2.25"
+    },
+    {
+      "meeting": "2025-06-05",
+      "before_date": "2025-06-04",
+      "after_date": "2025-06-12",
+      "before_rate": "2.25",
+      "after_rate": "2"
+    },
+    {
+      "meeting": "2025-07-24",
+      "before_date": "2025-07-23",
+      "after_date": "2025-07-31",
+      "before_rate": "2",
+      "after_rate": "2"
+    },
+    {
+      "meeting": "2025-09-11",
+      "before_date": "2025-09-10",
+      "after_date": "2025-09-18",
+      "before_rate": "2",
+      "after_rate": "2"
+    },
+    {
+      "meeting": "2025-10-30",
+      "before_date": "2025-10-29",
+      "after_date": "2025-11-06",
+      "before_rate": "2",
+      "after_rate": "2"
+    },
+    {
+      "meeting": "2025-12-18",
+      "before_date": "2025-12-17",
+      "after_date": "2025-12-25",
+      "before_rate": "2",
+      "after_rate": "2"
+    },
+    {
+      "meeting": "2026-02-05",
+      "before_date": "2026-02-04",
+      "after_date": "2026-02-12",
+      "before_rate": "2",
+      "after_rate": "2"
+    },
+    {
+      "meeting": "2026-03-19",
+      "before_date": "2026-03-18",
+      "after_date": "2026-03-26",
+      "before_rate": "2",
+      "after_rate": "2"
+    },
+    {
+      "meeting": "2026-04-30",
+      "before_date": "2026-04-29",
+      "after_date": "2026-05-07",
+      "before_rate": "2",
+      "after_rate": "2"
+    },
+    {
+      "meeting": "2026-06-11",
+      "before_date": "2026-06-10",
+      "after_date": "2026-06-18",
+      "before_rate": "2",
+      "after_rate": "2.25"
+    },
+    {
+      "meeting": "2026-07-23",
+      "before_date": "2026-07-22",
+      "after_date": "2026-07-30",
+      "before_rate": "2.25",
+      "after_rate": "2.25"
+    },
+    {
+      "meeting": "2026-09-10",
+      "before_date": "2026-09-09",
+      "after_date": "2026-09-17",
+      "before_rate": "2.25",
+      "after_rate": "2.5"
+    },
+    {
+      "meeting": "2026-10-29",
+      "before_date": "2026-10-28",
+      "after_date": "2026-11-05",
+      "before_rate": "2.5",
+      "after_rate": "2.5"
+    }
+  ]
+}

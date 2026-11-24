@@ -1,0 +1,11 @@
+{
+  "round": "2025-10-26",
+  "as_of": "2026-11-24",
+  "questions_sha256": "5095f9d7fdd714b2321b38e13e74de67d43aa1f3ab5d3034d0f629da28892242",
+  "archive_url": "https://www.forecastbench.org/assets/data/processed-forecast-sets/processed_forecast_sets.tar.gz",
+  "archive_sha256": "3b3b9630f2ccf4da401e703266a116cdc7de535eabb4cb44c9a10d1c01315b0f",
+  "member": "forecastbench-processed-forecast-sets/2025-10-26/2025-10-26.OpenAI.gpt-5-mini-2025-08-07_zero_shot.json",
+  "forecasts_member_sha256": "bf120c7f888237ce570137f72a869c292e3d923f9a93753bbd01fdda9d8e5008",
+  "license": "Forecasting Research Institute, ForecastBench. Derived data CC BY-SA 4.0. https://creativecommons.org/licenses/by-sa/4.0/",
+  "questions_url": "https://raw.githubusercontent.com/forecastingresearch/forecastbench-datasets/86b92ba06ed34d606d633bff3e99af54dd447d3a/datasets/question_sets/2025-10-26-llm.json"
+}

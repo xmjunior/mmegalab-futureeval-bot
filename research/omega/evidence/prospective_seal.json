@@ -1,0 +1,57 @@
+{
+  "frozen_on_utc": "2026-11-24",
+  "event_family": "ECB deposit facility easing",
+  "criterion": "Daily official deposit rate on meeting+7 calendar days strictly below meeting-1. Equality is false. Unscheduled action inside this fixed window counts. Use actual observations for both exact dates.",
+  "resolution": "First successful retrieval of both actual official ECB observations on or after first_fetch_utc. Preserve the retrieval time and values. Missing data stays pending. Later source revisions are not used to rescore.",
+  "source": "https://data-api.ecb.europa.eu/service/data/FM/D.U2.EUR.4F.KR.DFR.LEV",
+  "series": "FM.D.U2.EUR.4F.KR.DFR.LEV",
+  "input_sha256": "488d260f75f4d480add894a159fd953140e38f8944f72b8844f6d6b7a511476c",
+  "last_training_observation": "2026-11-05",
+  "arm_design": "Both arms apply the same Beta(1,1) smoothed empirical cut frequency. Simple uses all 2024–25 scheduled meetings. Counterevidence adds all seven completed 2026 meetings through October, including the new tightening evidence. No event-specific tuning.",
+  "estimates": {
+    "two_year_dossier": {
+      "meetings": 16,
+      "cuts": 8,
+      "p_cut": 0.5
+    },
+    "counterevidence_dossier": {
+      "meetings": 23,
+      "cuts": 8,
+      "p_cut": 0.36
+    }
+  },
+  "events": [
+    {
+      "meeting": "2026-12-17",
+      "before": "2026-12-16",
+      "after": "2026-12-24",
+      "first_fetch_utc": "2026-12-25T12:00:00+00:00",
+      "p_cut": {
+        "two_year_dossier": 0.5,
+        "counterevidence_dossier": 0.36
+      }
+    },
+    {
+      "meeting": "2027-02-04",
+      "before": "2027-02-03",
+      "after": "2027-02-11",
+      "first_fetch_utc": "2027-02-12T12:00:00+00:00",
+      "p_cut": {
+        "two_year_dossier": 0.5,
+        "counterevidence_dossier": 0.36
+      }
+    },
+    {
+      "meeting": "2027-03-18",
+      "before": "2027-03-17",
+      "after": "2027-03-25",
+      "first_fetch_utc": "2027-03-26T12:00:00+00:00",
+      "p_cut": {
+        "two_year_dossier": 0.5,
+        "counterevidence_dossier": 0.36
+      }
+    }
+  ],
+  "marginal_cost_usd": 0,
+  "promotion": "Exploratory correlated event family, no promotion on these three alone."
+}

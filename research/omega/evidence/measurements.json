@@ -1,0 +1,6375 @@
+{
+  "sources": [
+    {
+      "id": "2024-01-25_en",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp240125~f738889bde.en.html",
+      "meeting": "2024-01-25",
+      "language": "en",
+      "rates_low_to_high": [
+        "4.00",
+        "4.50",
+        "4.75"
+      ],
+      "normalized_sha256": "6c6b0d4c988387136c0f6510d285cd03e444ab4a6d1a716b9efb2754e4e72cdd",
+      "tokens": 524
+    },
+    {
+      "id": "2024-01-25_es",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp240125~f738889bde.es.html",
+      "meeting": "2024-01-25",
+      "language": "es",
+      "rates_low_to_high": [
+        "4.00",
+        "4.50",
+        "4.75"
+      ],
+      "normalized_sha256": "a4f2aedfda7d4f04c2f232c1a8de9976c8f6db91d74dd1ba1b983977fce4409c",
+      "tokens": 658
+    },
+    {
+      "id": "2024-01-25_pt",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp240125~f738889bde.pt.html",
+      "meeting": "2024-01-25",
+      "language": "pt",
+      "rates_low_to_high": [
+        "4.00",
+        "4.50",
+        "4.75"
+      ],
+      "normalized_sha256": "bd41663004d23253862dc5fd765487726f7a26be262f68d0cc2f9674f6955656",
+      "tokens": 642
+    },
+    {
+      "id": "2024-03-07_en",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp240307~a5fa52b82b.en.html",
+      "meeting": "2024-03-07",
+      "language": "en",
+      "rates_low_to_high": [
+        "4.00",
+        "4.50",
+        "4.75"
+      ],
+      "normalized_sha256": "d46a93871babe1fce00d31365e1eee2074e6bf825b28194effa5346006df2353",
+      "tokens": 641
+    },
+    {
+      "id": "2024-03-07_es",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp240307~a5fa52b82b.es.html",
+      "meeting": "2024-03-07",
+      "language": "es",
+      "rates_low_to_high": [
+        "4.00",
+        "4.50",
+        "4.75"
+      ],
+      "normalized_sha256": "93c831d643178e296cf650782abf9748fb6ebf4f8f6baa694dd06ca8050e693b",
+      "tokens": 820
+    },
+    {
+      "id": "2024-03-07_pt",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp240307~a5fa52b82b.pt.html",
+      "meeting": "2024-03-07",
+      "language": "pt",
+      "rates_low_to_high": [
+        "4.00",
+        "4.50",
+        "4.75"
+      ],
+      "normalized_sha256": "20f042798f3da329040aa33da9ca00658c05aa4481c5b3f78b718891c76d40b9",
+      "tokens": 783
+    },
+    {
+      "id": "2024-04-11_en",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp240411~1345644915.en.html",
+      "meeting": "2024-04-11",
+      "language": "en",
+      "rates_low_to_high": [
+        "4.00",
+        "4.50",
+        "4.75"
+      ],
+      "normalized_sha256": "3b52baa267340d6b004a723d3101ce6967b032ce856ae42dce1d258d46dca504",
+      "tokens": 572
+    },
+    {
+      "id": "2024-04-11_es",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp240411~1345644915.es.html",
+      "meeting": "2024-04-11",
+      "language": "es",
+      "rates_low_to_high": [
+        "4.00",
+        "4.50",
+        "4.75"
+      ],
+      "normalized_sha256": "7618e468a9b0ee6d16bb8061c4bb13f598ad372e52cb54a479106c4849d6abbb",
+      "tokens": 724
+    },
+    {
+      "id": "2024-04-11_pt",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp240411~1345644915.pt.html",
+      "meeting": "2024-04-11",
+      "language": "pt",
+      "rates_low_to_high": [
+        "4.00",
+        "4.50",
+        "4.75"
+      ],
+      "normalized_sha256": "7d3d64d9cbda34add231dc016d485ff63344610396ffd092822e2428ceeda6d0",
+      "tokens": 706
+    },
+    {
+      "id": "2024-06-06_en",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp240606~2148ecdb3c.en.html",
+      "meeting": "2024-06-06",
+      "language": "en",
+      "rates_low_to_high": [
+        "3.75",
+        "4.25",
+        "4.50"
+      ],
+      "normalized_sha256": "cb583df57ae89a9dc9df74594539aab6ce8743e387c7c76191a4f7bdf3346166",
+      "tokens": 751
+    },
+    {
+      "id": "2024-06-06_es",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp240606~2148ecdb3c.es.html",
+      "meeting": "2024-06-06",
+      "language": "es",
+      "rates_low_to_high": [
+        "3.75",
+        "4.25",
+        "4.50"
+      ],
+      "normalized_sha256": "5ce64310e30c8462f79f599e997488d0ed331de30d8055e92230b2163e934b92",
+      "tokens": 962
+    },
+    {
+      "id": "2024-06-06_pt",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp240606~2148ecdb3c.pt.html",
+      "meeting": "2024-06-06",
+      "language": "pt",
+      "rates_low_to_high": [
+        "3.75",
+        "4.25",
+        "4.50"
+      ],
+      "normalized_sha256": "2b3f118204148f0ec0136e6052cb14302a3a620dfb9d5c9ceb54b831c1bcbba3",
+      "tokens": 907
+    },
+    {
+      "id": "2024-07-18_en",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp240718~b9e0ddd9d5.en.html",
+      "meeting": "2024-07-18",
+      "language": "en",
+      "rates_low_to_high": [
+        "3.75",
+        "4.25",
+        "4.50"
+      ],
+      "normalized_sha256": "50b2f3ed20b2d144c1f3a4bc89ef811eeae6ad0743db216028f23e971ca7082d",
+      "tokens": 509
+    },
+    {
+      "id": "2024-07-18_es",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp240718~b9e0ddd9d5.es.html",
+      "meeting": "2024-07-18",
+      "language": "es",
+      "rates_low_to_high": [
+        "3.75",
+        "4.25",
+        "4.50"
+      ],
+      "normalized_sha256": "2b2713396a26f903b742b7abdda7d27236ea58b615686404c2a444ba74aebe5f",
+      "tokens": 652
+    },
+    {
+      "id": "2024-07-18_pt",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp240718~b9e0ddd9d5.pt.html",
+      "meeting": "2024-07-18",
+      "language": "pt",
+      "rates_low_to_high": [
+        "3.75",
+        "4.25",
+        "4.50"
+      ],
+      "normalized_sha256": "c36c1246d60dcb51db5b1caa61fbd9dfeed41f38826f07a91f5a65ebe07ccc8e",
+      "tokens": 641
+    },
+    {
+      "id": "2024-09-12_en",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp240912~67cb23badb.en.html",
+      "meeting": "2024-09-12",
+      "language": "en",
+      "rates_low_to_high": [
+        "3.50",
+        "3.65",
+        "3.90"
+      ],
+      "normalized_sha256": "e6055e64979c6be943f59b7664fb8e70c741c56755503740034c20249ab05a1c",
+      "tokens": 872
+    },
+    {
+      "id": "2024-09-12_es",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp240912~67cb23badb.es.html",
+      "meeting": "2024-09-12",
+      "language": "es",
+      "rates_low_to_high": [
+        "3.50",
+        "3.65",
+        "3.90"
+      ],
+      "normalized_sha256": "be4666df71ff9da7f5804232599c88aec9d400da41a54a6bc9d19f41f1e7bc53",
+      "tokens": 1134
+    },
+    {
+      "id": "2024-09-12_pt",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp240912~67cb23badb.pt.html",
+      "meeting": "2024-09-12",
+      "language": "pt",
+      "rates_low_to_high": [
+        "3.50",
+        "3.65",
+        "3.90"
+      ],
+      "normalized_sha256": "3deaf3658e7b9a605c38a1f2d7700c0fd3bd690ed03bf225f05289b7a85a0b3b",
+      "tokens": 1071
+    },
+    {
+      "id": "2024-10-17_en",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp241017~aa366eaf20.en.html",
+      "meeting": "2024-10-17",
+      "language": "en",
+      "rates_low_to_high": [
+        "3.25",
+        "3.40",
+        "3.65"
+      ],
+      "normalized_sha256": "37dd91567f61f466e8d4d0e269f602bffa4db2b79bd4a63dc7bd19c0c59a4486",
+      "tokens": 569
+    },
+    {
+      "id": "2024-10-17_es",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp241017~aa366eaf20.es.html",
+      "meeting": "2024-10-17",
+      "language": "es",
+      "rates_low_to_high": [
+        "3.25",
+        "3.40",
+        "3.65"
+      ],
+      "normalized_sha256": "77f57916ce1de7ee421a52a764f079cfcb73efc8a69101d0d19f1eaa776332e7",
+      "tokens": 745
+    },
+    {
+      "id": "2024-10-17_pt",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp241017~aa366eaf20.pt.html",
+      "meeting": "2024-10-17",
+      "language": "pt",
+      "rates_low_to_high": [
+        "3.25",
+        "3.40",
+        "3.65"
+      ],
+      "normalized_sha256": "2b1877c9a74d8ee5202aa67d597434ee22e5ccbc64a3a252604dd1f091d348f4",
+      "tokens": 716
+    },
+    {
+      "id": "2024-12-12_en",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp241212~2acab6e51e.en.html",
+      "meeting": "2024-12-12",
+      "language": "en",
+      "rates_low_to_high": [
+        "3.00",
+        "3.15",
+        "3.40"
+      ],
+      "normalized_sha256": "a2815d91f16600cf4647abd6a0f269ab3b2108e666929dce58caf7ef37d1a078",
+      "tokens": 678
+    },
+    {
+      "id": "2024-12-12_es",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp241212~2acab6e51e.es.html",
+      "meeting": "2024-12-12",
+      "language": "es",
+      "rates_low_to_high": [
+        "3.00",
+        "3.15",
+        "3.40"
+      ],
+      "normalized_sha256": "9b3bce16e257a03bcc5d6cb924480a102a66ba1084289ae368cc041417df841c",
+      "tokens": 902
+    },
+    {
+      "id": "2024-12-12_pt",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2024/html/ecb.mp241212~2acab6e51e.pt.html",
+      "meeting": "2024-12-12",
+      "language": "pt",
+      "rates_low_to_high": [
+        "3.00",
+        "3.15",
+        "3.40"
+      ],
+      "normalized_sha256": "70d2e753584a33a933e063714abd4fc61aece5d1bb63b58e8a71d4ce7a70df3b",
+      "tokens": 879
+    },
+    {
+      "id": "2025-01-30_en",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp250130~530b29e622.en.html",
+      "meeting": "2025-01-30",
+      "language": "en",
+      "rates_low_to_high": [
+        "2.75",
+        "2.90",
+        "3.15"
+      ],
+      "normalized_sha256": "a40ec652a67eb536f62d242eef54f99272355cb7bee92e93bf5d351cd3f9a28e",
+      "tokens": 562
+    },
+    {
+      "id": "2025-01-30_es",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp250130~530b29e622.es.html",
+      "meeting": "2025-01-30",
+      "language": "es",
+      "rates_low_to_high": [
+        "2.75",
+        "2.90",
+        "3.15"
+      ],
+      "normalized_sha256": "2d239ba2cfad964e9e356e507fc95d7fe1f77edc614163d51e8b22b0572dc7fa",
+      "tokens": 739
+    },
+    {
+      "id": "2025-01-30_pt",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp250130~530b29e622.pt.html",
+      "meeting": "2025-01-30",
+      "language": "pt",
+      "rates_low_to_high": [
+        "2.75",
+        "2.90",
+        "3.15"
+      ],
+      "normalized_sha256": "9da9b72a52f8b5ed2cbbcdbf899acd7f743b53c699f00340ce316ae32fd98adb",
+      "tokens": 716
+    },
+    {
+      "id": "2025-03-06_en",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp250306~d4340800b3.en.html",
+      "meeting": "2025-03-06",
+      "language": "en",
+      "rates_low_to_high": [
+        "2.50",
+        "2.65",
+        "2.90"
+      ],
+      "normalized_sha256": "3a7269ea94bbbdbe4554816d8bb96380d73d7f3edd429dc9f4d7442a68f8bcf2",
+      "tokens": 646
+    },
+    {
+      "id": "2025-03-06_es",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp250306~d4340800b3.es.html",
+      "meeting": "2025-03-06",
+      "language": "es",
+      "rates_low_to_high": [
+        "2.50",
+        "2.65",
+        "2.90"
+      ],
+      "normalized_sha256": "4110effd646609abcad80f4c85dde3cc8fe236e758a30f0b047397c375621001",
+      "tokens": 871
+    },
+    {
+      "id": "2025-03-06_pt",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp250306~d4340800b3.pt.html",
+      "meeting": "2025-03-06",
+      "language": "pt",
+      "rates_low_to_high": [
+        "2.50",
+        "2.65",
+        "2.90"
+      ],
+      "normalized_sha256": "0004bd8f2ed379639838b0a6498e72ffaae0ddb02d9f54528ff15d166597a0ff",
+      "tokens": 845
+    },
+    {
+      "id": "2025-04-17_en",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp250417~42727d0735.en.html",
+      "meeting": "2025-04-17",
+      "language": "en",
+      "rates_low_to_high": [
+        "2.25",
+        "2.40",
+        "2.65"
+      ],
+      "normalized_sha256": "766d82e0430e766e5ba644a8ebac865ec366ec4b7927b122878ad2fc6d0f7e0a",
+      "tokens": 504
+    },
+    {
+      "id": "2025-04-17_es",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp250417~42727d0735.es.html",
+      "meeting": "2025-04-17",
+      "language": "es",
+      "rates_low_to_high": [
+        "2.25",
+        "2.40",
+        "2.65"
+      ],
+      "normalized_sha256": "6349d29ef5b017a326815057f1f1465357c47180c75f4b40915a8334585a694f",
+      "tokens": 650
+    },
+    {
+      "id": "2025-04-17_pt",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp250417~42727d0735.pt.html",
+      "meeting": "2025-04-17",
+      "language": "pt",
+      "rates_low_to_high": [
+        "2.25",
+        "2.40",
+        "2.65"
+      ],
+      "normalized_sha256": "c857fbf6fe19e577970503e1879b4f7848f6b6cecf5cc4e50a355e23958e4d23",
+      "tokens": 644
+    },
+    {
+      "id": "2025-06-05_en",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp250605~3b5f67d007.en.html",
+      "meeting": "2025-06-05",
+      "language": "en",
+      "rates_low_to_high": [
+        "2.00",
+        "2.15",
+        "2.40"
+      ],
+      "normalized_sha256": "88130710e4e398b47990f1d5f65771f123ba18e3b3975327da350ceccea76a1f",
+      "tokens": 720
+    },
+    {
+      "id": "2025-06-05_es",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp250605~3b5f67d007.es.html",
+      "meeting": "2025-06-05",
+      "language": "es",
+      "rates_low_to_high": [
+        "2.00",
+        "2.15",
+        "2.40"
+      ],
+      "normalized_sha256": "68d79c30f05de6cdeea4267366294ed0472356a4898e59d2cbd0644cd314bd6e",
+      "tokens": 938
+    },
+    {
+      "id": "2025-06-05_pt",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp250605~3b5f67d007.pt.html",
+      "meeting": "2025-06-05",
+      "language": "pt",
+      "rates_low_to_high": [
+        "2.00",
+        "2.15",
+        "2.40"
+      ],
+      "normalized_sha256": "2d6e462034d9845680f4b7325e8db2d6c64e8963febd6eab5b284533953e035d",
+      "tokens": 922
+    },
+    {
+      "id": "2025-07-24_en",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp250724~50bc70e13f.en.html",
+      "meeting": "2025-07-24",
+      "language": "en",
+      "rates_low_to_high": [
+        "2.00",
+        "2.15",
+        "2.40"
+      ],
+      "normalized_sha256": "c5100fc71c485d04c94d74b41c317d7cd51784c6726e6d7ed2179ce08273a5e0",
+      "tokens": 365
+    },
+    {
+      "id": "2025-07-24_es",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp250724~50bc70e13f.es.html",
+      "meeting": "2025-07-24",
+      "language": "es",
+      "rates_low_to_high": [
+        "2.00",
+        "2.15",
+        "2.40"
+      ],
+      "normalized_sha256": "1a01d1946d5620a52c22884d524356e12ccf4fa281fb1133d4fd231aadebf339",
+      "tokens": 472
+    },
+    {
+      "id": "2025-07-24_pt",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp250724~50bc70e13f.pt.html",
+      "meeting": "2025-07-24",
+      "language": "pt",
+      "rates_low_to_high": [
+        "2.00",
+        "2.15",
+        "2.40"
+      ],
+      "normalized_sha256": "6f7b79dbf9c16d5d1c2b18d78e171f80e76f04d907a44add788cf4fbf743653e",
+      "tokens": 469
+    },
+    {
+      "id": "2025-09-11_en",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp250911~6afb7a9490.en.html",
+      "meeting": "2025-09-11",
+      "language": "en",
+      "rates_low_to_high": [
+        "2.00",
+        "2.15",
+        "2.40"
+      ],
+      "normalized_sha256": "d6dab5a30a155f40027122a45dddfbaebcc3c99d6e5728aa5b7df477121ba36b",
+      "tokens": 412
+    },
+    {
+      "id": "2025-09-11_es",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp250911~6afb7a9490.es.html",
+      "meeting": "2025-09-11",
+      "language": "es",
+      "rates_low_to_high": [
+        "2.00",
+        "2.15",
+        "2.40"
+      ],
+      "normalized_sha256": "44198c9728c0df21f84f9d77df78605bf1a69d00dd181ebb1519f6d80b19f472",
+      "tokens": 548
+    },
+    {
+      "id": "2025-09-11_pt",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp250911~6afb7a9490.pt.html",
+      "meeting": "2025-09-11",
+      "language": "pt",
+      "rates_low_to_high": [
+        "2.00",
+        "2.15",
+        "2.40"
+      ],
+      "normalized_sha256": "681d7fb1dd9aaf33d6c6b2c017716749ea353a1edcfa9ae28da4ef6158ba3b20",
+      "tokens": 534
+    },
+    {
+      "id": "2025-10-30_en",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp251030~cf0540b5c0.en.html",
+      "meeting": "2025-10-30",
+      "language": "en",
+      "rates_low_to_high": [
+        "2.00",
+        "2.15",
+        "2.40"
+      ],
+      "normalized_sha256": "6c84356549a95726182837041cab9ba2db63090469367fb38ce1dabfe7084345",
+      "tokens": 361
+    },
+    {
+      "id": "2025-10-30_es",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp251030~cf0540b5c0.es.html",
+      "meeting": "2025-10-30",
+      "language": "es",
+      "rates_low_to_high": [
+        "2.00",
+        "2.15",
+        "2.40"
+      ],
+      "normalized_sha256": "57d93d2f1de523571eb214b96a4ffec7b6e33ef4494d29296cf8c846df9153ab",
+      "tokens": 476
+    },
+    {
+      "id": "2025-10-30_pt",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp251030~cf0540b5c0.pt.html",
+      "meeting": "2025-10-30",
+      "language": "pt",
+      "rates_low_to_high": [
+        "2.00",
+        "2.15",
+        "2.40"
+      ],
+      "normalized_sha256": "53a2c1453798adfba4c93cd9db9e8a441d4c6b5dd9dc6508a198d3cd4a052de2",
+      "tokens": 468
+    },
+    {
+      "id": "2025-12-18_en",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp251218~58b0e415a6.en.html",
+      "meeting": "2025-12-18",
+      "language": "en",
+      "rates_low_to_high": [
+        "2.00",
+        "2.15",
+        "2.40"
+      ],
+      "normalized_sha256": "eda8a1b9f693820c6e60382f5dcbcc9cd6cffc83219b41a5cbce28196cd76e68",
+      "tokens": 423
+    },
+    {
+      "id": "2025-12-18_es",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp251218~58b0e415a6.es.html",
+      "meeting": "2025-12-18",
+      "language": "es",
+      "rates_low_to_high": [
+        "2.00",
+        "2.15",
+        "2.40"
+      ],
+      "normalized_sha256": "0b6bfd25749b962fa5efff924d868bbf989433a7d38eda17cea5a2d013d54e0c",
+      "tokens": 559
+    },
+    {
+      "id": "2025-12-18_pt",
+      "url": "https://www.ecb.europa.eu/press/pr/date/2025/html/ecb.mp251218~58b0e415a6.pt.html",
+      "meeting": "2025-12-18",
+      "language": "pt",
+      "rates_low_to_high": [
+        "2.00",
+        "2.15",
+        "2.40"
+      ],
+      "normalized_sha256": "a4673e9792de7eb9faf50df4a6a3a78a653fe9c3a7d73839bb6f953785cd7cab",
+      "tokens": 538
+    }
+  ],
+  "pairs": [
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-01-25_es",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.886408404,
+      "jaccard": 0.008818342,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-01-25_pt",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.904674047,
+      "jaccard": 0.008857396,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-03-07_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.264819588,
+      "jaccard": 0.637015782,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-03-07_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.907295666,
+      "jaccard": 0.007733952,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-03-07_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.921915669,
+      "jaccard": 0.007867821,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-04-11_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.251919051,
+      "jaccard": 0.544668588,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-04-11_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.903586126,
+      "jaccard": 0.008326395,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-04-11_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.914750421,
+      "jaccard": 0.00838223,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-06-06_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.433506045,
+      "jaccard": 0.371492705,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-06-06_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.922409639,
+      "jaccard": 0.007153076,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-06-06_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.932139491,
+      "jaccard": 0.00729927,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-07-18_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.251141553,
+      "jaccard": 0.499257058,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-07-18_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.900125628,
+      "jaccard": 0.008841733,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-07-18_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.914742451,
+      "jaccard": 0.008873114,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-09-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.488709677,
+      "jaccard": 0.310865191,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-09-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.929087624,
+      "jaccard": 0.006747638,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-09-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.937850669,
+      "jaccard": 0.006811989,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-10-17_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.329496403,
+      "jaccard": 0.409703504,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-10-17_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.908929627,
+      "jaccard": 0.00838223,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-10-17_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.923163842,
+      "jaccard": 0.008445946,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.529813665,
+      "jaccard": 0.224814422,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.914169629,
+      "jaccard": 0.008202834,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_en",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.933980583,
+      "jaccard": 0.007513148,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-01-25_pt",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.795817958,
+      "jaccard": 0.009623095,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-03-07_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.896907216,
+      "jaccard": 0.007993605,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-03-07_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.274273176,
+      "jaccard": 0.606094808,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-03-07_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.83029672,
+      "jaccard": 0.008639309,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-04-11_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.89428759,
+      "jaccard": 0.008460237,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-04-11_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.281599059,
+      "jaccard": 0.536951501,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-04-11_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.822209759,
+      "jaccard": 0.009153318,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-06-06_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.910765688,
+      "jaccard": 0.007507508,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-06-06_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.438554217,
+      "jaccard": 0.365504915,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-06-06_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.853440151,
+      "jaccard": 0.008064516,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-07-18_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.899540381,
+      "jaccard": 0.00893655,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-07-18_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.280150754,
+      "jaccard": 0.49940547,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-07-18_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.819419775,
+      "jaccard": 0.009638554,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-09-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.919354839,
+      "jaccard": 0.007077141,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-09-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.496386631,
+      "jaccard": 0.311635476,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-09-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.867501079,
+      "jaccard": 0.007566204,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-10-17_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.90019698,
+      "jaccard": 0.008650519,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-10-17_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.345949143,
+      "jaccard": 0.411953042,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-10-17_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.839548023,
+      "jaccard": 0.00921659,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.90931677,
+      "jaccard": 0.007905138,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.545962417,
+      "jaccard": 0.224625624,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_es",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.865533981,
+      "jaccard": 0.008281573,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-03-07_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.908364084,
+      "jaccard": 0.008025682,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-03-07_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.821173889,
+      "jaccard": 0.008534851,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-03-07_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.265486726,
+      "jaccard": 0.606444189,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-04-11_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.907749077,
+      "jaccard": 0.008496177,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-04-11_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.816578483,
+      "jaccard": 0.00913242,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-04-11_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.277061133,
+      "jaccard": 0.514942529,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-06-06_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.912492804,
+      "jaccard": 0.007535795,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-06-06_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.850120482,
+      "jaccard": 0.00794176,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-06-06_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.431668238,
+      "jaccard": 0.355394379,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-07-18_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.913284133,
+      "jaccard": 0.008976661,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-07-18_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.817343173,
+      "jaccard": 0.009646302,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-07-18_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.286560095,
+      "jaccard": 0.478158205,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-09-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.923655914,
+      "jaccard": 0.007102273,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-09-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.861336947,
+      "jaccard": 0.007523511,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-09-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.493741908,
+      "jaccard": 0.296175753,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-10-17_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.915744157,
+      "jaccard": 0.008688097,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-10-17_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.827912478,
+      "jaccard": 0.009188361,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-10-17_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.346892655,
+      "jaccard": 0.413606911,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.922509225,
+      "jaccard": 0.007936508,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.856272219,
+      "jaccard": 0.008247423,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-01-25_pt",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.519902913,
+      "jaccard": 0.242320819,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_en",
+      "right": "2024-03-07_es",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.905650027,
+      "jaccard": 0.007092199,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-03-07_en",
+      "right": "2024-03-07_pt",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.91983342,
+      "jaccard": 0.007204611,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-03-07_en",
+      "right": "2024-04-11_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.31121134,
+      "jaccard": 0.455324357,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_en",
+      "right": "2024-04-11_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.912404468,
+      "jaccard": 0.007587253,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_en",
+      "right": "2024-04-11_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.919798093,
+      "jaccard": 0.007633588,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_en",
+      "right": "2024-06-06_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.398963731,
+      "jaccard": 0.339,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_en",
+      "right": "2024-06-06_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.921445783,
+      "jaccard": 0.00660066,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_en",
+      "right": "2024-06-06_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.931668238,
+      "jaccard": 0.00672495,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_en",
+      "right": "2024-07-18_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.367912371,
+      "jaccard": 0.412797992,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_en",
+      "right": "2024-07-18_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.909547739,
+      "jaccard": 0.008012821,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_en",
+      "right": "2024-07-18_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.918294849,
+      "jaccard": 0.008038585,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_en",
+      "right": "2024-09-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.456989247,
+      "jaccard": 0.282746161,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_en",
+      "right": "2024-09-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.927280939,
+      "jaccard": 0.006253909,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_en",
+      "right": "2024-09-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.937419076,
+      "jaccard": 0.006309148,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_en",
+      "right": "2024-10-17_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.387886598,
+      "jaccard": 0.352325581,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_en",
+      "right": "2024-10-17_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.914843288,
+      "jaccard": 0.007633588,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_en",
+      "right": "2024-10-17_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.927118644,
+      "jaccard": 0.007686395,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_en",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.49378882,
+      "jaccard": 0.205687204,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_en",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.914677501,
+      "jaccard": 0.007544582,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_en",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.933495146,
+      "jaccard": 0.006906077,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_es",
+      "right": "2024-03-07_pt",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.814679854,
+      "jaccard": 0.007751938,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-03-07_es",
+      "right": "2024-04-11_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.910586945,
+      "jaccard": 0.007457122,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_es",
+      "right": "2024-04-11_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.310477235,
+      "jaccard": 0.453658537,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_es",
+      "right": "2024-04-11_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.822819528,
+      "jaccard": 0.008163265,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_es",
+      "right": "2024-06-06_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.914975315,
+      "jaccard": 0.006706908,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_es",
+      "right": "2024-06-06_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.382168675,
+      "jaccard": 0.345295056,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_es",
+      "right": "2024-06-06_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.842130066,
+      "jaccard": 0.007285974,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_es",
+      "right": "2024-07-18_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.915523862,
+      "jaccard": 0.007824726,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_es",
+      "right": "2024-07-18_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.355458036,
+      "jaccard": 0.414342629,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_es",
+      "right": "2024-07-18_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.829402084,
+      "jaccard": 0.008547009,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_es",
+      "right": "2024-09-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.915053763,
+      "jaccard": 0.006361323,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_es",
+      "right": "2024-09-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.448961156,
+      "jaccard": 0.296486091,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_es",
+      "right": "2024-09-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.85930082,
+      "jaccard": 0.006876791,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_es",
+      "right": "2024-10-17_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.916620954,
+      "jaccard": 0.007604563,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_es",
+      "right": "2024-10-17_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.379594076,
+      "jaccard": 0.349726776,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_es",
+      "right": "2024-10-17_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.835436094,
+      "jaccard": 0.008213552,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_es",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.918266594,
+      "jaccard": 0.007022472,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_es",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.500253936,
+      "jaccard": 0.214445272,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_es",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.855825243,
+      "jaccard": 0.007462687,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_pt",
+      "right": "2024-04-11_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.922436231,
+      "jaccard": 0.007581501,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_pt",
+      "right": "2024-04-11_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.838105154,
+      "jaccard": 0.008241758,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_pt",
+      "right": "2024-04-11_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.3112962,
+      "jaccard": 0.470292044,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_pt",
+      "right": "2024-06-06_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.920353982,
+      "jaccard": 0.006807352,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_pt",
+      "right": "2024-06-06_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.838072289,
+      "jaccard": 0.007259528,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_pt",
+      "right": "2024-06-06_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.377002828,
+      "jaccard": 0.356255178,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_pt",
+      "right": "2024-07-18_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.927641853,
+      "jaccard": 0.007961783,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_pt",
+      "right": "2024-07-18_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.836022905,
+      "jaccard": 0.008658009,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_pt",
+      "right": "2024-07-18_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.358146799,
+      "jaccard": 0.42244898,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_pt",
+      "right": "2024-09-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.923997918,
+      "jaccard": 0.006451613,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_pt",
+      "right": "2024-09-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.854110208,
+      "jaccard": 0.006908463,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_pt",
+      "right": "2024-09-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.44885628,
+      "jaccard": 0.289962825,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_pt",
+      "right": "2024-10-17_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.929724102,
+      "jaccard": 0.007733952,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_pt",
+      "right": "2024-10-17_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.837064029,
+      "jaccard": 0.008287293,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_pt",
+      "right": "2024-10-17_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.38677772,
+      "jaccard": 0.37535545,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_pt",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.929724102,
+      "jaccard": 0.007132668,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_pt",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.846622651,
+      "jaccard": 0.007514089,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-03-07_pt",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.48592233,
+      "jaccard": 0.229230769,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_en",
+      "right": "2024-04-11_es",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.904761905,
+      "jaccard": 0.008006405,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-04-11_en",
+      "right": "2024-04-11_pt",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.910263601,
+      "jaccard": 0.008058018,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-04-11_en",
+      "right": "2024-06-06_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.426021877,
+      "jaccard": 0.349628055,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_en",
+      "right": "2024-06-06_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.924819277,
+      "jaccard": 0.006915629,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_en",
+      "right": "2024-06-06_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.932610745,
+      "jaccard": 0.007052186,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_en",
+      "right": "2024-07-18_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.300069784,
+      "jaccard": 0.466019417,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_en",
+      "right": "2024-07-18_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.906407035,
+      "jaccard": 0.008481764,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_en",
+      "right": "2024-07-18_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.915334517,
+      "jaccard": 0.008510638,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_en",
+      "right": "2024-09-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.475268817,
+      "jaccard": 0.299038462,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_en",
+      "right": "2024-09-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.93134598,
+      "jaccard": 0.006535948,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_en",
+      "right": "2024-09-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.937850669,
+      "jaccard": 0.006596306,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_en",
+      "right": "2024-10-17_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.331472435,
+      "jaccard": 0.379571248,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_en",
+      "right": "2024-10-17_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.91306919,
+      "jaccard": 0.008058018,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_en",
+      "right": "2024-10-17_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.923163842,
+      "jaccard": 0.008116883,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_en",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.517391304,
+      "jaccard": 0.204204204,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_en",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.918740477,
+      "jaccard": 0.007919366,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_en",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.932524272,
+      "jaccard": 0.007251632,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_es",
+      "right": "2024-04-11_pt",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.807627594,
+      "jaccard": 0.008708273,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-04-11_es",
+      "right": "2024-06-06_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.918825561,
+      "jaccard": 0.007147963,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_es",
+      "right": "2024-06-06_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.432771084,
+      "jaccard": 0.325852037,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_es",
+      "right": "2024-06-06_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.845428841,
+      "jaccard": 0.007717042,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_es",
+      "right": "2024-07-18_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.913580247,
+      "jaccard": 0.008431703,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_es",
+      "right": "2024-07-18_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.297472075,
+      "jaccard": 0.448200654,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_es",
+      "right": "2024-07-18_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.817754262,
+      "jaccard": 0.009146341,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_es",
+      "right": "2024-09-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.922580645,
+      "jaccard": 0.006756757,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_es",
+      "right": "2024-09-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.479223126,
+      "jaccard": 0.28856485,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_es",
+      "right": "2024-09-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.864048338,
+      "jaccard": 0.007259528,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_es",
+      "right": "2024-10-17_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.916519694,
+      "jaccard": 0.008176615,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_es",
+      "right": "2024-10-17_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.335684891,
+      "jaccard": 0.360078278,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_es",
+      "right": "2024-10-17_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.831638418,
+      "jaccard": 0.008765522,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_es",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.918871252,
+      "jaccard": 0.007507508,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_es",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.529202641,
+      "jaccard": 0.201405152,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_es",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.859708738,
+      "jaccard": 0.007915567,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_pt",
+      "right": "2024-06-06_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.908020191,
+      "jaccard": 0.007913669,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_pt",
+      "right": "2024-06-06_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.843855422,
+      "jaccard": 0.007619048,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_pt",
+      "right": "2024-06-06_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.409048068,
+      "jaccard": 0.360383944,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_pt",
+      "right": "2024-07-18_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.919237241,
+      "jaccard": 0.008488964,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_pt",
+      "right": "2024-07-18_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.829500841,
+      "jaccard": 0.009174312,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_pt",
+      "right": "2024-07-18_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.289399888,
+      "jaccard": 0.478651685,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_pt",
+      "right": "2024-09-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.922580645,
+      "jaccard": 0.006793478,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_pt",
+      "right": "2024-09-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.857723577,
+      "jaccard": 0.007233273,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_pt",
+      "right": "2024-09-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.46396202,
+      "jaccard": 0.299607843,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_pt",
+      "right": "2024-10-17_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.919237241,
+      "jaccard": 0.008230453,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_pt",
+      "right": "2024-10-17_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.832305104,
+      "jaccard": 0.008759124,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_pt",
+      "right": "2024-10-17_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.320807628,
+      "jaccard": 0.41255144,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_pt",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.926528323,
+      "jaccard": 0.00755287,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_pt",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.851193499,
+      "jaccard": 0.007899934,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-04-11_pt",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.499029126,
+      "jaccard": 0.233766234,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_en",
+      "right": "2024-06-06_es",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.911325301,
+      "jaccard": 0.006265664,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-06-06_en",
+      "right": "2024-06-06_pt",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.912818096,
+      "jaccard": 0.007019783,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-06-06_en",
+      "right": "2024-07-18_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.388601036,
+      "jaccard": 0.438617402,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_en",
+      "right": "2024-07-18_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.908462867,
+      "jaccard": 0.007524454,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_en",
+      "right": "2024-07-18_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.903857225,
+      "jaccard": 0.008308157,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_en",
+      "right": "2024-09-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.385483871,
+      "jaccard": 0.351035104,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_en",
+      "right": "2024-09-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.926377597,
+      "jaccard": 0.005952381,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_en",
+      "right": "2024-09-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.927060855,
+      "jaccard": 0.006606607,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_en",
+      "right": "2024-10-17_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.390328152,
+      "jaccard": 0.421714286,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_en",
+      "right": "2024-10-17_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.918825561,
+      "jaccard": 0.007189073,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_en",
+      "right": "2024-10-17_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.915254237,
+      "jaccard": 0.007965243,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_en",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.492227979,
+      "jaccard": 0.236745887,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_en",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.921279837,
+      "jaccard": 0.007147498,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_en",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.924271845,
+      "jaccard": 0.007198953,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_es",
+      "right": "2024-06-06_pt",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.803016023,
+      "jaccard": 0.006849315,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-06-06_es",
+      "right": "2024-07-18_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.924337349,
+      "jaccard": 0.007230658,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_es",
+      "right": "2024-07-18_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.364819277,
+      "jaccard": 0.453765491,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_es",
+      "right": "2024-07-18_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.837590361,
+      "jaccard": 0.007952286,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_es",
+      "right": "2024-09-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.918554217,
+      "jaccard": 0.005963029,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_es",
+      "right": "2024-09-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.388437218,
+      "jaccard": 0.340957827,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_es",
+      "right": "2024-09-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.845058265,
+      "jaccard": 0.006486486,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_es",
+      "right": "2024-10-17_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.924819277,
+      "jaccard": 0.007042254,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_es",
+      "right": "2024-10-17_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.390361446,
+      "jaccard": 0.395778364,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_es",
+      "right": "2024-10-17_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.841445783,
+      "jaccard": 0.007662835,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_es",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.92626506,
+      "jaccard": 0.006540222,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_es",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.494939759,
+      "jaccard": 0.217391304,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_es",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.847710843,
+      "jaccard": 0.007005254,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_pt",
+      "right": "2024-07-18_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.932610745,
+      "jaccard": 0.007380074,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_pt",
+      "right": "2024-07-18_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.844486334,
+      "jaccard": 0.008080808,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_pt",
+      "right": "2024-07-18_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.354382658,
+      "jaccard": 0.453748783,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_pt",
+      "right": "2024-09-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.926955702,
+      "jaccard": 0.006064281,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_pt",
+      "right": "2024-09-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.837850045,
+      "jaccard": 0.006535948,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_pt",
+      "right": "2024-09-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.373759171,
+      "jaccard": 0.327062229,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_pt",
+      "right": "2024-10-17_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.934024505,
+      "jaccard": 0.007183908,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_pt",
+      "right": "2024-10-17_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.843543827,
+      "jaccard": 0.007756949,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_pt",
+      "right": "2024-10-17_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.356738926,
+      "jaccard": 0.432532348,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_pt",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.937794533,
+      "jaccard": 0.006662225,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_pt",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.855325165,
+      "jaccard": 0.007075472,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-06-06_pt",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.449104618,
+      "jaccard": 0.236880466,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_en",
+      "right": "2024-07-18_es",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.898241206,
+      "jaccard": 0.008960573,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-07-18_en",
+      "right": "2024-07-18_pt",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.908821788,
+      "jaccard": 0.008992806,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-07-18_en",
+      "right": "2024-09-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.438172043,
+      "jaccard": 0.395449621,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_en",
+      "right": "2024-09-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.931797651,
+      "jaccard": 0.006816633,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_en",
+      "right": "2024-09-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.940440224,
+      "jaccard": 0.006882312,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_en",
+      "right": "2024-10-17_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.256834532,
+      "jaccard": 0.53880597,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_en",
+      "right": "2024-10-17_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.911295092,
+      "jaccard": 0.008488964,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_en",
+      "right": "2024-10-17_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.923728814,
+      "jaccard": 0.00855432,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_en",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.504968944,
+      "jaccard": 0.266666667,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_en",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.919248349,
+      "jaccard": 0.008295626,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_en",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.937864078,
+      "jaccard": 0.007598784,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_es",
+      "right": "2024-07-18_pt",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.801065719,
+      "jaccard": 0.009661836,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-07-18_es",
+      "right": "2024-09-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.918817204,
+      "jaccard": 0.007092199,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_es",
+      "right": "2024-09-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.432700994,
+      "jaccard": 0.394280763,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_es",
+      "right": "2024-09-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.858437635,
+      "jaccard": 0.007580543,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_es",
+      "right": "2024-10-17_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.902638191,
+      "jaccard": 0.008673027,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_es",
+      "right": "2024-10-17_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.273802484,
+      "jaccard": 0.510297483,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_es",
+      "right": "2024-10-17_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.822033898,
+      "jaccard": 0.009237875,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_es",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.913664596,
+      "jaccard": 0.00792393,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_es",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.513458608,
+      "jaccard": 0.256629598,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_es",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.858737864,
+      "jaccard": 0.008298755,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_pt",
+      "right": "2024-09-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.920967742,
+      "jaccard": 0.007112376,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_pt",
+      "right": "2024-09-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.853658537,
+      "jaccard": 0.007532957,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_pt",
+      "right": "2024-09-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.421234355,
+      "jaccard": 0.394390885,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_pt",
+      "right": "2024-10-17_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.914150385,
+      "jaccard": 0.00870322,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_pt",
+      "right": "2024-10-17_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.816676523,
+      "jaccard": 0.009202454,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_pt",
+      "right": "2024-10-17_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.240112994,
+      "jaccard": 0.570913462,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_pt",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.92303138,
+      "jaccard": 0.007949126,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_pt",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.855764347,
+      "jaccard": 0.008258775,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-07-18_pt",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.477184466,
+      "jaccard": 0.276558385,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-09-12_en",
+      "right": "2024-09-12_es",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.923215899,
+      "jaccard": 0.005678592,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-09-12_en",
+      "right": "2024-09-12_pt",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.92792404,
+      "jaccard": 0.005724098,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-09-12_en",
+      "right": "2024-10-17_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.393548387,
+      "jaccard": 0.430885529,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-09-12_en",
+      "right": "2024-10-17_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.922043011,
+      "jaccard": 0.006793478,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-09-12_en",
+      "right": "2024-10-17_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.926344086,
+      "jaccard": 0.00683527,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-09-12_en",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.508064516,
+      "jaccard": 0.236206897,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-09-12_en",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.912646013,
+      "jaccard": 0.006790123,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-09-12_en",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.933009709,
+      "jaccard": 0.00621118,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-09-12_es",
+      "right": "2024-09-12_pt",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.82908934,
+      "jaccard": 0.006204757,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-09-12_es",
+      "right": "2024-10-17_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.930442638,
+      "jaccard": 0.006648936,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-09-12_es",
+      "right": "2024-10-17_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.38934056,
+      "jaccard": 0.429426861,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-09-12_es",
+      "right": "2024-10-17_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.853658537,
+      "jaccard": 0.007272727,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-09-12_es",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.935411021,
+      "jaccard": 0.006199628,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-09-12_es",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.507226739,
+      "jaccard": 0.23056119,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-09-12_es",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.859981933,
+      "jaccard": 0.006677796,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-09-12_pt",
+      "right": "2024-10-17_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.937419076,
+      "jaccard": 0.006711409,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-09-12_pt",
+      "right": "2024-10-17_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.855848079,
+      "jaccard": 0.007294833,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-09-12_pt",
+      "right": "2024-10-17_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.37850669,
+      "jaccard": 0.424373379,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-09-12_pt",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.940440224,
+      "jaccard": 0.006253909,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-09-12_pt",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.863185153,
+      "jaccard": 0.006688963,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-09-12_pt",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.473888649,
+      "jaccard": 0.239640884,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-10-17_en",
+      "right": "2024-10-17_es",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.905972797,
+      "jaccard": 0.008230453,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-10-17_en",
+      "right": "2024-10-17_pt",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.915819209,
+      "jaccard": 0.008291874,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-10-17_en",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.432298137,
+      "jaccard": 0.35443038,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-10-17_en",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.916708989,
+      "jaccard": 0.008070433,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-10-17_en",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.932524272,
+      "jaccard": 0.007390983,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-10-17_es",
+      "right": "2024-10-17_pt",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.808474576,
+      "jaccard": 0.008817046,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-10-17_es",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.91602602,
+      "jaccard": 0.00755287,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-10-17_es",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.450482478,
+      "jaccard": 0.330147698,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-10-17_es",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.853883495,
+      "jaccard": 0.00795756,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-10-17_pt",
+      "right": "2024-12-12_en",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.925423729,
+      "jaccard": 0.007604563,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-10-17_pt",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.849669883,
+      "jaccard": 0.00794702,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-10-17_pt",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.417961165,
+      "jaccard": 0.360036004,
+      "status": "distinct"
+    },
+    {
+      "left": "2024-12-12_en",
+      "right": "2024-12-12_es",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.909090909,
+      "jaccard": 0.007472826,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-12-12_en",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.922815534,
+      "jaccard": 0.006839945,
+      "status": "same_release"
+    },
+    {
+      "left": "2024-12-12_es",
+      "right": "2024-12-12_pt",
+      "year": 2024,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.822815534,
+      "jaccard": 0.007242004,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-01-30_es",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.903790087,
+      "jaccard": 0.008298755,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-01-30_pt",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.918401801,
+      "jaccard": 0.008403361,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-03-06_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.29556962,
+      "jaccard": 0.493472585,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-03-06_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.920331092,
+      "jaccard": 0.007507508,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-03-06_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.930624381,
+      "jaccard": 0.007593014,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-04-17_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.332386364,
+      "jaccard": 0.471365639,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-04-17_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.907732294,
+      "jaccard": 0.008944544,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-04-17_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.918935644,
+      "jaccard": 0.008944544,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-06-05_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.479225953,
+      "jaccard": 0.334433443,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-06-05_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.929732314,
+      "jaccard": 0.007189073,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-06-05_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.937471051,
+      "jaccard": 0.007204611,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-07-24_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.477982955,
+      "jaccard": 0.32481203,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-07-24_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.900568182,
+      "jaccard": 0.010341262,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-07-24_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.907670455,
+      "jaccard": 0.010288066,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-09-11_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.482954545,
+      "jaccard": 0.301542777,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-09-11_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.900568182,
+      "jaccard": 0.009624639,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-09-11_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.918323864,
+      "jaccard": 0.009661836,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-10-30_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.483664773,
+      "jaccard": 0.32526475,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-10-30_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.897017045,
+      "jaccard": 0.010319917,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-10-30_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.914772727,
+      "jaccard": 0.010319917,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.480113636,
+      "jaccard": 0.298611111,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.904119318,
+      "jaccard": 0.00952381,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_en",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.919034091,
+      "jaccard": 0.009661836,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-01-30_pt",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.814293754,
+      "jaccard": 0.00893522,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-03-06_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.913119534,
+      "jaccard": 0.007757952,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-03-06_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.339886187,
+      "jaccard": 0.432535885,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-03-06_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.846878097,
+      "jaccard": 0.008163265,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-04-17_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.913119534,
+      "jaccard": 0.008718396,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-04-17_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.358017493,
+      "jaccard": 0.422394678,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-04-17_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.827988338,
+      "jaccard": 0.009441385,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-06-05_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.918611269,
+      "jaccard": 0.00736377,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-06-05_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.468451243,
+      "jaccard": 0.311973019,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-06-05_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.864289023,
+      "jaccard": 0.007787151,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-07-24_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.915451895,
+      "jaccard": 0.009746589,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-07-24_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.481632653,
+      "jaccard": 0.328638498,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-07-24_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.838483965,
+      "jaccard": 0.010666667,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-09-11_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.918950437,
+      "jaccard": 0.009319664,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-09-11_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.485131195,
+      "jaccard": 0.301621622,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-09-11_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.84664723,
+      "jaccard": 0.01010101,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-10-30_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.914868805,
+      "jaccard": 0.009794319,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-10-30_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.489212828,
+      "jaccard": 0.327868852,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-10-30_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.837317784,
+      "jaccard": 0.010695187,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.920116618,
+      "jaccard": 0.009259259,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.472303207,
+      "jaccard": 0.296691569,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_es",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.843148688,
+      "jaccard": 0.01010101,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-03-06_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.920090039,
+      "jaccard": 0.007849294,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-03-06_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.8375582,
+      "jaccard": 0.008163265,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-03-06_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.290386521,
+      "jaccard": 0.513931889,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-04-17_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.924592009,
+      "jaccard": 0.008833922,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-04-17_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.835678109,
+      "jaccard": 0.00955414,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-04-17_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.308947665,
+      "jaccard": 0.500591716,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-06-05_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.92290377,
+      "jaccard": 0.007446016,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-06-05_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.855640535,
+      "jaccard": 0.007848267,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-06-05_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.449282075,
+      "jaccard": 0.356261023,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-07-24_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.92740574,
+      "jaccard": 0.009891197,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-07-24_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.853685988,
+      "jaccard": 0.010859729,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-07-24_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.451322454,
+      "jaccard": 0.348557692,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-09-11_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.930782217,
+      "jaccard": 0.009451796,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-09-11_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.853123241,
+      "jaccard": 0.010195412,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-09-11_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.462014631,
+      "jaccard": 0.324022346,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-10-30_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.931344963,
+      "jaccard": 0.009940358,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-10-30_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.85481148,
+      "jaccard": 0.010840108,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-10-30_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.454698931,
+      "jaccard": 0.359659781,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.929656725,
+      "jaccard": 0.009389671,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.851435003,
+      "jaccard": 0.01010101,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-01-30_pt",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.460889139,
+      "jaccard": 0.318131257,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_en",
+      "right": "2025-03-06_es",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.911536472,
+      "jaccard": 0.007062147,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-03-06_en",
+      "right": "2025-03-06_pt",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.921209118,
+      "jaccard": 0.007137759,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-03-06_en",
+      "right": "2025-04-17_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.381012658,
+      "jaccard": 0.449933244,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_en",
+      "right": "2025-04-17_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.905696203,
+      "jaccard": 0.008319468,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_en",
+      "right": "2025-04-17_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.911509901,
+      "jaccard": 0.008319468,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_en",
+      "right": "2025-06-05_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.433693796,
+      "jaccard": 0.33299075,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_en",
+      "right": "2025-06-05_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.923040153,
+      "jaccard": 0.006779661,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_en",
+      "right": "2025-06-05_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.93052339,
+      "jaccard": 0.006793478,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_en",
+      "right": "2025-07-24_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.518987342,
+      "jaccard": 0.293565684,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_en",
+      "right": "2025-07-24_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.908227848,
+      "jaccard": 0.009514748,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_en",
+      "right": "2025-07-24_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.913291139,
+      "jaccard": 0.009469697,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_en",
+      "right": "2025-09-11_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.5,
+      "jaccard": 0.290816327,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_en",
+      "right": "2025-09-11_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.902531646,
+      "jaccard": 0.00890472,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_en",
+      "right": "2025-09-11_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.91835443,
+      "jaccard": 0.00893655,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_en",
+      "right": "2025-10-30_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.530379747,
+      "jaccard": 0.295546559,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_en",
+      "right": "2025-10-30_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.906962025,
+      "jaccard": 0.009496676,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_en",
+      "right": "2025-10-30_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.917721519,
+      "jaccard": 0.009496676,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_en",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.497468354,
+      "jaccard": 0.289873418,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_en",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.906962025,
+      "jaccard": 0.008818342,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_en",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.917721519,
+      "jaccard": 0.00893655,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_es",
+      "right": "2025-03-06_pt",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.824083251,
+      "jaccard": 0.007514089,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-03-06_es",
+      "right": "2025-04-17_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.919813761,
+      "jaccard": 0.007849294,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_es",
+      "right": "2025-04-17_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.400931195,
+      "jaccard": 0.380999021,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_es",
+      "right": "2025-04-17_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.83807553,
+      "jaccard": 0.008583691,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_es",
+      "right": "2025-06-05_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.918261769,
+      "jaccard": 0.006734007,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_es",
+      "right": "2025-06-05_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.407743786,
+      "jaccard": 0.326241135,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_es",
+      "right": "2025-06-05_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.850856878,
+      "jaccard": 0.007194245,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_es",
+      "right": "2025-07-24_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.922400414,
+      "jaccard": 0.008673027,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_es",
+      "right": "2025-07-24_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.535437144,
+      "jaccard": 0.287321063,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_es",
+      "right": "2025-07-24_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.854630109,
+      "jaccard": 0.009584665,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_es",
+      "right": "2025-09-11_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.924469736,
+      "jaccard": 0.008333333,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_es",
+      "right": "2025-09-11_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.507501293,
+      "jaccard": 0.298536585,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_es",
+      "right": "2025-09-11_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.860838076,
+      "jaccard": 0.009125475,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_es",
+      "right": "2025-10-30_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.927056389,
+      "jaccard": 0.008710801,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_es",
+      "right": "2025-10-30_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.538023797,
+      "jaccard": 0.284114053,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_es",
+      "right": "2025-10-30_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.853078117,
+      "jaccard": 0.009607686,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_es",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.923435075,
+      "jaccard": 0.008285004,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_es",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.505949302,
+      "jaccard": 0.282982792,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_es",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.854112778,
+      "jaccard": 0.009125475,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_pt",
+      "right": "2025-04-17_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.930624381,
+      "jaccard": 0.007942812,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_pt",
+      "right": "2025-04-17_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.852329039,
+      "jaccard": 0.00867679,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_pt",
+      "right": "2025-04-17_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.366699703,
+      "jaccard": 0.463798531,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_pt",
+      "right": "2025-06-05_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.9271556,
+      "jaccard": 0.006802721,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_pt",
+      "right": "2025-06-05_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.84416826,
+      "jaccard": 0.007246377,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_pt",
+      "right": "2025-06-05_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.405280222,
+      "jaccard": 0.352558895,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_pt",
+      "right": "2025-07-24_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.934588702,
+      "jaccard": 0.008787346,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_pt",
+      "right": "2025-07-24_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.868186323,
+      "jaccard": 0.00974026,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_pt",
+      "right": "2025-07-24_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.514866204,
+      "jaccard": 0.301041667,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_pt",
+      "right": "2025-09-11_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.936075322,
+      "jaccard": 0.008438819,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_pt",
+      "right": "2025-09-11_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.863726462,
+      "jaccard": 0.009202454,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_pt",
+      "right": "2025-09-11_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.494053518,
+      "jaccard": 0.310689311,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_pt",
+      "right": "2025-10-30_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.938057483,
+      "jaccard": 0.008826125,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_pt",
+      "right": "2025-10-30_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.868681863,
+      "jaccard": 0.009724473,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_pt",
+      "right": "2025-10-30_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.512388503,
+      "jaccard": 0.311578947,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_pt",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.935084242,
+      "jaccard": 0.008389262,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_pt",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.863726462,
+      "jaccard": 0.009125475,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-03-06_pt",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.482160555,
+      "jaccard": 0.30417495,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_en",
+      "right": "2025-04-17_es",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.893437297,
+      "jaccard": 0.009433962,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-04-17_en",
+      "right": "2025-04-17_pt",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.90470297,
+      "jaccard": 0.009433962,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-04-17_en",
+      "right": "2025-06-05_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.437108708,
+      "jaccard": 0.403402187,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_en",
+      "right": "2025-06-05_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.930210325,
+      "jaccard": 0.007501875,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_en",
+      "right": "2025-06-05_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.937471051,
+      "jaccard": 0.007518797,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_en",
+      "right": "2025-07-24_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.427010148,
+      "jaccard": 0.362582781,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_en",
+      "right": "2025-07-24_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.890710383,
+      "jaccard": 0.0110011,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_en",
+      "right": "2025-07-24_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.89530408,
+      "jaccard": 0.010940919,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_en",
+      "right": "2025-09-11_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.430913349,
+      "jaccard": 0.33640553,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_en",
+      "right": "2025-09-11_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.891472868,
+      "jaccard": 0.01019368,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_en",
+      "right": "2025-09-11_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.914723032,
+      "jaccard": 0.010235415,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_en",
+      "right": "2025-10-30_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.428571429,
+      "jaccard": 0.365609349,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_en",
+      "right": "2025-10-30_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.885245902,
+      "jaccard": 0.010976948,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_en",
+      "right": "2025-10-30_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.900928793,
+      "jaccard": 0.010976948,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_en",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.430132709,
+      "jaccard": 0.332826748,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_en",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.894252874,
+      "jaccard": 0.010080645,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_en",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.912382332,
+      "jaccard": 0.010235415,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_es",
+      "right": "2025-04-17_pt",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.785272277,
+      "jaccard": 0.010989011,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-04-17_es",
+      "right": "2025-06-05_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.914627205,
+      "jaccard": 0.007867821,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_es",
+      "right": "2025-06-05_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.43499044,
+      "jaccard": 0.388468809,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_es",
+      "right": "2025-06-05_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.856878184,
+      "jaccard": 0.008253095,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_es",
+      "right": "2025-07-24_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.903833658,
+      "jaccard": 0.010649627,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_es",
+      "right": "2025-07-24_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.433398311,
+      "jaccard": 0.360677083,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_es",
+      "right": "2025-07-24_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.817413905,
+      "jaccard": 0.011560694,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_es",
+      "right": "2025-09-11_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.908382066,
+      "jaccard": 0.010141988,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_es",
+      "right": "2025-09-11_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.434697856,
+      "jaccard": 0.331346841,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_es",
+      "right": "2025-09-11_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.834307992,
+      "jaccard": 0.010899183,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_es",
+      "right": "2025-10-30_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.907082521,
+      "jaccard": 0.010706638,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_es",
+      "right": "2025-10-30_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.434697856,
+      "jaccard": 0.35974026,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_es",
+      "right": "2025-10-30_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.822612086,
+      "jaccard": 0.011594203,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_es",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.909681611,
+      "jaccard": 0.010070493,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_es",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.421702404,
+      "jaccard": 0.327058824,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_es",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.829109812,
+      "jaccard": 0.010899183,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_pt",
+      "right": "2025-06-05_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.915196357,
+      "jaccard": 0.007867821,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_pt",
+      "right": "2025-06-05_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.842734226,
+      "jaccard": 0.008236102,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_pt",
+      "right": "2025-06-05_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.419175544,
+      "jaccard": 0.416425121,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_pt",
+      "right": "2025-07-24_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.916460396,
+      "jaccard": 0.010649627,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_pt",
+      "right": "2025-07-24_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.837252475,
+      "jaccard": 0.011616651,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_pt",
+      "right": "2025-07-24_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.398514851,
+      "jaccard": 0.377952756,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_pt",
+      "right": "2025-09-11_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.91769802,
+      "jaccard": 0.010141988,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_pt",
+      "right": "2025-09-11_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.839727723,
+      "jaccard": 0.010859729,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_pt",
+      "right": "2025-09-11_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.406559406,
+      "jaccard": 0.363970588,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_pt",
+      "right": "2025-10-30_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.918316832,
+      "jaccard": 0.010706638,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_pt",
+      "right": "2025-10-30_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.83539604,
+      "jaccard": 0.011594203,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_pt",
+      "right": "2025-10-30_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.400371287,
+      "jaccard": 0.392287234,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_pt",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.918316832,
+      "jaccard": 0.010070493,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_pt",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.837252475,
+      "jaccard": 0.010752688,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-04-17_pt",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": true,
+      "ncd": 0.406559406,
+      "jaccard": 0.354014599,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_en",
+      "right": "2025-06-05_es",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.912523901,
+      "jaccard": 0.006476684,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-06-05_en",
+      "right": "2025-06-05_pt",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.921259843,
+      "jaccard": 0.006489293,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-06-05_en",
+      "right": "2025-07-24_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.573136027,
+      "jaccard": 0.265605875,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_en",
+      "right": "2025-07-24_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.915196357,
+      "jaccard": 0.008928571,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_en",
+      "right": "2025-07-24_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.918611269,
+      "jaccard": 0.008888889,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_en",
+      "right": "2025-09-11_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.550369949,
+      "jaccard": 0.256976744,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_en",
+      "right": "2025-09-11_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.913488902,
+      "jaccard": 0.008389262,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_en",
+      "right": "2025-09-11_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.927148549,
+      "jaccard": 0.008417508,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_en",
+      "right": "2025-10-30_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.574843483,
+      "jaccard": 0.267241379,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_en",
+      "right": "2025-10-30_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.915196357,
+      "jaccard": 0.008912656,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_en",
+      "right": "2025-10-30_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.923164485,
+      "jaccard": 0.008912656,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_en",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.555492316,
+      "jaccard": 0.252013809,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_en",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.919749573,
+      "jaccard": 0.008312552,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_en",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.926010245,
+      "jaccard": 0.008417508,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_es",
+      "right": "2025-06-05_pt",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.805928671,
+      "jaccard": 0.006948466,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-06-05_es",
+      "right": "2025-07-24_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.926386233,
+      "jaccard": 0.008250825,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_es",
+      "right": "2025-07-24_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.568833652,
+      "jaccard": 0.269749518,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_es",
+      "right": "2025-07-24_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.862332696,
+      "jaccard": 0.009153318,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_es",
+      "right": "2025-09-11_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.927342256,
+      "jaccard": 0.007942812,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_es",
+      "right": "2025-09-11_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.534894837,
+      "jaccard": 0.284658041,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_es",
+      "right": "2025-09-11_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.862332696,
+      "jaccard": 0.008733624,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_es",
+      "right": "2025-10-30_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.930210325,
+      "jaccard": 0.008285004,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_es",
+      "right": "2025-10-30_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.57456979,
+      "jaccard": 0.266794626,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_es",
+      "right": "2025-10-30_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.858986616,
+      "jaccard": 0.009174312,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_es",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.929254302,
+      "jaccard": 0.007898894,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_es",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.533938815,
+      "jaccard": 0.271324864,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_es",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.858030593,
+      "jaccard": 0.008733624,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_pt",
+      "right": "2025-07-24_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.935155164,
+      "jaccard": 0.008271299,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_pt",
+      "right": "2025-07-24_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.875868458,
+      "jaccard": 0.009209517,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_pt",
+      "right": "2025-07-24_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.544696619,
+      "jaccard": 0.276595745,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_pt",
+      "right": "2025-09-11_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.938397406,
+      "jaccard": 0.007961783,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_pt",
+      "right": "2025-09-11_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.867531264,
+      "jaccard": 0.008727273,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_pt",
+      "right": "2025-09-11_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.527095878,
+      "jaccard": 0.282931354,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_pt",
+      "right": "2025-10-30_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.939323761,
+      "jaccard": 0.008305648,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_pt",
+      "right": "2025-10-30_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.871699861,
+      "jaccard": 0.009195402,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_pt",
+      "right": "2025-10-30_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.545159796,
+      "jaccard": 0.286132812,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_pt",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.939323761,
+      "jaccard": 0.007917656,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_pt",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.870310329,
+      "jaccard": 0.008658009,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-06-05_pt",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.520611394,
+      "jaccard": 0.279370953,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_en",
+      "right": "2025-07-24_es",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.875822368,
+      "jaccard": 0.012690355,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-07-24_en",
+      "right": "2025-07-24_pt",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.889145497,
+      "jaccard": 0.01261034,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-07-24_en",
+      "right": "2025-09-11_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.234269119,
+      "jaccard": 0.586864407,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_en",
+      "right": "2025-09-11_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.887596899,
+      "jaccard": 0.011627907,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_en",
+      "right": "2025-09-11_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.911078717,
+      "jaccard": 0.011682243,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_en",
+      "right": "2025-10-30_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.171342685,
+      "jaccard": 0.663484487,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_en",
+      "right": "2025-10-30_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.879211175,
+      "jaccard": 0.012658228,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_en",
+      "right": "2025-10-30_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.900154799,
+      "jaccard": 0.012658228,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_en",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.254476909,
+      "jaccard": 0.561983471,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_en",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.890421456,
+      "jaccard": 0.011481056,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_en",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.907313541,
+      "jaccard": 0.011682243,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_es",
+      "right": "2025-07-24_pt",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.772902232,
+      "jaccard": 0.013528749,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-07-24_es",
+      "right": "2025-09-11_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.884868421,
+      "jaccard": 0.011976048,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_es",
+      "right": "2025-09-11_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.248837209,
+      "jaccard": 0.599337748,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_es",
+      "right": "2025-09-11_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.817784257,
+      "jaccard": 0.012631579,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_es",
+      "right": "2025-10-30_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.878289474,
+      "jaccard": 0.012771392,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_es",
+      "right": "2025-10-30_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.197206245,
+      "jaccard": 0.653136531,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_es",
+      "right": "2025-10-30_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.781733746,
+      "jaccard": 0.013574661,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_es",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.883223684,
+      "jaccard": 0.011876485,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_es",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.264367816,
+      "jaccard": 0.565705128,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_es",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.816075308,
+      "jaccard": 0.012631579,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_pt",
+      "right": "2025-09-11_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.897613549,
+      "jaccard": 0.011904762,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_pt",
+      "right": "2025-09-11_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.792917629,
+      "jaccard": 0.012513034,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_pt",
+      "right": "2025-09-11_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.249271137,
+      "jaccard": 0.562197092,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_pt",
+      "right": "2025-10-30_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.892994611,
+      "jaccard": 0.012690355,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_pt",
+      "right": "2025-10-30_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.783679754,
+      "jaccard": 0.013498313,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_pt",
+      "right": "2025-10-30_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.179368745,
+      "jaccard": 0.644160584,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_pt",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.897613549,
+      "jaccard": 0.011806375,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_pt",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.796168582,
+      "jaccard": 0.012371134,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-07-24_pt",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.265025344,
+      "jaccard": 0.5472,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-09-11_en",
+      "right": "2025-09-11_es",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.87751938,
+      "jaccard": 0.011025358,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-09-11_en",
+      "right": "2025-09-11_pt",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.905976676,
+      "jaccard": 0.011074197,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-09-11_en",
+      "right": "2025-10-30_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.22071636,
+      "jaccard": 0.628008753,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-09-11_en",
+      "right": "2025-10-30_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.883319638,
+      "jaccard": 0.011947431,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-09-11_en",
+      "right": "2025-10-30_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.903250774,
+      "jaccard": 0.011947431,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-09-11_en",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.210179076,
+      "jaccard": 0.544230769,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-09-11_en",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.892720307,
+      "jaccard": 0.010893246,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-09-11_en",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.907313541,
+      "jaccard": 0.011074197,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-09-11_es",
+      "right": "2025-09-11_pt",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.798833819,
+      "jaccard": 0.011741683,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-09-11_es",
+      "right": "2025-10-30_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.889922481,
+      "jaccard": 0.011695906,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-09-11_es",
+      "right": "2025-10-30_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.262015504,
+      "jaccard": 0.579119086,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-09-11_es",
+      "right": "2025-10-30_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.792569659,
+      "jaccard": 0.012552301,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-09-11_es",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.885271318,
+      "jaccard": 0.010940919,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-09-11_es",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.214559387,
+      "jaccard": 0.568011958,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-09-11_es",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.805213613,
+      "jaccard": 0.011741683,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-09-11_pt",
+      "right": "2025-10-30_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.913265306,
+      "jaccard": 0.011750881,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-09-11_pt",
+      "right": "2025-10-30_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.816326531,
+      "jaccard": 0.012605042,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-09-11_pt",
+      "right": "2025-10-30_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.234693878,
+      "jaccard": 0.617449664,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-09-11_pt",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.906705539,
+      "jaccard": 0.010989011,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-09-11_pt",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.808309038,
+      "jaccard": 0.011616651,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-09-11_pt",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.203475742,
+      "jaccard": 0.555891239,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-10-30_en",
+      "right": "2025-10-30_es",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.86852917,
+      "jaccard": 0.012738854,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-10-30_en",
+      "right": "2025-10-30_pt",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.895510836,
+      "jaccard": 0.012738854,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-10-30_en",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.267672008,
+      "jaccard": 0.567849687,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-10-30_en",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.889655172,
+      "jaccard": 0.011547344,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-10-30_en",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.913106445,
+      "jaccard": 0.011750881,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-10-30_es",
+      "right": "2025-10-30_pt",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.761609907,
+      "jaccard": 0.013544018,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-10-30_es",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.884963024,
+      "jaccard": 0.011848341,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-10-30_es",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.269731801,
+      "jaccard": 0.558917197,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-10-30_es",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.814627082,
+      "jaccard": 0.012605042,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-10-30_pt",
+      "right": "2025-12-18_en",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.901702786,
+      "jaccard": 0.011848341,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-10-30_pt",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.795402299,
+      "jaccard": 0.012409514,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-10-30_pt",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": false,
+      "different_rate": false,
+      "ncd": 0.259956553,
+      "jaccard": 0.577741408,
+      "status": "distinct"
+    },
+    {
+      "left": "2025-12-18_en",
+      "right": "2025-12-18_es",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.885823755,
+      "jaccard": 0.010810811,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-12-18_en",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.902968863,
+      "jaccard": 0.010989011,
+      "status": "same_release"
+    },
+    {
+      "left": "2025-12-18_es",
+      "right": "2025-12-18_pt",
+      "year": 2025,
+      "same": true,
+      "different_rate": false,
+      "ncd": 0.790731354,
+      "jaccard": 0.011616651,
+      "status": "same_release"
+    }
+  ],
+  "resolution": [
+    {
+      "meeting": "2024-01-25",
+      "target": "2024-01-26",
+      "effective_in_release": "2024-01-25",
+      "old": "4.00",
+      "announced": "4.00",
+      "gold": "4.00",
+      "rule": "4.00",
+      "cut": false
+    },
+    {
+      "meeting": "2024-03-07",
+      "target": "2024-03-08",
+      "effective_in_release": "2024-03-07",
+      "old": "4.00",
+      "announced": "4.00",
+      "gold": "4.00",
+      "rule": "4.00",
+      "cut": false
+    },
+    {
+      "meeting": "2024-04-11",
+      "target": "2024-04-12",
+      "effective_in_release": "2024-04-11",
+      "old": "4.00",
+      "announced": "4.00",
+      "gold": "4.00",
+      "rule": "4.00",
+      "cut": false
+    },
+    {
+      "meeting": "2024-06-06",
+      "target": "2024-06-07",
+      "effective_in_release": "2024-06-12",
+      "old": "4.00",
+      "announced": "3.75",
+      "gold": "4.00",
+      "rule": "4.00",
+      "cut": true
+    },
+    {
+      "meeting": "2024-07-18",
+      "target": "2024-07-19",
+      "effective_in_release": "2024-07-18",
+      "old": "3.75",
+      "announced": "3.75",
+      "gold": "3.75",
+      "rule": "3.75",
+      "cut": false
+    },
+    {
+      "meeting": "2024-09-12",
+      "target": "2024-09-13",
+      "effective_in_release": "2024-09-18",
+      "old": "3.75",
+      "announced": "3.50",
+      "gold": "3.75",
+      "rule": "3.75",
+      "cut": true
+    },
+    {
+      "meeting": "2024-10-17",
+      "target": "2024-10-18",
+      "effective_in_release": "2024-10-23",
+      "old": "3.50",
+      "announced": "3.25",
+      "gold": "3.50",
+      "rule": "3.50",
+      "cut": true
+    },
+    {
+      "meeting": "2024-12-12",
+      "target": "2024-12-13",
+      "effective_in_release": "2024-12-18",
+      "old": "3.25",
+      "announced": "3.00",
+      "gold": "3.25",
+      "rule": "3.25",
+      "cut": true
+    },
+    {
+      "meeting": "2025-01-30",
+      "target": "2025-01-31",
+      "effective_in_release": "2025-02-05",
+      "old": "3.00",
+      "announced": "2.75",
+      "gold": "3.00",
+      "rule": "3.00",
+      "cut": true
+    },
+    {
+      "meeting": "2025-03-06",
+      "target": "2025-03-07",
+      "effective_in_release": "2025-03-12",
+      "old": "2.75",
+      "announced": "2.50",
+      "gold": "2.75",
+      "rule": "2.75",
+      "cut": true
+    },
+    {
+      "meeting": "2025-04-17",
+      "target": "2025-04-18",
+      "effective_in_release": "2025-04-23",
+      "old": "2.50",
+      "announced": "2.25",
+      "gold": "2.50",
+      "rule": "2.50",
+      "cut": true
+    },
+    {
+      "meeting": "2025-06-05",
+      "target": "2025-06-06",
+      "effective_in_release": "2025-06-11",
+      "old": "2.25",
+      "announced": "2.00",
+      "gold": "2.25",
+      "rule": "2.25",
+      "cut": true
+    },
+    {
+      "meeting": "2025-07-24",
+      "target": "2025-07-25",
+      "effective_in_release": "2025-07-24",
+      "old": "2.00",
+      "announced": "2.00",
+      "gold": "2.00",
+      "rule": "2.00",
+      "cut": false
+    },
+    {
+      "meeting": "2025-09-11",
+      "target": "2025-09-12",
+      "effective_in_release": "2025-09-11",
+      "old": "2.00",
+      "announced": "2.00",
+      "gold": "2.00",
+      "rule": "2.00",
+      "cut": false
+    },
+    {
+      "meeting": "2025-10-30",
+      "target": "2025-10-31",
+      "effective_in_release": "2025-10-30",
+      "old": "2.00",
+      "announced": "2.00",
+      "gold": "2.00",
+      "rule": "2.00",
+      "cut": false
+    },
+    {
+      "meeting": "2025-12-18",
+      "target": "2025-12-19",
+      "effective_in_release": "2025-12-18",
+      "old": "2.00",
+      "announced": "2.00",
+      "gold": "2.00",
+      "rule": "2.00",
+      "cut": false
+    }
+  ],
+  "gold_schedule": [
+    [
+      "2023-02-08",
+      "2.50"
+    ],
+    [
+      "2023-03-22",
+      "3.00"
+    ],
+    [
+      "2023-05-10",
+      "3.25"
+    ],
+    [
+      "2023-06-21",
+      "3.50"
+    ],
+    [
+      "2023-08-02",
+      "3.75"
+    ],
+    [
+      "2023-09-20",
+      "4.00"
+    ],
+    [
+      "2024-06-12",
+      "3.75"
+    ],
+    [
+      "2024-09-18",
+      "3.50"
+    ],
+    [
+      "2024-10-23",
+      "3.25"
+    ],
+    [
+      "2024-12-18",
+      "3.00"
+    ],
+    [
+      "2025-02-05",
+      "2.75"
+    ],
+    [
+      "2025-03-12",
+      "2.50"
+    ],
+    [
+      "2025-04-23",
+      "2.25"
+    ],
+    [
+      "2025-06-11",
+      "2.00"
+    ]
+  ],
+  "adversarial_controls": {
+    "one_digit_mutation_ncd": 0.037433155,
+    "same_id_different_rate": "conflict",
+    "impostor_domain": "unknown"
+  }
+}

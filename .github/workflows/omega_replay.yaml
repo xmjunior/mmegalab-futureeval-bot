@@ -1,0 +1,35 @@
+name: Reproduce OMEGA research
+on:
+  push:
+    branches: [research/omega-infinity]
+    paths:
+      - research/omega/**
+      - .github/workflows/omega_replay.yaml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: omega-science-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        block: [binary, continuous, evidence, economics, forecastbench_export]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install the fixed numeric runtime
+        if: matrix.block == 'binary' || matrix.block == 'continuous'
+        run: python -m pip install --disable-pip-version-check numpy==2.3.5
+      - name: Recompute sealed results and run regression tests
+        env:
+          BLOCK: ${{ matrix.block }}
+        run: python research/omega/replay.py "$BLOCK"
