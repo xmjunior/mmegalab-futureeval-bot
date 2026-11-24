@@ -793,14 +793,14 @@ if __name__ == "__main__":
     parser.add_argument(
         "--mode",
         type=str,
-        choices=["seasonal-check", "seasonal", "tournament", "metaculus_cup", "test_questions"],
+        choices=["seasonal-check", "seasonal", "minibench", "tournament", "metaculus_cup", "test_questions"],
         default="tournament",
         help="What to forecast on (default: tournament)",
     )
     parser.add_argument("--test-size", type=int, choices=range(1, 11), default=1,
                         help="Number of testing-area questions for a dry run")
     args = parser.parse_args()
-    run_mode: Literal["seasonal-check", "seasonal", "tournament", "metaculus_cup", "test_questions"] = args.mode
+    run_mode: Literal["seasonal-check", "seasonal", "minibench", "tournament", "metaculus_cup", "test_questions"] = args.mode
 
     client = MetaculusClient()
     if client.get_current_user_id() <= 0:
@@ -842,6 +842,7 @@ if __name__ == "__main__":
     # whenever those rotate seasons.
     TOURNAMENT_URLS = {
         "seasonal": "https://www.metaculus.com/tournament/fall-futureeval-2026/",
+        "minibench": "https://www.metaculus.com/futureeval/minibench/",
         "tournament": "https://www.metaculus.com/tournament/fall-futureeval-2026/",
         "metaculus_cup": "https://www.metaculus.com/tournament/metaculus-cup-fall-2026/",
         "test_questions": "https://www.metaculus.com/tournament/bot-testing-area/",
@@ -850,18 +851,29 @@ if __name__ == "__main__":
     # Dispatch on mode. Each branch produces a list of ForecastReport (or
     # exceptions, since return_exceptions=True) which then flows into the
     # summary printers below.
-    if run_mode in {"seasonal", "tournament"}:
+    if run_mode == "seasonal":
         forecast_reports = asyncio.run(
             template_bot.forecast_on_tournament(
                 client.CURRENT_AI_COMPETITION_ID, return_exceptions=True
             )
         )
-        if run_mode == "tournament":
-            forecast_reports.extend(asyncio.run(
-                template_bot.forecast_on_tournament(
-                    client.CURRENT_MINIBENCH_ID, return_exceptions=True
-                )
-            ))
+    elif run_mode == "minibench":
+        forecast_reports = asyncio.run(
+            template_bot.forecast_on_tournament(
+                client.CURRENT_MINIBENCH_ID, return_exceptions=True
+            )
+        )
+    elif run_mode == "tournament":
+        forecast_reports = asyncio.run(
+            template_bot.forecast_on_tournament(
+                client.CURRENT_AI_COMPETITION_ID, return_exceptions=True
+            )
+        )
+        forecast_reports.extend(asyncio.run(
+            template_bot.forecast_on_tournament(
+                client.CURRENT_MINIBENCH_ID, return_exceptions=True
+            )
+        ))
     elif run_mode == "metaculus_cup":
         # The Metaculus Cup may be uninitialized near the start of a season
         # (Jan/May/Sep). MetaculusClient.ACX_2025_TOURNAMENT = 32564 and
