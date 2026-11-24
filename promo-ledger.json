@@ -4,11 +4,15 @@
       "lease_nonce": "d88a3e13e5a34790b31a7043835e2e3f",
       "max_micro_usd": 0,
       "records": {},
+      "request": {
+        "request_ambiguous": true,
+        "status": "network_or_timeout"
+      },
       "requests": {
         "single_panel_request": 0
       },
       "started_at": "2026-11-24T19:45:52.911831+00:00",
-      "status": "reserved"
+      "status": "stopped_no_retry"
     }
   },
   "panel_hash": "173e2c3ade7fa75d0ee51014e22c25fc33959a48a8610905b0690ca4e4791471",
