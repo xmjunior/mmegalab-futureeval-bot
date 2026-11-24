@@ -151,7 +151,10 @@ def run(provider, search=False):
             return
         code, res = request("api.openai.com", "/v1/models", key)
         ok = code == 200 and isinstance(res.get("data"), list)
-        emit("openai", configured=True, http=code, authenticated=ok, inference_requests=0)
+        candidates = {"gpt-5.6-sol", "gpt-5.6", "gpt-5.5", "gpt-5.4", "gpt-5.4-mini", "gpt-5-mini"}
+        available = {m["id"] for m in res.get("data", []) if isinstance(m, dict) and "id" in m}
+        emit("openai", configured=True, http=code, authenticated=ok, inference_requests=0,
+             visible_candidates=sorted(available & candidates))
         if not ok:
             raise ValueError("openai_model_list_unavailable")
     else:

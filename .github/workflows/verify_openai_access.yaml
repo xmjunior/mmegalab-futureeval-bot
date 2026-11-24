@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   credentials:
-    if: github.repository == 'xmjunior/mmegalab-futureeval-bot' && !contains(github.event.head_commit.message, '[tavily-only]')
+    if: github.repository == 'xmjunior/mmegalab-futureeval-bot' && !contains(github.event.head_commit.message, '[tavily-only]') && !contains(github.event.head_commit.message, '[count-only]')
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
@@ -22,12 +22,12 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || secrets.MEGALAB_OPENAI_API_KEY || secrets.OPENAI_PROJECT_API_KEY || secrets.OPENAI_API_KEY_MEGALAB }}
         run: python research/resource_access.py openai
       - name: AskNews rate limits without using tokens
-        if: "!cancelled()"
+        if: "!cancelled() && !contains(github.event.head_commit.message, '[openai-only]')"
         env:
           ASKNEWS_API_KEY: ${{ secrets.ASKNEWS_API_KEY }}
         run: python research/resource_access.py asknews
   tavily:
-    if: github.repository == 'xmjunior/mmegalab-futureeval-bot'
+    if: github.repository == 'xmjunior/mmegalab-futureeval-bot' && !contains(github.event.head_commit.message, '[openai-only]') && !contains(github.event.head_commit.message, '[count-only]')
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -42,3 +42,16 @@ jobs:
           TAVILY_SOURCE: ${{ secrets.TAVILY_API_KEY != '' && 'TAVILY_API_KEY' || 'MEGALAB' }}
           GH_TOKEN: ${{ github.token }}
         run: python research/resource_access.py tavily --search
+  count-panel:
+    if: github.repository == 'xmjunior/mmegalab-futureeval-bot' && contains(github.event.head_commit.message, '[count-only]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: d432162a27dbcb559145d39fd2f14b56b616e3f5
+          persist-credentials: false
+      - name: Measure the frozen panel using only the free input-token endpoint
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python research/promo/runner.py count
