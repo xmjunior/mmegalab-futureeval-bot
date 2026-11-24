@@ -10,7 +10,7 @@ jobs:
     timeout-minutes: 2
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with: {ref: 0651ae3fa563dac451e334df21097c37bc3096c5, persist-credentials: false}
+        with: {ref: 9e3cecf3189ffcc70e3b3f9b6db1137b4a09ac6f, persist-credentials: false}
       - name: Read billing-tier evidence without inference or creating a batch
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
