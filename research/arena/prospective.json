@@ -1,0 +1,78 @@
+{
+  "payload": {
+    "audit_ledger_commit": "ad6ccf32b1ec86e5f6a5d95489bd0491b0fe948c",
+    "audit_ledger_sha256": "68f01dcbcbff9a6d75ecf8d30d2a9ce901ac3a8363692489dccecb7a98e08fad",
+    "fit": {
+      "a": -0.019995397441587282,
+      "b": 0.32089811731712353,
+      "last_training_origin": "2026-10-01",
+      "training_cases": 184
+    },
+    "history_sha256": "b6cbfed526814ce7a49978cddd040dc9f0a99fae3ab654c7b9e2f01edcc97736",
+    "issued_at_utc": "2026-11-24T23:02:00.643081+00:00",
+    "model_members": [
+      "codex-work-session",
+      "gemini-web-4-neon",
+      "openai"
+    ],
+    "panel_sha256": "173e2c3ade7fa75d0ee51014e22c25fc33959a48a8610905b0690ca4e4791471",
+    "probabilities": {
+      "C": {
+        "ust-promo-v1-20261202-2y": 0.5142857142857142,
+        "ust-promo-v1-20261202-spread": 0.3142857142857143,
+        "ust-promo-v1-20261209-2y": 0.5,
+        "ust-promo-v1-20261209-spread": 0.36363636363636365
+      },
+      "calibrated_reference": {
+        "ust-promo-v1-20261202-2y": 0.48458886137722873,
+        "ust-promo-v1-20261202-spread": 0.420409237913804,
+        "ust-promo-v1-20261209-2y": 0.4800046025584127,
+        "ust-promo-v1-20261209-spread": 0.43624576837880497
+      },
+      "codex-work-session": {
+        "ust-promo-v1-20261202-2y": 0.49,
+        "ust-promo-v1-20261202-spread": 0.34,
+        "ust-promo-v1-20261209-2y": 0.49,
+        "ust-promo-v1-20261209-spread": 0.38
+      },
+      "coin": {
+        "ust-promo-v1-20261202-2y": 0.5,
+        "ust-promo-v1-20261202-spread": 0.5,
+        "ust-promo-v1-20261209-2y": 0.5,
+        "ust-promo-v1-20261209-spread": 0.5
+      },
+      "gemini-web-4-neon": {
+        "ust-promo-v1-20261202-2y": 0.5,
+        "ust-promo-v1-20261202-spread": 0.33,
+        "ust-promo-v1-20261209-2y": 0.49,
+        "ust-promo-v1-20261209-spread": 0.38
+      },
+      "model_mean": {
+        "ust-promo-v1-20261202-2y": 0.5014286666666666,
+        "ust-promo-v1-20261202-spread": 0.32809533333333335,
+        "ust-promo-v1-20261209-2y": 0.49333333333333335,
+        "ust-promo-v1-20261209-spread": 0.37454533333333334
+      },
+      "model_reference_mean": {
+        "ust-promo-v1-20261202-2y": 0.5078571904761904,
+        "ust-promo-v1-20261202-spread": 0.32119052380952384,
+        "ust-promo-v1-20261209-2y": 0.4966666666666667,
+        "ust-promo-v1-20261209-spread": 0.3690908484848485
+      },
+      "openai": {
+        "ust-promo-v1-20261202-2y": 0.514286,
+        "ust-promo-v1-20261202-spread": 0.314286,
+        "ust-promo-v1-20261209-2y": 0.5,
+        "ust-promo-v1-20261209-spread": 0.363636
+      }
+    },
+    "schema": "megalab-arena-v1",
+    "source_forecast_sha256": {
+      "C": "6aed58bc380b3b3f5e2dd5acf1a01c9ae323515c2b3d8e2901748da4dcaec65f",
+      "codex-work-session": "01a8a40e2e63894c6abe3683b9dea09862d71d0a7a7df4ce920d309543090479",
+      "gemini-web-4-neon": "24a1a16e3b803e1c2244a2e08e603b59fde4ab6828d486b3b4753eb7d430910d",
+      "openai": "43917ef38355af73d1c18b63f72544a1e55e0ea339f6f9b73ba2255183ee3949"
+    }
+  },
+  "sha256": "32c886ed36e4e1f3c9c9860fcb7fc5db5df805bda9dca4f17b17fb74c43d1fde"
+}

@@ -1,0 +1,41 @@
+name: Replay independent MEGALAB ARENA
+on:
+  push:
+    branches: [research/champion-v2]
+    paths:
+      - research/arena/**
+      - .github/workflows/arena_replay.yaml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: arena-replay-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: research/champion-observations
+          path: observations
+          persist-credentials: false
+      - name: Test score, chronology and sealed submissions
+        run: |
+          python3 -m unittest discover -s research/arena -p 'test_*.py' -v
+          python3 -m unittest discover -s research/promo -p 'test_*.py' -v
+      - name: Reproduce the dated holdout and score the sealed cases
+        run: |
+          mkdir results
+          python3 research/arena/arena.py backtest > results/historical.json
+          cmp research/arena/historical.json results/historical.json
+          python3 research/arena/arena.py score observations/records/promo-score.json > results/prospective-status.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: arena-replay-${{ github.run_id }}-${{ github.run_attempt }}
+          path: results/
+          if-no-files-found: error
