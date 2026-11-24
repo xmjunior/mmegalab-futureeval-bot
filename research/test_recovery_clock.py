@@ -251,6 +251,98 @@ class Recovery(unittest.TestCase):
             }
             self.assertEqual(d.evaluation_attempted(c.control_slot(NOW)), valid)
 
+    def test_callback_requires_an_original_run_and_fresh_trusted_main(self):
+        original = list(c.ORIGINALS)[0]
+        ev = {
+            "action": "completed",
+            "repository": {"full_name": c.REPO},
+            "workflow_run": dict(
+                run(c.ORIGINALS[original], 5, 81),
+                name=original,
+                head_repository={"full_name": c.REPO},
+                head_sha="a" * 40,
+                conclusion="success",
+                updated_at=NOW.isoformat(),
+            ),
+        }
+        self.assertTrue(c.trusted_completion(ev, NOW))
+        bad = [
+            {"head_branch": "verify/check"},
+            {"head_repository": {"full_name": "other/repo"}},
+            {"event": "pull_request"},
+            {"event": "workflow_run"},
+            {"status": "queued"},
+            {"conclusion": "skipped"},
+            {"path": ".github/workflows/test_bot.yaml"},
+            {"name": "Champion control"},
+            {"updated_at": (NOW - timedelta(hours=2, seconds=1)).isoformat()},
+        ]
+        for change in bad:
+            self.assertFalse(
+                c.trusted_completion(
+                    dict(ev, workflow_run=dict(ev["workflow_run"], **change)), NOW
+                )
+            )
+        self.assertFalse(
+            c.trusted_completion(dict(ev, repository={"full_name": "other/repo"}), NOW)
+        )
+
+    def test_seed_honors_existing_lease_terminal_backoff_and_dry_mode(self):
+        e = Mock()
+        e.environment.return_value = ENV
+        e.runs.return_value = []
+        e.recent_clock_runs.return_value = []
+        e.older_active_clock.return_value = False
+        self.assertIn("read only", c.seed(e, NOW, dry=True))
+        e.send.assert_not_called()
+        r = dict(
+            run(
+                c.CONTROL,
+                80,
+                1,
+                event="workflow_dispatch",
+                display_title="Champion recovery cycle 8 errors 2",
+            ),
+            updated_at=(NOW - timedelta(hours=20)).isoformat(),
+            conclusion="failure",
+        )
+        e.recent_clock_runs.return_value = [r]
+        self.assertIn("24-hour", c.seed(e, NOW))
+        e.send.assert_not_called()
+        e.recent_clock_runs.return_value = [
+            dict(
+                r, display_title="Champion recovery cycle 2 errors 0", status="waiting"
+            )
+        ]
+        self.assertIn("active", c.seed(e, NOW))
+        e.send.assert_not_called()
+        e.recent_clock_runs.return_value = [
+            dict(r, updated_at=(NOW - timedelta(hours=25)).isoformat())
+        ]
+        e.older_active_clock.return_value = True
+        self.assertIn("older", c.seed(e, NOW))
+        e.send.assert_not_called()
+        e.older_active_clock.return_value = False
+        self.assertIn("seeded", c.seed(e, NOW))
+        e.send.assert_called_once_with(
+            c.CONTROL,
+            {"mode": "recovery", "recovery_cycle": "0", "recovery_errors": "0"},
+        )
+        e.send.reset_mock()
+        self.assertIn("outside", c.seed(e, c.STOP))
+        e.send.assert_not_called()
+
+    def test_seed_environment_removed_between_reads_has_no_effect(self):
+        e = Mock()
+        e.environment.side_effect = [ENV, dict(ENV, protection_rules=[])]
+        e.runs.return_value = []
+        e.recent_clock_runs.return_value = []
+        e.older_active_clock.return_value = False
+        with self.assertRaisesRegex(ValueError, "50-minute"):
+            c.seed(e, NOW)
+        e.send.assert_not_called()
+        e.original_coverage.assert_not_called()
+
     def test_duration_of_second_wait_is_independent(self):
         e = Mock()
         e.environment.return_value = ENV

@@ -22,6 +22,13 @@ MAX_FAILURES = 3
 CONTROL = "champion_control.yaml"
 MARKET = "market_pulse.yaml"
 MAIN = {"ref": "main"}
+REPO = "xmjunior/mmegalab-futureeval-bot"
+ORIGINALS = {
+    "Forecast on new AI tournament questions": "run_bot_on_tournament.yaml",
+    "Forecast on MiniBench": "run_bot_on_minibench.yaml",
+    "Market Pulse 26Q4 spot updates": MARKET,
+}
+ACTIVE = ("waiting", "pending", "in_progress", "queued", "requested")
 
 
 def guard(condition, message):
@@ -184,6 +191,34 @@ class Dispatcher:
                 return True
         return False
 
+    def recent_clock_runs(self, now):
+        # Usually the first page includes the current chain or its recent seed.
+        params = {
+            "event": "workflow_dispatch",
+            "branch": "main",
+            "created": ">=" + (now - timedelta(hours=26)).isoformat(),
+            "per_page": 100,
+        }
+        rows = self.github("/actions/workflows/" + CONTROL + "/runs", **params)[
+            "workflow_runs"
+        ]
+        guard(len(rows) < 100, "ambiguous clock-run history")
+        return rows
+
+    def older_active_clock(self):
+        for status in ACTIVE:
+            rows = self.github(
+                "/actions/workflows/" + CONTROL + "/runs",
+                event="workflow_dispatch",
+                branch="main",
+                status=status,
+                per_page=100,
+            )["workflow_runs"]
+            guard(len(rows) < 100, "ambiguous active clock history")
+            if any(is_clock(r) and r["status"] != "completed" for r in rows):
+                return True
+        return False
+
     def original_coverage(self):
         # Preserve the normal identity, open-window, own-history and concurrency checks.
         subprocess.run(
@@ -282,6 +317,85 @@ def recover_market(engine, now):
     return "original Market Pulse dispatched"
 
 
+def is_clock(run):
+    title = run.get("display_title") or ""
+    return (
+        run.get("path") == ".github/workflows/" + CONTROL
+        and run.get("event") == "workflow_dispatch"
+        and run.get("head_branch") == "main"
+        and (
+            title == "Champion recovery"
+            or re.fullmatch(r"Champion recovery cycle [0-9]+ errors [0-9]+", title)
+            is not None
+        )
+    )
+
+
+def suppressed(engine, now):
+    for run in engine.recent_clock_runs(now):
+        if not is_clock(run):
+            continue
+        if run.get("status") != "completed":
+            return "an existing clock is active"
+        finished = utc(run["updated_at"])
+        if (
+            run.get("conclusion") in ("failure", "timed_out", "cancelled")
+            and (run.get("display_title") or "").endswith(" errors 2")
+            and now - finished < timedelta(hours=24)
+        ):
+            return "24-hour cooldown after repeated clock failures"
+        if now - finished < timedelta(minutes=110):
+            return "a clock recently completed"
+    return "an older clock is still active" if engine.older_active_clock() else None
+
+
+def trusted_completion(event, now):
+    r = event.get("workflow_run") or {}
+    if not (
+        event.get("action") == "completed"
+        and (event.get("repository") or {}).get("full_name") == REPO
+        and (r.get("head_repository") or {}).get("full_name") == REPO
+        and r.get("head_branch") == "main"
+        and r.get("event") in ("schedule", "workflow_dispatch")
+        and r.get("status") == "completed"
+        and r.get("conclusion") in ("success", "failure", "timed_out")
+        and type(r.get("id")) is int
+        and r["id"] > 0
+        and re.fullmatch(r"[a-f0-9]{40}", r.get("head_sha") or "")
+    ):
+        return False
+    name = ORIGINALS.get(r.get("name"))
+    if not name or r.get("path") != ".github/workflows/" + name:
+        return False
+    age = now - utc(r["updated_at"])
+    return timedelta(minutes=-1) <= age <= timedelta(hours=2)
+
+
+def seed(engine, now, dry=False):
+    if now + timedelta(minutes=WAIT) >= STOP:
+        return "outside tournament window"
+    try:
+        ident = timer_id(engine.environment())
+    except HTTPError as e:
+        if e.code != 404:
+            raise
+        return "environment not configured; no dispatch"
+    except ValueError:
+        return "environment has no valid 50-minute rule; no dispatch"
+    if native_healthy(engine, now):
+        return "native schedules healthy"
+    reason = suppressed(engine, now)
+    if reason:
+        return reason
+    if dry:
+        return "eligible for one recovery dispatch (read only)"
+    guard(timer_id(engine.environment()) == ident, "environment changed before seeding")
+    engine.send(
+        CONTROL, {"mode": "recovery", "recovery_cycle": "0", "recovery_errors": "0"}
+    )
+    return "seeded one bounded recovery clock"
+
+
 def output(**values):
     with open(os.environ["GITHUB_OUTPUT"], "a") as f:
         for k, v in values.items():
@@ -333,14 +447,25 @@ def wake(engine, now, clock, cycle, errors, env_id, anchor):
 
 def main():
     arg = argparse.ArgumentParser(description=__doc__)
-    arg.add_argument("phase", choices=("preflight", "backoff", "wake"))
+    arg.add_argument("phase", choices=("preflight", "backoff", "wake", "seed"))
     phase = arg.parse_args().phase
     guard(
-        os.environ["GITHUB_REPOSITORY"] == "xmjunior/mmegalab-futureeval-bot"
+        os.environ["GITHUB_REPOSITORY"] == REPO
         and os.environ["GITHUB_REF"] == "refs/heads/main"
-        and os.environ["GITHUB_EVENT_NAME"] == "workflow_dispatch",
+        and os.environ["GITHUB_EVENT_NAME"]
+        == ("workflow_run" if phase == "seed" else "workflow_dispatch"),
         "unsupported trigger",
     )
+    if phase == "seed":
+        now = datetime.now(UTC)
+        payload = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text())
+        if os.environ["GITHUB_RUN_ATTEMPT"] != "1" or not trusted_completion(
+            payload, now
+        ):
+            print("untrusted, stale or repeated completion; no dispatch")
+            return
+        print(seed(Dispatcher(), now))
+        return
     mode = os.environ["RECOVERY_MODE"]
     guard(mode in ("recovery", "recovery_check"), "invalid mode")
     errs = int(os.environ["RECOVERY_ERRORS"])
@@ -356,6 +481,9 @@ def main():
             now, cycle, errs
         ):
             print("closed or re-run; no lease")
+            return
+        if mode == "recovery_check":
+            print(seed(engine, now, dry=True))
             return
         try:
             env_id = timer_id(engine.environment())
