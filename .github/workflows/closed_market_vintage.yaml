@@ -13,6 +13,9 @@ jobs:
         with: {ref: 8df3c813c80cc5931a00816cf6835dac5c91b7c7, persist-credentials: false}
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with: {ref: 5ba764b6bafa61fcaef03022a4ff36835401d4ac, path: frozen-market, persist-credentials: false}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
       - name: Install numerical library from PyPI
         run: |
           python -m pip install --only-binary=:all: numpy==2.2.6 --disable-pip-version-check
