@@ -1,0 +1,32 @@
+name: Test the free Gemma route on the frozen Treasury panel
+on:
+  push:
+    branches: [verify/champion-promo-panel]
+permissions:
+  contents: read
+concurrency:
+  group: champion-promo-single-panel
+  cancel-in-progress: false
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check scientific and budget rules without using credentials
+        run: |
+          python -m unittest discover -s research/promo -p 'test_*.py'
+          python research/promo/runner.py dry
+      - name: Reserve the single free request and record its actual outcome
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          set -eu
+          outcome=$(python research/promo/runner.py gemma)
+          echo "$outcome"
+          RESULT="$outcome" python -c 'import json,os; assert json.loads(os.environ["RESULT"])["status"] == "completed", "No complete Gemma response"'
