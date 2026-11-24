@@ -53,6 +53,18 @@ class Trials(unittest.TestCase):
         self.assertEqual(live.summary(self.book)["scores"]["coin"]["brier"],.25)
         self.assertEqual(live.summary(self.book)["paired"],1)
 
+    def test_changed_arm_or_outcome_fails_before_scoring(self):
+        self.go()
+        self.day += timedelta(days=9)
+        self.go()
+        case = next(iter(self.book["cases"].values()))
+        old = case["models"]["blind"]["p"]
+        case["models"]["blind"]["p"] = .9
+        with self.assertRaisesRegex(ValueError, "invalid sealed arm"): live.summary(self.book)
+        case["models"]["blind"]["p"] = old
+        case["resolution"]["outcome"] ^= 1
+        with self.assertRaisesRegex(ValueError, "changed resolution"): live.summary(self.book)
+
     def test_no_backfill_or_rescore_after_last_window(self):
         self.day += timedelta(days=2)
         self.go()

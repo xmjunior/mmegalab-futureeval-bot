@@ -3,7 +3,6 @@ import argparse
 import hashlib
 import json
 import math
-import os
 import subprocess
 import sys
 from datetime import UTC, date, datetime, timedelta
@@ -76,11 +75,51 @@ def prompt(case, name):
     return text + 'Use only this evidence. Return one JSON object {"p": probability} with 0 < p < 1.'
 
 
+def seal_for(case, name, record):
+    fields = {k: v for k, v in record.items() if k != "sha256"}
+    return identify([case["design_sha256"], name, fields])
+
+
+def validate(key, case):
+    design = case["design"]
+    if identify(design) != case["design_sha256"] or key != design["issue_day"]:
+        raise ValueError("changed frozen evidence")
+    issued = datetime.fromisoformat(design["created_utc"])
+    if issued.tzinfo is None or issued.astimezone(UTC).date().isoformat() != key:
+        raise ValueError("invalid issue time")
+    for name, arm in case["models"].items():
+        if (name not in NAMES or arm["model"] != MODEL or arm["status"] not in {"leased","sealed","unavailable"}
+                or arm["prompt_sha256"] != sha(prompt(case, name).encode())):
+            raise ValueError("unexpected arm")
+        if arm["status"] == "sealed":
+            stamped = datetime.fromisoformat(arm["issued_utc"])
+            if (stamped.tzinfo is None or not issued <= stamped or stamped.astimezone(UTC).date().isoformat() != key
+                    or seal_for(case, name, arm) != arm["sha256"]
+                    or not 0 < arm["p"] < 1):
+                raise ValueError("invalid sealed arm")
+    resolution = case["resolution"]
+    if resolution is not None:
+        if seal_for(case, "resolution", resolution) != resolution["sha256"]:
+            raise ValueError("changed resolution")
+        target = date.fromisoformat(design["spec"]["target"])
+        recorded = datetime.fromisoformat(resolution["recorded_utc"]).astimezone(UTC).date()
+        if resolution["status"] == "resolved":
+            obs = date.fromisoformat(resolution["observed_date"])
+            threshold = settle.Decimal(design["spec"]["threshold"])
+            if (not target <= obs <= target + timedelta(days=6) or recorded < obs + timedelta(days=2)
+                    or settle.Decimal(resolution["threshold"]) != threshold
+                    or resolution["outcome"] != int(settle.Decimal(resolution["value"]) > threshold)):
+                raise ValueError("invalid resolution criteria")
+        elif resolution["status"] != "void" or recorded < target + timedelta(days=8):
+            raise ValueError("invalid void")
+
+
 def summary(book):
     paired = []
     counts = {k: 0 for k in NAMES}
     settled = 0
-    for case in book["cases"].values():
+    for key, case in book["cases"].items():
+        validate(key, case)
         res = case["resolution"]
         for name, arm in case["models"].items():
             counts[name] += int(arm["status"] == "sealed")
@@ -104,12 +143,12 @@ def summary(book):
 def advance(book, source, now, call, checkpoint):
     if book["schema"] != SCHEMA:
         raise ValueError("unexpected state")
-    for case in book["cases"].values():
-        if identify(case["design"]) != case["design_sha256"]:
-            raise ValueError("changed frozen evidence")
+    for key, case in book["cases"].items():
+        validate(key, case)
         if case["resolution"] is None:
             result = settle.resolution(case["design"]["spec"], source, now())
             if result is not None:
+                result["sha256"] = seal_for(case, "resolution", result)
                 case["resolution"] = result
                 checkpoint("Record the first eligible official Treasury resolution")
     stamp = now()
@@ -139,6 +178,8 @@ def advance(book, source, now, call, checkpoint):
                        response_sha256=sha(text.encode()))
         except (OSError, ValueError, RuntimeError, TypeError, KeyError) as exc:
             arm.update(status="unavailable", reason=type(exc).__name__)
+        if arm["status"] == "sealed":
+            arm["sha256"] = seal_for(case, name, arm)
         checkpoint("Seal the weekly " + name + " outcome without repeating requests")
 
 
