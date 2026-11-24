@@ -1,0 +1,247 @@
+{
+  "archive_sha256": "3b3b9630f2ccf4da401e703266a116cdc7de535eabb4cb44c9a10d1c01315b0f",
+  "archive_url": "https://www.forecastbench.org/assets/data/processed-forecast-sets/processed_forecast_sets.tar.gz",
+  "columns": [
+    "split",
+    "due",
+    "source",
+    "id",
+    "target",
+    "direction",
+    "haiku",
+    "mini",
+    "deepseek",
+    "y",
+    "dependence_family"
+  ],
+  "coverage": {
+    "2025-10-26": {
+      "eligible_first_issue": 383,
+      "native_deepseek": 383,
+      "native_haiku": 383,
+      "native_mini": 383,
+      "paired": 383,
+      "source_forecast_entries": 1220,
+      "unavailable_in_vintage": 837
+    },
+    "2025-11-09": {
+      "eligible_first_issue": 362,
+      "native_deepseek": 362,
+      "native_haiku": 362,
+      "native_mini": 362,
+      "paired": 362,
+      "source_forecast_entries": 1156,
+      "unavailable_in_vintage": 794
+    },
+    "2025-11-23": {
+      "eligible_first_issue": 378,
+      "native_deepseek": 378,
+      "native_haiku": 377,
+      "native_mini": 378,
+      "paired": 377,
+      "source_forecast_entries": 964,
+      "unavailable_in_vintage": 586
+    },
+    "2025-12-07": {
+      "eligible_first_issue": 189,
+      "native_deepseek": 189,
+      "native_haiku": 189,
+      "native_mini": 189,
+      "paired": 189,
+      "source_forecast_entries": 964,
+      "unavailable_in_vintage": 775
+    },
+    "2025-12-21": {
+      "source_forecast_entries": 973,
+      "unavailable_in_vintage": 973
+    },
+    "2026-01-04": {
+      "eligible_first_issue": 422,
+      "native_deepseek": 420,
+      "native_haiku": 420,
+      "native_mini": 422,
+      "paired": 418,
+      "source_forecast_entries": 951,
+      "unavailable_in_vintage": 529
+    },
+    "2026-01-18": {
+      "eligible_first_issue": 389,
+      "native_deepseek": 386,
+      "native_haiku": 385,
+      "native_mini": 389,
+      "paired": 383,
+      "source_forecast_entries": 968,
+      "unavailable_in_vintage": 579
+    },
+    "2026-02-01": {
+      "eligible_first_issue": 192,
+      "native_deepseek": 192,
+      "native_haiku": 192,
+      "native_mini": 192,
+      "paired": 192,
+      "source_forecast_entries": 966,
+      "unavailable_in_vintage": 774
+    },
+    "2026-02-15": {
+      "source_forecast_entries": 959,
+      "unavailable_in_vintage": 959
+    },
+    "2026-03-01": {
+      "eligible_first_issue": 962,
+      "native_deepseek": 956,
+      "native_haiku": 956,
+      "native_mini": 962,
+      "paired": 950,
+      "source_forecast_entries": 962
+    },
+    "2026-03-15": {
+      "eligible_first_issue": 967,
+      "native_deepseek": 958,
+      "native_haiku": 964,
+      "native_mini": 967,
+      "paired": 955,
+      "source_forecast_entries": 967
+    },
+    "2026-03-29": {
+      "eligible_first_issue": 981,
+      "native_deepseek": 978,
+      "native_haiku": 978,
+      "native_mini": 981,
+      "paired": 975,
+      "source_forecast_entries": 981
+    },
+    "2026-04-12": {
+      "eligible_first_issue": 926,
+      "native_deepseek": 917,
+      "native_haiku": 923,
+      "native_mini": 926,
+      "paired": 914,
+      "source_forecast_entries": 926
+    },
+    "2026-04-26": {
+      "eligible_first_issue": 968,
+      "native_deepseek": 962,
+      "native_haiku": 968,
+      "native_mini": 968,
+      "paired": 962,
+      "source_forecast_entries": 968
+    },
+    "2026-05-10": {
+      "eligible_first_issue": 982,
+      "native_deepseek": 967,
+      "native_haiku": 979,
+      "native_mini": 982,
+      "paired": 967,
+      "source_forecast_entries": 982
+    }
+  },
+  "forecast_sha256": {
+    "2025-10-26.Anthropic.claude-haiku-4-5-20251001_zero_shot.json": "8efd9448fccbc5a4fe724a0a93088acc675dbcd73fb0b50723149ade80942f62",
+    "2025-10-26.DeepSeek.DeepSeek-V3.1_zero_shot.json": "67261050059bdb30e061bace0b3c024af30b40c93a29e9e743932cf3f159fd9e",
+    "2025-10-26.OpenAI.gpt-5-mini-2025-08-07_zero_shot.json": "bf120c7f888237ce570137f72a869c292e3d923f9a93753bbd01fdda9d8e5008",
+    "2025-11-09.Anthropic.claude-haiku-4-5-20251001_zero_shot.json": "d842ef5b814e3b9a5386f59a620a55f9567b893c5bb2268078a15c7c3f6cbbea",
+    "2025-11-09.DeepSeek.DeepSeek-V3.1_zero_shot.json": "de817cf035a5971e91049788a1aef3984ee3b8964c78da8bdba6d34fe762c695",
+    "2025-11-09.OpenAI.gpt-5-mini-2025-08-07_zero_shot.json": "af2d21d21fa4ab844fc4de49e4df9cfcab5dbb0c3974635547275c3a7ffcb429",
+    "2025-11-23.Anthropic.claude-haiku-4-5-20251001_zero_shot.json": "a0bcf3acb7c65483b3e6b8330ed67855aed61dc208cce7828f7904415d508793",
+    "2025-11-23.DeepSeek.DeepSeek-V3.1_zero_shot.json": "843aa1a2da30df92c7e0e6f9057347cc90fd3412cfd209b13e84c21877930052",
+    "2025-11-23.OpenAI.gpt-5-mini-2025-08-07_zero_shot.json": "d1b953a44d605d9bc1f5289c0f50d1b0fddb808e356dc52e757935334b375f3a",
+    "2025-12-07.Anthropic.claude-haiku-4-5-20251001_zero_shot.json": "8d99e6105c64ec3867651a9a43a2a4a19a24b607d829b79ec45e9516a4356678",
+    "2025-12-07.DeepSeek.DeepSeek-V3.1_zero_shot.json": "d8c313554d70ee9185ffe740bc8301d55e7d289a4c16354e370a4d76cbc8e45c",
+    "2025-12-07.OpenAI.gpt-5-mini-2025-08-07_zero_shot.json": "cbabc1cfd44d8421dd88dff869ddb48a1a84f8354364d2e4b2d0fc82ee9b5cf9",
+    "2025-12-21.Anthropic.claude-haiku-4-5-20251001_zero_shot.json": "2d705806c1ad2c5d15be6e0486df41bd8ba599e95440c449be38fe494db511a9",
+    "2025-12-21.DeepSeek.DeepSeek-V3.1_zero_shot.json": "3b66b77d439bb059579238b006d2d5962c7a02e64ac004a0c682d69fdeb99bf8",
+    "2025-12-21.OpenAI.gpt-5-mini-2025-08-07_zero_shot.json": "4a14d2bde18c1356658919b6044fab6b59a2618d7cc98151c151dd0509954c47",
+    "2026-01-04.Anthropic.claude-haiku-4-5-20251001_zero_shot.json": "81ec048bfcfc90b74f57824f55a14ecbfca65bbc27d0038139304e53f46a9b32",
+    "2026-01-04.DeepSeek.DeepSeek-V3.1_zero_shot.json": "628473b498b6e96bd71c5eb618381e9d7192b26ddf714ad77e160594a9b131af",
+    "2026-01-04.OpenAI.gpt-5-mini-2025-08-07_zero_shot.json": "95e7ba3d864ed16275d50bd18745bb9c5fff00d153872c337c0c521302e5cfa9",
+    "2026-01-18.Anthropic.claude-haiku-4-5-20251001_zero_shot.json": "f71c3fce2dbd268a33ab78a9d7f3e66069df9d98cc707bb70f7d6d1cb2973e1e",
+    "2026-01-18.DeepSeek.DeepSeek-V3.1_zero_shot.json": "539e4d04978c787b9bab5baa5f9af17d593df223c67f5dec8199e85686bc844d",
+    "2026-01-18.OpenAI.gpt-5-mini-2025-08-07_zero_shot.json": "6eed8f6d8237226289452b7ed15057fc0764141f1ff0067f8f4f79acef2b0d8b",
+    "2026-02-01.Anthropic.claude-haiku-4-5-20251001_zero_shot.json": "91f03fdbd8182a1963087bc75f600598cad8a829083aaffd22f228368b1a9de0",
+    "2026-02-01.DeepSeek.DeepSeek-V3.1_zero_shot.json": "508ddeeffe9686e665f759ece1f45b346f446d491919af3642704d3e9bca4b84",
+    "2026-02-01.OpenAI.gpt-5-mini-2025-08-07_zero_shot.json": "c1e0bdd3d2854a52b8dffa3dd2af97ff4e6902559542b5677734d81dc97745d2",
+    "2026-02-15.Anthropic.claude-haiku-4-5-20251001_zero_shot.json": "5c88cd6e9cf10b3420610aeb0287240072737398a8f4ab5ca7fac7fe3e525796",
+    "2026-02-15.DeepSeek.DeepSeek-V3.1_zero_shot.json": "6ff2664f7d9b6c58a9bdb6934854cd6ec2e3729fcc0a5d5067c78263cde500c3",
+    "2026-02-15.OpenAI.gpt-5-mini-2025-08-07_zero_shot.json": "9f34b90254672b67fc53ade5d5ec33ec61cb962e45538dd1f531d0a33f64c0c4",
+    "2026-03-01.Anthropic.claude-haiku-4-5-20251001_zero_shot.json": "d927a16d36a88adbbd5b03dfb547a685e28cf46d24a3553a0616e14a3a589ec9",
+    "2026-03-01.DeepSeek.DeepSeek-V3.1_zero_shot.json": "f73f0f92928858dfe7f6df382142b2f2569f356d240840c1dec4afc28b2a4f9d",
+    "2026-03-01.OpenAI.gpt-5-mini-2025-08-07_zero_shot.json": "395717d1a4bc1d8b124d2469af5b906d3a8811a2d2c60afdd968d10850a765e3",
+    "2026-03-15.Anthropic.claude-haiku-4-5-20251001_zero_shot.json": "06439eb2e959bf58eaacd14a703358fb65df99c0d66af195b5e6b0cb2fc2ee7e",
+    "2026-03-15.DeepSeek.DeepSeek-V3.1_zero_shot.json": "4c259c6bb3648c9b7424df448323a25b3c55f93fe0dbb612e4623b6cc77b49e2",
+    "2026-03-15.OpenAI.gpt-5-mini-2025-08-07_zero_shot.json": "d886777248e7ca8f587f7039e3694b58fda9216ff1ac13a9fce7e23704f94df7",
+    "2026-03-29.Anthropic.claude-haiku-4-5-20251001_zero_shot.json": "b2edf55244af5d7d8dbbd45ff4959a84bf9d0304bcbb48a9ea0ce7e5d666cbbe",
+    "2026-03-29.DeepSeek.DeepSeek-V3.1_zero_shot.json": "e70de2b9694f654ddb05819999dd3b386631bb4ce9ec9526eb6cbefd2399c9b7",
+    "2026-03-29.OpenAI.gpt-5-mini-2025-08-07_zero_shot.json": "40a35e3ac8b601c5b77606bf39905b62b231873c45a54ab759f8dcccd75034b2",
+    "2026-04-12.Anthropic.claude-haiku-4-5-20251001_zero_shot.json": "a9f69039d153d9241da5f533421e54a94f1e8ad7251cb34eada7b7ac4b3fd60e",
+    "2026-04-12.DeepSeek.DeepSeek-V3.1_zero_shot.json": "fe5df0c9d47c94df0242f6bf52596cd3e0297d836c89e623a123cb0d862269db",
+    "2026-04-12.OpenAI.gpt-5-mini-2025-08-07_zero_shot.json": "dafe836fdf8fe7d21b6407fa44227658fedb025b83c22269245b2bba5609ff44",
+    "2026-04-26.Anthropic.claude-haiku-4-5-20251001_zero_shot.json": "a57e5f8f08afc3bc2635278ff3233edcccf06653858aa5237cfb7fdf31efdcf2",
+    "2026-04-26.DeepSeek.DeepSeek-V3.1_zero_shot.json": "f5cce246d36599fd79f68947c9adc88aeeccaf29e79ad939cc20d1e6a1970703",
+    "2026-04-26.OpenAI.gpt-5-mini-2025-08-07_zero_shot.json": "c6676d30de7dc17d42cc99029526a5ebabcef889f6d24789d807025f716d51df",
+    "2026-05-10.Anthropic.claude-haiku-4-5-20251001_zero_shot.json": "38c4108458b5a858c059ffa87acc645651642f0f3889fe7e9bf031a52d7d8b57",
+    "2026-05-10.DeepSeek.DeepSeek-V3.1_zero_shot.json": "e41572ee2311808a31336cee0882ea17cf80a9b31209c9d8ad04d1104de0f9cf",
+    "2026-05-10.OpenAI.gpt-5-mini-2025-08-07_zero_shot.json": "f2616db7dca3780c3eb108305d3db4f2c0e771c41959f3740585e7bbeaed7e3f"
+  },
+  "license": "ForecastBench data \u00a9 Forecasting Research Institute, CC BY-SA 4.0; derived dataset and results under the same license. https://www.forecastbench.org/datasets/ and https://creativecommons.org/licenses/by-sa/4.0/",
+  "models": {
+    "deepseek": "DeepSeek.DeepSeek-V3.1_zero_shot.json",
+    "haiku": "Anthropic.claude-haiku-4-5-20251001_zero_shot.json",
+    "mini": "OpenAI.gpt-5-mini-2025-08-07_zero_shot.json"
+  },
+  "question_metadata_revision": "86b92ba06ed34d606d633bff3e99af54dd447d3a",
+  "question_set_sha256": {
+    "2025-10-26": "5095f9d7fdd714b2321b38e13e74de67d43aa1f3ab5d3034d0f629da28892242",
+    "2025-11-09": "078bae3ff4beef5e73e6c96ef642d19ede730d3d31e213c128bbf0bb79f63e6e",
+    "2025-11-23": "784ac0f8c7b0a87270f0302b8bee5680a0bce9b1cc041c3d6f5d7ab58cc84960",
+    "2025-12-07": "4c84055929a8f162aa5188626b7508dee86e3d16d9e1925be5c8eff67549ad58",
+    "2025-12-21": "554f84f0cc326949edfca94028f70a5e18a8b19fb9f437b0ebf19cf32745ca91",
+    "2026-01-04": "6e2a23bdb27d3449e80752e82db4d37ae74680145c188033ff5ae9b1a02de5e1",
+    "2026-01-18": "5b6b3108134e02b823f9a6486bb5b1753d4f2e5eb2332e5dedf4768279d6285f",
+    "2026-02-01": "92d3c6fe92cdacdbbc3856b4b76d72ec1bff1608826af286df6307a027bc0dd7",
+    "2026-02-15": "080fbfdcc3862fe6805dbd746bfb24e180f69a47a2ce359f78c918ff5ed3affb",
+    "2026-03-01": "fa12fb34a0e76c5912fd7d25e534a7147e8cb87284ea0a3fb309a78d4d62e405",
+    "2026-03-15": "4de06c2ef88a64ba3cd205b9ddbbbd123d482ab770e0535adf8c8fb097d15078",
+    "2026-03-29": "e43601443384d86d2d7cee455e2d987bc9c8056b3c94f0d50ca1ee4c4d0f42f2",
+    "2026-04-12": "792208b93fc3aaf7e5d9cf9c013ee28517f130a4077dccbcf6a50b7f3695985a",
+    "2026-04-26": "ce1b582bd5b1bdb3c7b8a65e775c4f335b28b52e756963ccbe88a949b4081750",
+    "2026-05-10": "892c7637abb8a32996f9b90446af5b0bb486a7f7af9a2b94beda87a9508f444a"
+  },
+  "resolution_sha256": {
+    "1bd50bae3559460987e695bf32c7854a6d4adb7b/2026-01-04_resolution_set.json": "eb8ff3875117c3de324b4d2fe839a7c66b47bc394cc582f2c3ffd12d3a159cf1",
+    "1bd50bae3559460987e695bf32c7854a6d4adb7b/2026-01-18_resolution_set.json": "2a450a1f14d5f45190eddc9225ee23eaea74a576003a752abcd299caa454b1ec",
+    "1bd50bae3559460987e695bf32c7854a6d4adb7b/2026-02-01_resolution_set.json": "4b1662795bcdc6b7550447aa818c00dffb560ba9564bde30cd8e06e57e15205e",
+    "1bd50bae3559460987e695bf32c7854a6d4adb7b/2026-02-15_resolution_set.json": null,
+    "86b92ba06ed34d606d633bff3e99af54dd447d3a/2026-03-01_resolution_set.json": "ef6ec1c229b397ef5befd3b06a36a866d41f6534185bcedabd0545ecd9561e34",
+    "86b92ba06ed34d606d633bff3e99af54dd447d3a/2026-03-15_resolution_set.json": "a338de52ad230db7e5b1c331b30d10b64c950e25b38d841dd8d60017eebe8045",
+    "86b92ba06ed34d606d633bff3e99af54dd447d3a/2026-03-29_resolution_set.json": "98101589d5fe285a1ce03153249ceab9cf9e0bf0097589e665cbb3470302b38c",
+    "86b92ba06ed34d606d633bff3e99af54dd447d3a/2026-04-12_resolution_set.json": "e6e6a4f24ae8257c289b7ff6dabc386fad342dced9ea5348b5dd00fb00ffea63",
+    "86b92ba06ed34d606d633bff3e99af54dd447d3a/2026-04-26_resolution_set.json": "6fd065eced1d7ddc01ce8132799c43aac108254c0ba14446aaebaec9268ce3f8",
+    "86b92ba06ed34d606d633bff3e99af54dd447d3a/2026-05-10_resolution_set.json": "f257084124bb51087927b0226d32b6963cc14242cf07c132bd1a28b1970e9e36",
+    "f2fc9404dc32c8b99f902b265aae3182ba16648b/2025-10-26_resolution_set.json": "181b7169ac473024b8c6161704142f1e32ebe059914e316dc3c5cb5a0bc03532",
+    "f2fc9404dc32c8b99f902b265aae3182ba16648b/2025-11-09_resolution_set.json": "82b76cc66ae992a324b61a6a82909cf2b20c757a015a821470655a10bb0b14d6",
+    "f2fc9404dc32c8b99f902b265aae3182ba16648b/2025-11-23_resolution_set.json": "d233988092b69ec422048bfc246de8b920899846a719dcf20ec7ff8cc11ce5b1",
+    "f2fc9404dc32c8b99f902b265aae3182ba16648b/2025-12-07_resolution_set.json": "56af1c86a4d32beff20e8da3e9df262e764771526d599a73a662114030134902",
+    "f2fc9404dc32c8b99f902b265aae3182ba16648b/2025-12-21_resolution_set.json": null
+  },
+  "rows_jsonl_sha256": "6d7b464141d5c0c5a141df2fdc8b3ec25dcb0ab1f2299950324795c5b6776860",
+  "split_vintages": [
+    [
+      "train",
+      "2026-01-04",
+      "f2fc9404dc32c8b99f902b265aae3182ba16648b",
+      "2026-01-02T04:30:39Z"
+    ],
+    [
+      "valid",
+      "2026-03-01",
+      "1bd50bae3559460987e695bf32c7854a6d4adb7b",
+      "2026-02-28T06:29:11Z"
+    ],
+    [
+      "test",
+      "2026-11-24",
+      "86b92ba06ed34d606d633bff3e99af54dd447d3a",
+      "2026-11-22T00:06:38Z"
+    ]
+  ]
+}
