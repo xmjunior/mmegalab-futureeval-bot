@@ -1,0 +1,17 @@
+name: Confirm Groq free allocation
+on:
+  push:
+    branches: [verify/openai-access-audit]
+    paths: ['.github/workflows/groq_free_eligibility.yaml']
+permissions: {contents: read}
+jobs:
+  entitlement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {ref: 0651ae3fa563dac451e334df21097c37bc3096c5, persist-credentials: false}
+      - name: Read billing-tier evidence without inference or creating a batch
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: python research/promo/groq_trial.py --entitlement-only
