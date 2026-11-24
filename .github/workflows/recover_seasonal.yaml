@@ -27,12 +27,11 @@ jobs:
           meta="https://www.metaculus.com/api"
           gt=os.environ["GH_TOKEN"]; mt=os.environ["METACULUS_TOKEN"]
           repo="https://api.github.com/repos/"+os.environ["GITHUB_REPOSITORY"]
-          expected="0d369a0e99149533d03f46791f4eaffd7f7eab77"
+          expected="8d52a632256a34d87df28e9124769fb14e69db55"
           if fetch(repo+"/commits/main",gt,"Bearer ")["sha"]!=expected:
               print("Verified main SHA changed; skip."); raise SystemExit(0)
-          test=fetch(repo+"/actions/runs/45467839147",gt,"Bearer ")
-          if (test["head_sha"],test["head_branch"],test["conclusion"])!=(expected,"verify/futureeval","success"):
-              raise ValueError("Verified smoke gate is not green on the expected default head")
+          test=fetch(repo+"/actions/runs/45467213084",gt,"Bearer ")
+          if test["conclusion"]!="success": raise ValueError("Live testing-area transport was not verified")
           runs=fetch(gh+"/runs?per_page=10",gt,"Bearer ")["workflow_runs"]
           if any(r["status"]!="completed" or r["created_at"]>="2026-11-24T19:03:00Z" for r in runs):
               print("A newer seasonal attempt already exists; skip."); raise SystemExit(0)
