@@ -129,7 +129,7 @@ def audit(slug, key, userid, created, now):
     next_times = sorted({q["opens"] for q in questions.values() if q["state"]=="upcoming" and q["opens"] and q["opens"]>now})
     since = [q for q in questions.values() if q["opens"] and q["opens"]<=now and q["closes"] and q["closes"]>=created]
     return {"own_filter_post_ids": sorted(filtered_post_ids)[:20], "own_filter_post_total":len(filtered_post_ids), "mismatching_post_ids":mismatch,"question_history_missing_count":len(missing_history),"own_history_without_post":missing_own,
-            "project":pid,"slug":slug,"dates":{k:project.get(k) for k in ("start_date","close_date","forecasting_end_date")},
+            "project":pid,"slug":slug,"canonical_slug":project.get("slug"),"dates":{k:project.get(k) for k in ("start_date","close_date","forecasting_end_date")},
             "states":dict(counts),"questions":len(questions),"forecasted_questions":len(own),
             "forecast_events":sum(q["own_count"] for q in own),"duplicate_questions":[q["id"] for q in own if q["own_count"]>1],
             "opportunities_overlapping_account_lifetime":len(since),"unanswered_current":sum(not q["own_count"] for q in open_now),
