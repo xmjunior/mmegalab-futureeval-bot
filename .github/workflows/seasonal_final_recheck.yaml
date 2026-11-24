@@ -1,0 +1,38 @@
+name: Final unanswered seasonal recheck at 20:45 UTC
+on:
+  push:
+    branches: [ops/seasonal-final-recheck-20261124]
+permissions:
+  actions: write
+  contents: read
+concurrency:
+  group: seasonal-final-recheck-20261124
+  cancel-in-progress: false
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 58
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Wait once for provider cooldown, recheck own history and dispatch at most once
+        run: |
+          python -u - <<'PYCODE'
+          from research.recover_window import GH, SEASON, request, runs, seasonal, stamp, wait_until
+          if not "2026-11-24T20:00" <= stamp() < "2026-11-24T20:48":
+              raise SystemExit("One-time pre-close recheck expired")
+          wait_until("20:45:02")
+          earlier = request(GH, "/actions/runs/45472342686")
+          if earlier["status"] != "completed" or earlier["conclusion"] != "success":
+              raise SystemExit("Previous timing guard has not safely finished")
+          original = runs(SEASON)
+          if not (original[0]["id"] == 45475772762 and original[0]["status"] == "completed"
+                  and original[0]["conclusion"] == "failure"):
+              print("A newer seasonal run has taken responsibility. Skipping.")
+          else:
+              seasonal(recent_since="2026-11-24T20:01:00Z", allow_research_control=True)
+          PYCODE
+        env:
+          GH_TOKEN: ${{ github.token }}
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
