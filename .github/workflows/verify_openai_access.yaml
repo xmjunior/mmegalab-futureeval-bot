@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   credentials:
-    if: github.repository == 'xmjunior/mmegalab-futureeval-bot'
+    if: github.repository == 'xmjunior/mmegalab-futureeval-bot' && !contains(github.event.head_commit.message, '[tavily-only]')
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:

@@ -51,13 +51,16 @@ def quota(payload):
 
 
 def free(q):
-    # Keep the entire paid path closed. Unknown counters grant no permission.
+    # Check prepaid headroom directly. A null PAYGO cap does not establish that PAYGO is off.
+    # The entire key allowance plus 250 other account credits must still fit inside the free plan.
+    numbers = ("used", "included", "key_limit", "key_used", "paygo_used")
+    if any(type(q.get(field)) is not int for field in numbers):
+        return False
     return (str(q["plan"]).lower() in {"researcher", "free"} and q["paygo_used"] == 0
-            and q["paygo_limit"] == 0 and type(q["used"]) is int
-            and type(q["included"]) is int and 0 <= q["used"] < q["included"] - 1
-            and type(q["key_used"]) is int and 0 <= q["key_used"] < 700
-            and (q["key_limit"] is None or
-                 (type(q["key_limit"]) is int and q["key_used"] < q["key_limit"])))
+            and q["paygo_limit"] in (0, None) and 0 <= q["used"] < q["included"] <= 1000
+            and 0 <= q["key_used"] < q["key_limit"] <= 700
+            and q["included"] - q["used"] >= q["key_limit"] - q["key_used"] + 250)
+
 
 
 def github(method, path, data=None):
@@ -98,6 +101,14 @@ def treasury_search(key, before):
         raise ValueError("reservation_unavailable")
     prior = reservation["content"]["sha"]
     try:
+        quota_status, current = request("api.tavily.com", "/usage", key)
+        if quota_status != 200 or not free(quota(current)):
+            record["status"] = "skipped_free_quota"
+            persisted, _ = write_record(record, prior)
+            if persisted != 200:
+                raise ValueError("quota_stop_record_failed")
+            emit("search_skipped", reason="free_quota_changed", requests=0)
+            return
         status, result = request("api.tavily.com", "/search", key, "POST", opts)
         record.update(status="provider_error", http=status)
         if status == 200:
