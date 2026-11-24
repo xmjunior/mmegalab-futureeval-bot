@@ -1,0 +1,34 @@
+{
+  "source_commit": "f2a09239ee817f82d794f625b19dcc792e2068af",
+  "scope": "closed numeric decisions, project 33131",
+  "source_module_sha256": "cb9857a0b431fcb1cfc1e86340641d5169007219c3dcb15ecc103b4df8ced1e4",
+  "cases": [
+    {
+      "id": 46212,
+      "cutoff": "2026-10-12T02:59:59+00:00",
+      "resolution": "2026-10-23T20:00:00+00:00",
+      "source_date": "2026-10-09",
+      "source_sha256": "9b62266bdf5a990e57c0cf9a4cbce4edb4548398cd25d630ada2bbd0f861ee3e",
+      "prompt": "You calibrate interval forecasts. Each row is anonymous. Its options are validated alternative interval widths for the same statistical forecast. You can and should abstain if the evidence is insufficient for a trustworthy numeric distribution. Quantiles are ordered at 10%, 25%, 50%, 75%, 90%. Review the quantile spacing, data age, sample size and forecast horizon. Choose null for stale data, incoherent quantiles, or inadequate uncertainty coverage. Otherwise choose a listed width. Use 1.0 where available unless uncertainty warrants a wider choice. Output only a JSON array of numbers or null values, one per row in order. No prose.\n[{\"observations\": 495, \"quote_age_days\": 3, \"days_until_measurement\": 11, \"choices\": [{\"width\": 1.25, \"quantiles\": [2.851656338955741, 2.991372808704167, 3.11, 3.2681695883944446, 3.4263391767888893]}]}]",
+      "prompt_sha256": "4d702a46f2615ade2b77c316feaf553c8064ae1bbe99aaebaa70a02f36fbbd8c"
+    },
+    {
+      "id": 46213,
+      "cutoff": "2026-10-26T02:59:59+00:00",
+      "resolution": "2026-11-06T21:00:00+00:00",
+      "source_date": "2026-10-23",
+      "source_sha256": "45bb8f556b0938617b6e7c1212b01f7dcdf74a92c54a11198b22030f864f1ebc",
+      "prompt": "You calibrate interval forecasts. Each row is anonymous. Its options are validated alternative interval widths for the same statistical forecast. You can and should abstain if the evidence is insufficient for a trustworthy numeric distribution. Quantiles are ordered at 10%, 25%, 50%, 75%, 90%. Review the quantile spacing, data age, sample size and forecast horizon. Choose null for stale data, incoherent quantiles, or inadequate uncertainty coverage. Otherwise choose a listed width. Use 1.0 where available unless uncertainty warrants a wider choice. Output only a JSON array of numbers or null values, one per row in order. No prose.\n[{\"observations\": 495, \"quote_age_days\": 3, \"days_until_measurement\": 11, \"choices\": [{\"width\": 1.25, \"quantiles\": [3.1050235448591796, 3.253735301210847, 3.38, 3.562382342695442, 3.730735274414312]}]}]",
+      "prompt_sha256": "f31a0dc3e0a526ffca3aaec5e80d879a6531e3a5c3cc35a73d19626708f5fd0c"
+    },
+    {
+      "id": 46709,
+      "cutoff": "2026-11-06T12:59:59+00:00",
+      "resolution": "2026-11-20T21:00:00+00:00",
+      "source_date": "2026-11-05",
+      "source_sha256": "5235fcf36a760250b080d8904ba04a24857158ceb6114ec27902b2bac3ae079b",
+      "prompt": "You calibrate interval forecasts. Each row is anonymous. Its options are validated alternative interval widths for the same statistical forecast. You can and should abstain if the evidence is insufficient for a trustworthy numeric distribution. Quantiles are ordered at 10%, 25%, 50%, 75%, 90%. Review the quantile spacing, data age, sample size and forecast horizon. Choose null for stale data, incoherent quantiles, or inadequate uncertainty coverage. Otherwise choose a listed width. Use 1.0 where available unless uncertainty warrants a wider choice. Output only a JSON array of numbers or null values, one per row in order. No prose.\n[{\"observations\": 494, \"quote_age_days\": 1, \"days_until_measurement\": 14, \"choices\": [{\"width\": 1.25, \"quantiles\": [3.1516801174141422, 3.3392914788917745, 3.48, 3.683245641600769, 3.870857003078402]}]}]",
+      "prompt_sha256": "f51037ad3daec5a20f4ca66ca1106af7d86d3cec8f661f61191a6f66f2b7c648"
+    }
+  ]
+}
