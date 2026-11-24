@@ -1,0 +1,24 @@
+name: Frozen Treasury panel on GPT-5.6 Sol
+on:
+  push:
+    branches: [verify/openai-access-audit]
+    paths: ['.github/workflows/champion_once.yaml']
+permissions: {contents: write}
+concurrency: {group: champion-promo-panel, cancel-in-progress: false}
+jobs:
+  panel:
+    if: github.repository == 'xmjunior/mmegalab-futureeval-bot' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: d4f888261e1042f31e968701306291c4799c2181
+          persist-credentials: false
+      - name: Submit the four preregistered probabilities in one reserved request
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          test "$(git rev-parse HEAD)" = "d4f888261e1042f31e968701306291c4799c2181"
+          python research/promo/runner.py owner-panel
