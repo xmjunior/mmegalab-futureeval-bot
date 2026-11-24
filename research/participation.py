@@ -86,6 +86,8 @@ def audit(slug, key, userid, created, now):
     project = read(f"/projects/tournaments/{slug}/")
     if "id" not in project:
         raise ValueError(f"Project identifier missing: {list(project)}")
+    if key.startswith("prior-") and not str(project.get("slug","")).startswith("minibench"):
+        raise ValueError("Requested archive is not a MiniBench tournament")
     pid = project["id"]
     questions = {}
     filtered_post_ids = {p["id"] for p in pages("/posts/",tournaments=pid,forecaster_id=userid,
@@ -129,7 +131,7 @@ def audit(slug, key, userid, created, now):
     next_times = sorted({q["opens"] for q in questions.values() if q["state"]=="upcoming" and q["opens"] and q["opens"]>now})
     since = [q for q in questions.values() if q["opens"] and q["opens"]<=now and q["closes"] and q["closes"]>=created]
     return {"own_filter_post_ids": sorted(filtered_post_ids)[:20], "own_filter_post_total":len(filtered_post_ids), "mismatching_post_ids":mismatch,"question_history_missing_count":len(missing_history),"own_history_without_post":missing_own,
-            "project":pid,"slug":slug,"canonical_slug":project.get("slug"),"dates":{k:project.get(k) for k in ("start_date","close_date","forecasting_end_date")},
+            "project":pid,"slug":slug,"canonical_slug":project.get("slug"),"api_has_participated":project.get("has_participated"),"dates":{k:project.get(k) for k in ("start_date","close_date","forecasting_end_date")},
             "states":dict(counts),"questions":len(questions),"forecasted_questions":len(own),
             "forecast_events":sum(q["own_count"] for q in own),"duplicate_questions":[q["id"] for q in own if q["own_count"]>1],
             "opportunities_overlapping_account_lifetime":len(since),"unanswered_current":sum(not q["own_count"] for q in open_now),
@@ -144,15 +146,15 @@ now = datetime.now(UTC).isoformat()
 out = {"observed_at":now,"account":{k:me.get(k) for k in ("id","username","is_bot","is_primary_bot","date_joined")},
        "projects":{}}
 args = argparse.ArgumentParser()
-args.add_argument("--prior-minibench-file", type=Path, help="JSON list of previously observed MiniBench slugs")
+args.add_argument("--prior-minibench-file", type=Path, help="JSON list of previously observed MiniBench IDs or archived slugs")
 opts = args.parse_args()
 projects = [("FutureEval","fall-futureeval-2026"),("MiniBench","minibench"),("MarketPulse","market-pulse-26q4")]
 if opts.prior_minibench_file:
     import re
     slugs = json.loads(opts.prior_minibench_file.read_text())
-    if not isinstance(slugs,list) or len(slugs)>10 or not all(isinstance(s,str) and re.fullmatch(r"minibench-[a-z0-9-]{4,60}",s) for s in slugs):
+    if not isinstance(slugs,list) or len(slugs)>10 or not all((type(s) is int and 0<s<1000000) or (isinstance(s,str) and re.fullmatch(r"minibench-[a-z0-9-]{4,60}|[0-9]{1,6}",s)) for s in slugs):
         raise ValueError("Invalid historical MiniBench list")
-    projects += [(s,s) for s in sorted(set(slugs))]
+    projects += [("prior-"+s,s) for s in sorted(set(map(str,slugs)))]
 for name,slug in projects:
     try:
         out["projects"][name]=audit(slug,name,me["id"],created or now,now)
