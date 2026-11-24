@@ -304,8 +304,42 @@ jobs:
         run: |
           test "$(git rev-parse HEAD)" = "$RECOVERY_SHA"
           python research/recovery_clock.py seed
+  omega-forward:
+    if: (github.event_name != 'workflow_dispatch' || !startsWith(inputs.mode, 'recovery')) && (github.ref_name == 'main' || (github.event_name == 'push' && github.ref_name == 'verify/champion-v2-control')) && github.event_name != 'workflow_run' && (github.event_name != 'schedule' || github.event.schedule == '17 7,19 * * *')
+    permissions:
+      contents: write
+    concurrency:
+      group: omega-independent-weekly-spread
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: e8f54568515ca9bae7bac892ea99a81d5d26ead9
+          path: science
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: cc13bf9f9979a745e4e28ec1376c40df26187202
+          path: transport
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: research/omega-forward-ledger
+          path: omega-records
+      - name: Test leases, clocks and immutable paired scoring
+        run: |
+          python -m unittest discover -s science/research/omega/forward -v
+          python -m pip install --disable-pip-version-check requests==2.34.2
+      - name: Issue or settle only the independent weekly spread experiment
+        env:
+          PYTHONPATH: ${{ github.workspace }}/transport
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GROQ_FREE_ACCOUNT_CONFIRMED: "true"
+        run: python science/research/omega/forward/live.py omega-records
   recovery-bundle:
-    needs: record
+    needs: [record, omega-forward]
     if: ${{ !cancelled() && (needs.record.result == 'success' || needs.record.result == 'failure') }}
     permissions:
       contents: read
