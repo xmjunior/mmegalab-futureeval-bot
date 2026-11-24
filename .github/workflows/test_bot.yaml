@@ -2,42 +2,51 @@ name: Test Bot
 
 on:
   workflow_dispatch:
+    inputs:
+      test_size:
+        description: Number of unpublished testing-area forecasts
+        type: choice
+        options: ["1", "2", "5", "10"]
+        default: "1"
+  push:
+    branches: [verify/futureeval]
 
-# Add concurrency group to prevent parallel runs
+permissions:
+  contents: read
+
 concurrency:
-  group: ${{ github.workflow }}
+  group: futureeval-test
   cancel-in-progress: false
 
-
-# Daily job to run the simple forecast bot
 jobs:
   forecast_job:
-    runs-on: ubuntu-latest # determines the machine that will run the job - keep as is
-    steps: # sets up the steps that will be run in order
-      # setup repository with all necessary dependencies - keep as is
-      - name: Check out repository
-        uses: actions/checkout@v4
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify checkout matches the current main commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          main_sha=$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_SHA" = "$main_sha"
+          echo "Verified main commit $main_sha"
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Install uv
-        uses: astral-sh/setup-uv@v10.3.0
+      - uses: astral-sh/setup-uv@v10.3.0
         with:
           version: "0.13.1"
       - name: Install dependencies
-        run: uv sync --locked
+        run: uv sync --locked --no-dev
       - name: Run bot
-        run: |
-          uv run python main.py --mode test_questions
-        # this reads the environment variables from the github repository.
-        # Store under Settings --> Secrets and variables --> Actions
+        run: uv run --locked --no-dev python main.py --mode test_questions --test-size "$TEST_SIZE"
         env:
+          TEST_SIZE: ${{ inputs.test_size || '1' }}
           METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }} 
-          PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
-          EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          ASKNEWS_CLIENT_ID: ${{ secrets.ASKNEWS_CLIENT_ID }}
-          ASKNEWS_SECRET: ${{ secrets.ASKNEWS_SECRET }}

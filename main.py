@@ -1,6 +1,9 @@
 import argparse
 import asyncio
 import logging
+import os
+import re
+import time
 from datetime import datetime, timezone
 from typing import Literal
 
@@ -19,6 +22,7 @@ silence_noisy_dependencies()
 from forecasting_tools import (
     AskNewsSearcher,
     BinaryQuestion,
+    BinaryReport,
     ForecastBot,
     GeneralLlm,
     MetaculusClient,
@@ -43,6 +47,76 @@ from forecasting_tools import (
 
 dotenv.load_dotenv()
 logger = logging.getLogger(__name__)
+
+
+class FreeForecastLlm(GeneralLlm):
+    """Use only free endpoints. Share backoff across research, forecasts and parsing."""
+
+    def __init__(self):
+        names = []
+        if os.getenv("GEMINI_API_KEY"):
+            names.extend(["gemini/gemma-4-31b-it", "gemini/gemma-4-26b-a4b-it"])
+        if os.getenv("OPENROUTER_API_KEY"):
+            names.append("openrouter/openrouter/free")
+        if not names:
+            raise ValueError("A Gemini or OpenRouter API key is required")
+
+        super().__init__(names[0], allowed_tries=1)
+        self.routes = [
+            GeneralLlm(name, temperature=0.2, timeout=55, allowed_tries=1, num_retries=0)
+            for name in names
+        ]
+        self.available_at = dict.fromkeys(names, 0.0)
+        self.lock = asyncio.Lock()
+
+    def to_dict(self):
+        return {"free_routes_in_order": [route.model for route in self.routes]}
+
+    async def invoke(self, prompt, system_prompt=None):
+        async with self.lock:
+            # Try each currently available route before waiting for one short retry.
+            for round_number in range(2):
+                wait = min(self.available_at.values()) - time.monotonic()
+                if wait > 45:
+                    break
+                if wait > 0:
+                    await asyncio.sleep(wait)
+                for route in self.routes:
+                    if self.available_at[route.model] > time.monotonic():
+                        continue
+                    try:
+                        answer = await route.invoke(prompt, system_prompt)
+                    except Exception as exc:
+                        status = getattr(exc, "status_code", None)
+                        retryable = status in (408, 429, 500, 502, 503, 504) or isinstance(
+                            exc, (TimeoutError, ConnectionError)
+                        ) or type(exc).__name__ in ("APIConnectionError", "Timeout")
+                        if not retryable and status not in (401, 402, 403, 404):
+                            raise
+                        headers = getattr(getattr(exc, "response", None), "headers", {})
+                        retry_after = str(headers.get("retry-after", ""))
+                        delay = max(
+                            12 * (round_number + 1),
+                            int(retry_after) if retry_after.isdigit() else 0,
+                        )
+                        daily_limit = (
+                            route.model.startswith("openrouter/")
+                            and status == 429
+                            and "day" in str(exc).lower()
+                        )
+                        if not retryable or daily_limit:
+                            delay = max(delay, 3600)
+                        self.available_at[route.model] = time.monotonic() + delay
+                        logger.warning(
+                            "Free route %s unavailable (%s), cooldown %ss",
+                            route.model, status or type(exc).__name__, delay,
+                        )
+                        continue
+                    if not answer.strip():
+                        raise ValueError(f"Empty response from {route.model}")
+                    logger.info("Model responded: %s", route.model)
+                    return answer
+        raise RuntimeError("All configured free model routes are temporarily unavailable")
 
 
 class FallTemplateBot2026(ForecastBot):
@@ -124,7 +198,7 @@ class FallTemplateBot2026(ForecastBot):
         1  # Set this to whatever works for your search-provider/ai-model rate limits
     )
     _concurrency_limiter = asyncio.Semaphore(_max_concurrent_questions)
-    _structure_output_validation_samples = 2
+    _structure_output_validation_samples = 1
 
     ##################################### RESEARCH #####################################
 
@@ -237,6 +311,15 @@ class FallTemplateBot2026(ForecastBot):
     ) -> ReasonedPrediction[float]:
         reasoning = await self.get_llm("default", "llm").invoke(prompt)
         logger.info(f"Reasoning for URL {question.page_url}: {reasoning}")
+        # The forecast prompt already specifies a machine-readable final line.
+        last_line = reasoning.strip().splitlines()[-1].strip().replace("**", "")
+        match = re.fullmatch(r"Probability:\s*(\d+(?:\.\d+)?)%[.]?", last_line, re.I)
+        if match:
+            parsed = BinaryPrediction(prediction_in_decimal=float(match[1]) / 100)
+            return ReasonedPrediction(
+                prediction_value=max(0.01, min(0.99, parsed.prediction_in_decimal)),
+                reasoning=reasoning,
+            )
         parsing_instructions = clean_indents(
             f"""
             The text given to you is trying to give a probability forecast for a binary question.
@@ -697,27 +780,21 @@ if __name__ == "__main__":
         default="tournament",
         help="What to forecast on (default: tournament)",
     )
+    parser.add_argument("--test-size", type=int, choices=range(1, 11), default=1,
+                        help="Number of testing-area questions for a dry run")
     args = parser.parse_args()
     run_mode: Literal["tournament", "metaculus_cup", "test_questions"] = args.mode
 
     check_environment(strict=True)
-    publish_to_metaculus = True
+    publish_to_metaculus = run_mode != "test_questions"
     print_startup_banner(run_mode, will_publish=publish_to_metaculus)
 
-    # Configure the bot. The `llms=` block below is commented out to use
-    # whichever default models forecasting-tools picks based on your env vars;
-    # uncomment and edit to pin specific models.
-    free_model = GeneralLlm(
-        model="gemini/gemini-3.5-flash-lite",
-        temperature=0.2,
-        timeout=90,
-        allowed_tries=3,
-    )
-    
+    free_model = FreeForecastLlm()
     template_bot = FallTemplateBot2026(
         research_reports_per_question=1,
-        predictions_per_research_report=3,
-        use_research_summary_to_forecast=True,
+        predictions_per_research_report=1,
+        use_research_summary_to_forecast=False,
+        enable_summarize_research=False,
         publish_reports_to_metaculus=publish_to_metaculus,
         folder_to_save_reports_to=None,
         skip_previously_forecasted_questions=True,
@@ -744,7 +821,10 @@ if __name__ == "__main__":
     # Dispatch on mode. Each branch produces a list of ForecastReport (or
     # exceptions, since return_exceptions=True) which then flows into the
     # summary printers below.
-    client = MetaculusClient()
+    client = template_bot.metaculus_client
+    if client.get_current_user_id() <= 0:
+        raise RuntimeError("Metaculus did not return an authenticated user")
+    logger.info("Metaculus authentication verified")
     if run_mode == "tournament":
         seasonal_tournament_reports = asyncio.run(
             template_bot.forecast_on_tournament(
@@ -769,15 +849,20 @@ if __name__ == "__main__":
             )
         )
     elif run_mode == "test_questions":
-        # The bot-testing-area tournament contains all question types and is
-        # the recommended target for smoke-testing your bot.
-        # https://www.metaculus.com/tournament/bot-testing-area/
-        template_bot.skip_previously_forecasted_questions = False
-        forecast_reports = asyncio.run(
-            template_bot.forecast_on_tournament(
-                "bot-testing-area", return_exceptions=True
-            )
-        )
+        template_bot.skip_previously_forecasted_questions = False  # dry run only
+        questions = client.get_all_open_questions_from_tournament("bot-testing-area")
+        binary = next((q for q in questions if type(q) is BinaryQuestion), None)
+        if binary is None or len(questions) < args.test_size:
+            raise RuntimeError("Not enough open testing-area questions for this test")
+        sample = [binary, *(q for q in questions if q is not binary)][:args.test_size]
+        forecast_reports = asyncio.run(template_bot.forecast_questions(sample))
+        if len(forecast_reports) != len(sample) or any(r.errors for r in forecast_reports):
+            raise RuntimeError("Incomplete testing-area forecast")
+        first = forecast_reports[0]
+        if not isinstance(first, BinaryReport) or not 0 < first.prediction < 1:
+            raise RuntimeError("Expected a valid binary probability")
+        logger.info("Validated dry run: question=%s probability=%.4f reports=%s",
+                    first.question.id_of_question, first.prediction, len(forecast_reports))
 
     template_bot.log_report_summary(forecast_reports)
     print_run_summary_banner(
