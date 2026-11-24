@@ -1,0 +1,18 @@
+{
+  "run_id": 45485394568,
+  "attempt": 2,
+  "commit": "5ba764b6bafa61fcaef03022a4ff36835401d4ac",
+  "first_attempt_saved": 2,
+  "restored_historical_decisions": 2,
+  "new_historical_decisions": 1,
+  "named_model": "gemini/gemma-4-31b-it",
+  "historical_paired_log_gains": [
+    1.979951,
+    -0.337514,
+    2.0912
+  ],
+  "eligible_forward_cutoffs": 0,
+  "forward_validation": "blocked_no_eligible_window",
+  "published": 0,
+  "verified_provider_qualification_only": true
+}
