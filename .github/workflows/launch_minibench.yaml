@@ -7,6 +7,7 @@ permissions:
   contents: read
 jobs:
   launch-existing-minibench:
+    if: github.event.head_commit.message != 'Check the verified recovery environment once without inference'
     runs-on: ubuntu-latest
     timeout-minutes: 4
     steps:
@@ -16,3 +17,17 @@ jobs:
         run: |
           gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/run_bot_on_minibench.yaml/dispatches" -f ref=main
           echo "MiniBench dispatched on the default branch"
+  inspect-recovery-clock:
+    if: github.event.head_commit.message == 'Check the verified recovery environment once without inference' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Dispatch exactly one read-only recovery inspection at the verified main revision
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          test "$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)" = "3b960f873aed0c02191a4a4db177215cd48f14a1"
+          gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/champion_control.yaml/dispatches" --input - <<'JSON'
+          {"ref":"main","inputs":{"mode":"recovery_check"}}
+          JSON
