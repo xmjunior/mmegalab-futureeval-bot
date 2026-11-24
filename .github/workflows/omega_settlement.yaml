@@ -1,0 +1,84 @@
+name: Settle independent OMEGA benchmarks
+on:
+  schedule:
+    - cron: "47 23 * * *"
+  workflow_call:
+  workflow_dispatch:
+  push:
+    branches: [verify/omega-settlement]
+permissions:
+  contents: write
+concurrency:
+  group: omega-independent-settlements
+  cancel-in-progress: false
+env:
+  SCIENCE_SHA: 8e136d7a1d54b8af4ec86fcc544b5326d786a26e
+jobs:
+  settle:
+    if: github.repository == 'xmjunior/mmegalab-futureeval-bot' && (github.ref_name == 'main' || github.ref_name == 'verify/omega-settlement' || github.ref_name == 'verify/champion-v2-control')
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.SCIENCE_SHA }}
+          path: science
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: research/omega-settlements
+          path: records
+      - name: Verify the frozen experiment and isolated ledger
+        run: |
+          set -eu
+          test "$(git -C science rev-parse HEAD)" = "$SCIENCE_SHA"
+          test "$(git -C records branch --show-current)" = research/omega-settlements
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Settle the sealed ECB forecasts
+        id: ecb
+        continue-on-error: true
+        timeout-minutes: 3
+        run: python science/research/omega/evidence/prospective.py settle --state records/ecb.json
+      - name: Score eligible unemployment first releases
+        id: unrate
+        continue-on-error: true
+        timeout-minutes: 4
+        run: |
+          python -m pip install --disable-pip-version-check --only-binary=:all: --retries 1 --timeout 20 numpy==2.3.5
+          python science/research/omega/continuous/settle.py --state records/unemployment.json
+      - name: Persist successful checks and require both sources
+        if: ${{ !cancelled() && (steps.unrate.outcome != 'skipped' || steps.ecb.outcome != 'skipped') }}
+        env:
+          UNRATE: ${{ steps.unrate.outcome }}
+          ECB: ${{ steps.ecb.outcome }}
+        working-directory: records
+        run: |
+          set -eu
+          test "$(git branch --show-current)" = research/omega-settlements
+          if test "$UNRATE" = success; then git add -- unemployment.json; fi
+          if test "$ECB" = success; then git add -- ecb.json; fi
+          if test "$UNRATE" = success && test "$ECB" = success; then
+            python - <<'PY'
+          import hashlib, json, os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          now = datetime.now(timezone.utc)
+          sources = {name: Path(name + '.json').read_bytes() for name in ('ecb', 'unemployment')}
+          receipt = Path('verification') / now.strftime('%G-W%V.json')
+          if not receipt.exists() and any(json.loads(raw)['status'] != 'complete' for raw in sources.values()):
+              receipt.parent.mkdir(exist_ok=True)
+              record = {'verified_utc': now.isoformat(), 'run_id': os.environ['GITHUB_RUN_ID'],
+                        'science_sha': os.environ['SCIENCE_SHA'],
+                        'state_sha256': {name: hashlib.sha256(raw).hexdigest() for name, raw in sources.items()}}
+              receipt.write_text(json.dumps(record, indent=2, sort_keys=True) + '\n')
+          PY
+            if test -d verification; then git add -- verification/; fi
+          fi
+          if ! git diff --cached --quiet; then
+            git -c user.name="MEGALAB research" -c user.email="forecast@users.noreply.github.com" commit -m "Record OMEGA release checks for run $GITHUB_RUN_ID"
+            git push origin HEAD:refs/heads/research/omega-settlements
+          fi
+          test "$UNRATE" = success && test "$ECB" = success

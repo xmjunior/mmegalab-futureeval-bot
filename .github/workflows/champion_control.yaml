@@ -338,8 +338,14 @@ jobs:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GROQ_FREE_ACCOUNT_CONFIRMED: "true"
         run: python science/research/omega/forward/live.py omega-records
+  omega-settlement:
+    needs: evaluate
+    if: ${{ !cancelled() && (needs.evaluate.result == 'success' || needs.evaluate.result == 'failure') }}
+    permissions:
+      contents: write
+    uses: ./.github/workflows/omega_settlement.yaml
   recovery-bundle:
-    needs: [record, omega-forward]
+    needs: [record, omega-forward, omega-settlement]
     if: ${{ !cancelled() && (needs.record.result == 'success' || needs.record.result == 'failure') }}
     permissions:
       contents: read
