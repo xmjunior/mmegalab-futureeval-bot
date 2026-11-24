@@ -55,10 +55,26 @@ def dispatch(file):
     print("Accepted one workflow_dispatch for",file,"at",stamp(),flush=True)
 
 
-def seasonal():
-    recent=[r for r in runs(SEASON) if r["status"]!="completed" or r["created_at"]>="2026-11-24T19:03:00Z"]
+def guard_head(head, allow_research_control):
+    if head == HEAD:
+        return True
+    if not allow_research_control:
+        return False
+    def protected_tree(sha):
+        tree_sha = request(GH, "/git/commits/" + sha)["tree"]["sha"]
+        response = request(GH, "/git/trees/" + tree_sha + "?recursive=1")
+        if response["truncated"]:
+            raise ValueError("Cannot establish a complete production tree")
+        return {e["path"]: (e["mode"], e["type"], e["sha"]) for e in response["tree"]
+                if e["type"] != "tree" and e["path"] != ".github/workflows/champion_control.yaml"}
+    return protected_tree(HEAD) == protected_tree(head)
+
+
+def seasonal(recent_since="2026-11-24T19:03:00Z", allow_research_control=False):
+    recent=[r for r in runs(SEASON) if r["status"]!="completed" or r["created_at"]>=recent_since]
     if recent: emit(recent); return
-    if request(GH,"/commits/main")["sha"]!=HEAD:
+    head = request(GH,"/commits/main")["sha"]
+    if not guard_head(head, allow_research_control):
         print("Default branch changed. Skipping seasonal."); return
     if request(GH,"/actions/runs/45467213084")["conclusion"]!="success": raise ValueError("Failed transport gate")
     me=request(MC,"/users/me")
@@ -73,7 +89,15 @@ def seasonal():
     q=request(MC,"/questions/46894/")
     open_now=(q["id"]==46894 and q["status"]=="open" and datetime.now(timezone.utc)<datetime.fromisoformat(q["scheduled_close_time"]))
     print("seasonal id=46894 open=",open_now,"own_history_count=0")
-    if open_now: dispatch(SEASON)
+    if open_now:
+        if request(GH, "/commits/main")["sha"] != head:
+            raise ValueError("Main changed while confirming participation")
+        latest = [r for r in runs(SEASON) if r["status"] != "completed" or r["created_at"] >= recent_since]
+        if latest:
+            emit(latest)
+            return
+        print("Verified active production revision", head)
+        dispatch(SEASON)
 
 
 def market():

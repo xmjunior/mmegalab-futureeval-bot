@@ -1,0 +1,31 @@
+name: Final seasonal recovery before 21 UTC, November 24
+on:
+  push:
+    branches: [ops/seasonal-final-20261124]
+permissions:
+  actions: write
+  contents: read
+concurrency:
+  group: seasonal-final-20261124
+  cancel-in-progress: false
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 72
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Wait once for provider cooldown, recheck own history and dispatch at most once
+        run: |
+          python -u - <<'PYCODE'
+          from research.recover_window import wait_until, seasonal, stamp
+          if not "2026-11-24T19:35" <= stamp() < "2026-11-24T20:50":
+              print("One-time recovery window has expired.")
+          else:
+              wait_until("20:37:02")
+              seasonal(recent_since="2026-11-24T19:35:00Z", allow_research_control=True)
+          PYCODE
+        env:
+          GH_TOKEN: ${{ github.token }}
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
