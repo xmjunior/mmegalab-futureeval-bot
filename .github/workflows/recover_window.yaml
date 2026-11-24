@@ -1,0 +1,23 @@
+name: One-off tournament recovery window 2026-11-24
+on:
+  push:
+    branches: [ops/champion-window-20261124]
+permissions:
+  actions: write
+  contents: read
+concurrency:
+  group: champion-one-off-20261124
+  cancel-in-progress: false
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 39
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Recover only missing opportunities within the approved UTC window
+        run: python -u research/recover_window.py
+        env:
+          GH_TOKEN: ${{ github.token }}
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
