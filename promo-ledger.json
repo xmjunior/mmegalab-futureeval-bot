@@ -54,10 +54,17 @@
       "groq-gpt-oss-120b": {
         "cases": {
           "100": {
+            "closed_at": "2026-11-24T23:11:08.524173+00:00",
             "issued_at": "2026-11-24T23:11:06.475482+00:00",
             "origin_index": 100,
+            "output_sha256": "b761c034ba49dfb1ce6f7c2660c2fc37d8396acbbf22cd42706f70c96dbf8348",
+            "p": 0.2373,
             "prompt_sha256": "41ab1b9423bca97bcd814ee625c1fc901db5e3819276dbc0e0b2cca29ada829e",
-            "status": "leased"
+            "status": "completed",
+            "usage": {
+              "completion_tokens": 132,
+              "prompt_tokens": 160
+            }
           },
           "64": {
             "closed_at": "2026-11-24T23:10:10.817018+00:00",
