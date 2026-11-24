@@ -2,6 +2,10 @@ name: Champion research and competition control
 on:
   schedule:
     - cron: "17 19 * * *"
+    - cron: "27 * * * *"
+  workflow_run:
+    workflows: ["Market Pulse 26Q4 spot updates"]
+    types: [completed]
   workflow_dispatch:
   push:
     branches: [verify/champion-v2-control]
@@ -11,10 +15,10 @@ concurrency:
   group: champion-v2-observations
   cancel-in-progress: false
 env:
-  RESEARCH_SHA: "bd49fabb6a4deb9a5323158c44d2d36981aa0fb6"
+  RESEARCH_SHA: "222ad5e3ea6def6dd924d0c7de365ef83861a2e5"
 jobs:
   evaluate:
-    if: github.ref_name == 'main' || (github.event_name == 'push' && github.ref_name == 'verify/champion-v2-control')
+    if: (github.ref_name == 'main' || (github.event_name == 'push' && github.ref_name == 'verify/champion-v2-control')) && github.event_name != 'workflow_run' && (github.event_name != 'schedule' || github.event.schedule == '17 19 * * *')
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
@@ -141,3 +145,26 @@ jobs:
           incomplete=[field for field in ('TREASURY','MINI','AUDIT') if run[field]!='success']
           if incomplete: raise SystemExit('Incomplete checks: '+', '.join(incomplete))
           PY
+  coverage:
+    if: github.ref_name == 'main' || (github.event_name == 'push' && github.ref_name == 'verify/champion-v2-control')
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RESEARCH_SHA }}
+          persist-credentials: false
+      - name: Recover a missed polling window only if it contains an unanswered question
+        env:
+          GH_TOKEN: ${{ github.token }}
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
+          ENABLED: ${{ github.ref_name == 'main' }}
+        run: |
+          if [ "$ENABLED" = "true" ]; then
+            python research/watchdog.py --dispatch
+          else
+            python research/watchdog.py
+          fi
