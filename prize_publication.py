@@ -274,8 +274,8 @@ class VerifiedPrizeClient(MetaculusClient):
         # Marker binds group subquestions to the exact payload and original reasoning.
         # A conditional or grouped post has no single native forecast to attach.
         # Preserve the exact question-specific forecast in its private note too.
-        stated = json.dumps(payload, ensure_ascii=False, allow_nan=False, separators=(",", ":"))
-        text = f"Forecast receipt {question_id}/{signature}\n\n{comment_text}\n\nSubmitted forecast for question {question_id}:\n```json\n{stated}\n```"
+        text = f"Forecast receipt {question_id}/{signature}\n\n{comment_text}"
+        text += self.forecast_note_suffix(question_id, payload)
         body = {"forecasts": [{"question": question_id, **payload}],
                 "comments": [{"on_post": post_id, "text": text, "is_private": True,
                               "included_forecast": True}]}
@@ -326,6 +326,11 @@ class VerifiedPrizeClient(MetaculusClient):
               f"response={status or 'interrupted'} stored_values={len(values)} private=true "
               f"native_attachment={'verified' if attached else 'unavailable'} "
               f"forecast_in_comment=true seconds_to_close={margin}", file=self.audit)
+
+    @staticmethod
+    def forecast_note_suffix(question_id, payload):
+        stated = json.dumps(payload, ensure_ascii=False, allow_nan=False, separators=(",", ":"))
+        return f"\n\nSubmitted forecast for question {question_id}:\n```json\n{stated}\n```"
 
     @staticmethod
     def _same_values(values, expected):
