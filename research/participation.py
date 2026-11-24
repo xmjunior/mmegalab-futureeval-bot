@@ -16,7 +16,8 @@ UTC = timezone.utc
 
 def read(path, **params):
     url = BASE + path + ("?" + urlencode(params) if params else "")
-    for attempt in range(3):
+    for attempt in range(4):
+        time.sleep(3.7)
         try:
             with urlopen(Request(url, method="GET", headers={
                 "Authorization": "Token " + os.environ["METACULUS_TOKEN"],
@@ -24,9 +25,10 @@ def read(path, **params):
             }), timeout=35) as response:
                 return json.load(response)
         except (HTTPError, URLError, TimeoutError) as exc:
-            if attempt == 2 or isinstance(exc, HTTPError) and exc.code not in (408,429,500,502,503,504):
+            if attempt == 3 or isinstance(exc, HTTPError) and exc.code not in (408,429,500,502,503,504):
                 raise
-            time.sleep(2 ** attempt)
+            delay = int(exc.headers.get("Retry-After", "60")) if isinstance(exc, HTTPError) and exc.code == 429 else 2 ** attempt
+            time.sleep(min(120, max(1,delay)))
 
 
 def pages(path, **filters):
@@ -92,18 +94,19 @@ def audit(slug, key, userid, created, now):
             questions[q["id"]] = q
     own = [q for q in questions.values() if q["own_count"]]
     # Verify detail where filters confirm an own forecast even if the list hid history.
-    for post_id in filtered_post_ids - {q["post"] for q in own}:
+    questions_by_post = {q["post"] for q in questions.values()}
+    relevant_filtered = filtered_post_ids & questions_by_post
+    for post_id in relevant_filtered - {q["post"] for q in own}:
         for q in extract(read(f"/posts/{post_id}/",with_cp="false")):
             questions[q["id"]] = q
     own = [q for q in questions.values() if q["own_count"]]
-    if filtered_post_ids != {q["post"] for q in own}:
-        raise RuntimeError("Authenticated post filter and own-subquestion history do not agree")
+    mismatch = sorted(relevant_filtered ^ {q["post"] for q in own})
     for q in questions.values():
         if q["own_count"] is None and q["post"] not in filtered_post_ids:
             q["own_count"] = 0  # Exhaustive, separately paginated own-forecaster filter.
     counts = Counter(q["state"] for q in questions.values())
     comments = []
-    for post_id in filtered_post_ids:
+    for post_id in {q["post"] for q in own} | relevant_filtered:
         for c in pages("/comments/",post=post_id,author=userid):
             if c.get("author_id",userid) != userid:
                 raise ValueError("Incorrect author in filtered results")
@@ -118,7 +121,8 @@ def audit(slug, key, userid, created, now):
     open_now = [q for q in questions.values() if q["state"]=="open"]
     next_times = sorted({q["opens"] for q in questions.values() if q["state"]=="upcoming" and q["opens"] and q["opens"]>now})
     since = [q for q in questions.values() if q["opens"] and q["opens"]<=now and q["closes"] and q["closes"]>=created]
-    return {"project":pid,"slug":slug,"dates":{k:project.get(k) for k in ("start_date","close_date","forecasting_end_date")},
+    return {"own_filter_post_ids": sorted(filtered_post_ids)[:20], "own_filter_post_total":len(filtered_post_ids), "mismatching_post_ids":mismatch,
+            "project":pid,"slug":slug,"dates":{k:project.get(k) for k in ("start_date","close_date","forecasting_end_date")},
             "states":dict(counts),"questions":len(questions),"forecasted_questions":len(own),
             "forecast_events":sum(q["own_count"] for q in own),"duplicate_questions":[q["id"] for q in own if q["own_count"]>1],
             "opportunities_overlapping_account_lifetime":len(since),"unanswered_current":sum(not q["own_count"] for q in open_now),
