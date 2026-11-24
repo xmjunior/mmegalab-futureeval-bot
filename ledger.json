@@ -745,7 +745,13 @@
         }
       },
       "design_sha256": "9d758176607cdd7740b50c5897c38b271650834dbf01d449f1a9f10c6e9cecb7",
-      "models": {},
+      "models": {
+        "blind": {
+          "model": "openai/gpt-oss-120b",
+          "prompt_sha256": "7ac37c6e02b7c13364d11151586c3c6afe88ed9429e1ddae2346fa080f30ddba",
+          "status": "leased"
+        }
+      },
       "resolution": null
     }
   },
