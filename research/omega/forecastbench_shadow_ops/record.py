@@ -106,7 +106,7 @@ def eligible(day):
     return FIRST <= day <= LAST and (day - FIRST).days % 14 == 0
 
 
-def operate(repo, science_sha, run_id, now, run_science, api=status_api):
+def operate(repo, science_sha, run_id, now, run_science, api=status_api, validate_issue=None):
     if git_text(repo, "branch", "--show-current") != BRANCH or git(repo, "status", "--porcelain"):
         raise ValueError("The ledger requires a clean checkout of the dedicated branch")
     folder = repo / "forecastbench"
@@ -127,7 +127,14 @@ def operate(repo, science_sha, run_id, now, run_science, api=status_api):
 
     before = {name: path.read_bytes() for name, path in issues.items()}
     receipts = folder / "receipts"
-    run_science(folder, receipts)
+    failure = None
+    try:
+        run_science(folder, receipts)
+    except subprocess.SubprocessError as exc:
+        # The scientist publishes today's issue atomically before fetching any old outcomes.
+        if not active or today in before or not (folder / today).is_file() or validate_issue is None:
+            raise
+        failure = exc
     after = issues_in(folder)
     if any(name not in after or after[name].read_bytes() != raw for name, raw in before.items()):
         raise ValueError("Scientific code attempted to change a previously published forecast")
@@ -135,15 +142,17 @@ def operate(repo, science_sha, run_id, now, run_science, api=status_api):
     if new and (not active or new != {today}):
         raise ValueError("Only the eligible current UTC round can be issued")
     if new:
+        if validate_issue:
+            validate_issue(after[today])
         save(repo, [after[today]], "Seal the ForecastBench shadow round " + today[:-5])
 
-    errors = []
+    errors = [f"Scientific settlement failed after an intact issue: {failure}"] if failure else []
     changed_scores = []
     new_receipts = []
     for name, issue in sorted(after.items()):
         proof = receipts / name
         score = folder / "scores" / name
-        changed = score.is_file() and bool(git(repo, "status", "--porcelain", "--", str(score.relative_to(repo))))
+        changed = failure is None and score.is_file() and bool(git(repo, "status", "--porcelain", "--", str(score.relative_to(repo))))
         if proof.exists() and not changed:
             continue
         try:
@@ -189,7 +198,10 @@ def main():
         subprocess.run([sys.executable, str(driver), "run", "--state-dir", str(directory),
                         "--receipts-dir", str(receipts)], check=True, env=public, timeout=135)
 
-    operate(args.ledger.resolve(), science_sha, env["GITHUB_RUN_ID"], datetime.now(UTC), run_science)
+    sys.path.insert(0, str(driver.parent))
+    from shadow import read_seal
+    operate(args.ledger.resolve(), science_sha, env["GITHUB_RUN_ID"], datetime.now(UTC),
+            run_science, validate_issue=read_seal)
 
 
 if __name__ == "__main__":

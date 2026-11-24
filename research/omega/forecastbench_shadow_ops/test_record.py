@@ -105,6 +105,18 @@ class Publication(unittest.TestCase):
             self.run_cycle(ISSUE+timedelta(days=2), lambda f,_: (f/NAME).write_text('changed'))
         self.assertEqual(json.loads(record.git(self.remote, 'show', 'refs/heads/'+record.BRANCH+':forecastbench/'+NAME)), {'fair-coin':.5})
 
+    def test_partial_science_failure_preserves_only_the_independently_validated_new_issue(self):
+        def fail_after_issue(folder, receipts):
+            self.issue(folder, receipts)
+            record.write_once(folder/'scores'/NAME, {'simulated':'partial'})
+            raise subprocess.CalledProcessError(1, 'science')
+        def valid(path):
+            self.assertEqual(json.loads(path.read_bytes()), {'fair-coin':.5})
+        with self.assertRaisesRegex(ValueError, 'failed after an intact issue'):
+            record.operate(self.repo, SHA, RUN, ISSUE, fail_after_issue, self.api, valid)
+        self.assertIn('forecastbench/receipts/'+NAME,self.committed())
+        self.assertNotIn('forecastbench/scores/'+NAME,self.committed())
+
     def test_other_bot_or_wrong_status_url_cannot_pass(self):
         self.run_cycle(ISSUE)
         commit, rows = next(iter(self.statuses.items()))
