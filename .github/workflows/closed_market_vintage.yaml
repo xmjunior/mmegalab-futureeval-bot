@@ -14,7 +14,8 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with: {ref: 5ba764b6bafa61fcaef03022a4ff36835401d4ac, path: frozen-market, persist-credentials: false}
       - name: Install numerical library from PyPI
-        run: python -m pip install --only-binary=:all: numpy==2.2.6 --disable-pip-version-check
+        run: |
+          python -m pip install --only-binary=:all: numpy==2.2.6 --disable-pip-version-check
       - name: Compare original distributions with ALFRED releases available before each cutoff
         env:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
