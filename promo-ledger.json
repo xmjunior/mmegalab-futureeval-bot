@@ -49,6 +49,18 @@
       "status": "completed"
     }
   },
+  "free_experiments": {
+    "arena-ust-closed-blind-1": {
+      "groq-gpt-oss-120b": {
+        "cases": {},
+        "created_at": "2026-11-24T23:10:07.772756+00:00",
+        "max_micro_usd": 0,
+        "model": "openai/gpt-oss-120b",
+        "source_sha256": "802ac4001ae8dae72a7b01132db702f7136d96ddf94c07da4f4dfa0f7c23ac25",
+        "status": "running"
+      }
+    }
+  },
   "panel_hash": "173e2c3ade7fa75d0ee51014e22c25fc33959a48a8610905b0690ca4e4791471",
   "schema": "openai-promo-v2"
 }
