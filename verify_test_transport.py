@@ -16,7 +16,7 @@ PROJECT_ID, POST_ID, QUESTION_ID, COMMENT_ID = 32977, 43322, 43324, 1358826
 
 def main(audit):
     client = VerifiedPrizeClient(audit, base_url="https://www.metaculus.com/api")
-    identity = client._read("/users/me", {})
+    identity = client._read("/users/me/", {})
     if identity.get("username") != "megalab-mario-bot" or client.get_current_user_id() != identity.get("id"):
         raise PublicationError("Expected test bot owner was not authenticated")
     post = client.get_question_by_post_id(POST_ID, "unpack_subquestions")

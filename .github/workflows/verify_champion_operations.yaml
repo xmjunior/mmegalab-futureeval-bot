@@ -41,5 +41,5 @@ jobs:
       - name: Verify the unscored private receipt
         env:
           METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
-          ALLOW_TEST_NOTE_EDIT: ${{ github.run_number == 7 && github.run_attempt == 1 }}
+          ALLOW_TEST_NOTE_EDIT: ${{ github.run_number == 8 && github.run_attempt == 1 }}
         run: uv run --locked --no-dev python verify_test_transport.py
