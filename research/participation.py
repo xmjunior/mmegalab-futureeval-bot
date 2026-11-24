@@ -115,18 +115,30 @@ def audit(slug, key, userid, created, now):
     for post_id in {q["post"] for q in own} | filtered_post_ids:
         for private in ("true","false"):
             for c in pages("/comments/",post=post_id,author=userid,is_private=private):
-                if c.get("author_id",userid) != userid:
-                    raise ValueError("Incorrect author in filtered results")
+                author = c.get("author") or {}
+                if (author.get("id") != userid or author.get("username") != BOT or c.get("on_post") != post_id
+                        or c.get("is_private") is not (private == "true")):
+                    raise ValueError("Filtered comment metadata failed author/post/privacy readback")
                 comments.append({"id":c["id"], "created_at":utc(c.get("created_at")), "post":post_id,
-                                 "is_private":private == "true",
+                                 "author_id":author["id"], "is_private":c["is_private"],
                                  "included_forecast":bool(c.get("included_forecast"))})
     boards = read(f"/leaderboards/project/{pid}/",primary_only="true",with_entries="true")
     ranking = []
     for b in boards:
-        row = b.get("userEntry")
+        explicit = b.get("userEntry") or b.get("user_entry")
+        matches = [entry for entry in b["entries"] if (entry.get("user") or {}).get("id")==userid]
+        if len(matches)>1 or (explicit and (explicit.get("user") or {}).get("id")!=userid):
+            raise ValueError("Unexpected leaderboard account matches")
+        if explicit and matches and (explicit.get("rank"),explicit.get("score"))!=(matches[0].get("rank"),matches[0].get("score")):
+            raise ValueError("Personal leaderboard entry disagrees with the participant table")
+        row = explicit or (matches[0] if matches else None)
         ranking.append({"leaderboard":b.get("id"),"score_type":b.get("score_type"),"ranked_entries":len(b.get("entries",[])),
-                        "coverage_max":b.get("max_coverage"),"own_entry":None if row is None else
+                        "coverage_max":b.get("max_coverage"),"self_entry_key":next((k for k in ("userEntry","user_entry") if k in b),None),
+                        "matched_entries_by_own_user_id":len(matches), "officially_finalized":b.get("finalized"),"own_entry":None if row is None else
                         {k:row.get(k) for k in ("rank","score","coverage","exclusion_status","prize","percent_prize")}})
+    participation = project.get("has_participated")
+    if isinstance(participation, bool) and participation != bool(filtered_post_ids):
+        raise RuntimeError("Project participation flag disagrees with the forecast-owner filter")
     open_now = [q for q in questions.values() if q["state"]=="open"]
     next_times = sorted({q["opens"] for q in questions.values() if q["state"]=="upcoming" and q["opens"] and q["opens"]>now})
     since = [q for q in questions.values() if q["opens"] and q["opens"]<=now and q["closes"] and q["closes"]>=created]
