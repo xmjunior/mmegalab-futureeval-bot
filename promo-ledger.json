@@ -53,6 +53,12 @@
     "arena-ust-closed-blind-1": {
       "groq-gpt-oss-120b": {
         "cases": {
+          "100": {
+            "issued_at": "2026-11-24T23:11:06.475482+00:00",
+            "origin_index": 100,
+            "prompt_sha256": "41ab1b9423bca97bcd814ee625c1fc901db5e3819276dbc0e0b2cca29ada829e",
+            "status": "leased"
+          },
           "64": {
             "closed_at": "2026-11-24T23:10:10.817018+00:00",
             "issued_at": "2026-11-24T23:10:09.069143+00:00",
