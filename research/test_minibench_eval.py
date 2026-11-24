@@ -137,6 +137,63 @@ class Mini(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             mb.update(api, ledger, T0, NOW)
 
+    def test_empty_resolved_page_with_speculative_next(self):
+        class EmptyResolved(Api):
+            def get(self, path, **params):
+                if path == "/posts/":
+                    self.calls.append((path, params))
+                    return {
+                        "results": [],
+                        "next": "https://www.metaculus.com/api/posts/?offset=100",
+                    }
+                return super().get(path, **params)
+
+        api = EmptyResolved()
+        ledger = mb.update(api, {"rounds": {}}, T0, NOW)
+        self.assertEqual(ledger["rounds"]["41"]["coverage"]["all_resolved_solo"], 0)
+        self.assertEqual(sum(p == "/posts/" for p, _ in api.calls), 1)
+        self.assertFalse(
+            any(p == "/questions/bulk-forecast-read/" for p, _ in api.calls)
+        )
+
+    def test_nonempty_page_then_empty_retains_all_rows(self):
+        class LastEmpty(Api):
+            def get(self, path, **params):
+                if path == "/posts/":
+                    original = super().get(path, **params)
+                    return {
+                        "results": original["results"] if params["offset"] == 0 else [],
+                        "next": "next",
+                    }
+                return super().get(path, **params)
+
+        api = LastEmpty()
+        self.assertEqual(mb.metadata(api, 41)[0][3]["id"], 3)
+        self.assertEqual([params["offset"] for p, params in api.calls], [0, 1])
+
+    def test_explicit_remaining_count_cannot_be_silently_lost(self):
+        class Inconsistent(Api):
+            def get(self, path, **params):
+                return {"results": [], "next": "next", "count": 1}
+
+        with self.assertRaisesRegex(RuntimeError, "before its advertised total"):
+            mb.metadata(Inconsistent(), 41)
+
+    def test_real_second_block_is_not_discarded(self):
+        class TwoPages(Api):
+            def get(self, path, **params):
+                page = super().get(path, **params)
+                if params["offset"] == 1:
+                    page["results"][0]["question"]["id"] = 42
+                elif params["offset"] == 2:
+                    page["results"] = []
+                page["next"] = "next"
+                return page
+
+        api = TwoPages()
+        self.assertEqual(sorted(mb.metadata(api, 41)[0]), [3, 42])
+        self.assertEqual([params["offset"] for _, params in api.calls], [0, 1, 2])
+
     def test_rotating_round_completes_old(self):
         api = Api()
         ledger = {"rounds": {}}

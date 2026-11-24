@@ -4,12 +4,17 @@ import os
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.error import HTTPError, URLError
-from urllib.request import Request, urlopen
+from urllib.request import HTTPRedirectHandler, Request, build_opener
+
+
+class NoRedirect(HTTPRedirectHandler):
+    def redirect_request(self, *args):
+        return None
 
 
 def status(url, headers, select):
     try:
-        with urlopen(Request(url, headers=headers), timeout=15) as response:
+        with build_opener(NoRedirect).open(Request(url, headers=headers), timeout=15) as response:
             payload = json.load(response)
         return {"status": "verified", **select(payload)}
     except HTTPError as error:

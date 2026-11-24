@@ -25,6 +25,13 @@ GEMMAS = ("gemma-4-31b-it", "gemma-4-26b-a4b-it")
 GOOGLE_PRICING = "https://aistudio.google.com/docs/pricing.md"
 SOFR = "https://markets.newyorkfed.org/api/rates/secured/sofr/last/5.json"
 CANDIDATE = "nvidia/nemotron-3-ultra-550b-a55b:free"
+# Named base models appear on the 2026-11-24 FutureEval model leaderboard.
+# A base listing, score, credit balance, or paid endpoint never enables these IDs.
+FRONTIERS = (
+    "anthropic/claude-opus-5:free",
+    "openai/gpt-5.6-sol:free",
+    "moonshotai/kimi-k3:free",
+)
 METHODS = ("champion", "A", "B", "C", "D", "E", "F", "coin")
 HORIZONS = (3, 7, 14)
 
@@ -44,12 +51,19 @@ def write_ledger(path, book):
     os.replace(tmp, path)
 
 
+class NoAuthRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        raise ValueError("credentialed_redirect_refused")
+
+
 def request(url, body=None, headers=None, limit=3_000_000, timeout=30):
     hdr = {"User-Agent": "MEGALAB-public-economics-research/1", **(headers or {})}
     if body is not None:
         hdr["Content-Type"] = "application/json"
     req = urllib.request.Request(url, headers=hdr, data=None if body is None else json.dumps(body).encode())
-    with urllib.request.urlopen(req, timeout=timeout) as stream:
+    has_secret = any(name.lower() in {"authorization", "x-goog-api-key"} for name in hdr)
+    opener = urllib.request.build_opener(NoAuthRedirect()).open if has_secret else urllib.request.urlopen
+    with opener(req, timeout=timeout) as stream:
         raw = stream.read(limit + 1)
     if len(raw) > limit:
         raise ValueError("response_too_large")
@@ -206,6 +220,20 @@ class Routes:
     def ready(self, model):
         return bool(os.getenv("GEMINI_API_KEY" if model in GEMMAS else "OPENROUTER_API_KEY"))
 
+    def verified_free(self, model):
+        if model not in (CANDIDATE, *FRONTIERS):
+            return False
+        if self.free_catalog is None:
+            items = json.loads(request(ORIGIN + "models", limit=8_000_000))["data"]
+            self.free_catalog = {row["id"]: row.get("pricing", {}) for row in items}
+        prices = self.free_catalog.get(model, {})
+        if not isinstance(prices, dict) or not {"prompt", "completion"} <= prices.keys():
+            return False
+        try:
+            return all(Decimal(str(v)).is_zero() for v in prices.values())
+        except ArithmeticError:
+            return False
+
     def call(self, model, prompt):
         if model in GEMMAS:
             if not self.google_prices_checked:
@@ -225,13 +253,9 @@ class Routes:
                                     {"x-goog-api-key": os.environ["GEMINI_API_KEY"]}, timeout=55))
             text = "\n".join(p["text"] for p in reply["candidates"][0]["content"]["parts"] if p.get("text") and not p.get("thought"))
             return text, reply.get("modelVersion", model), reply.get("usageMetadata", {})
-        if model != CANDIDATE or not model.endswith(":free"):
+        if model not in (CANDIDATE, *FRONTIERS) or not model.endswith(":free"):
             raise ValueError("model_outside_allowlist")
-        if self.free_catalog is None:
-            items = json.loads(request(ORIGIN + "models", limit=8_000_000))["data"]
-            self.free_catalog = {row["id"]: row.get("pricing", {}) for row in items}
-        prices = self.free_catalog.get(model, {})
-        if not {"prompt", "completion"} <= set(prices) or any(Decimal(str(v)) != 0 for v in prices.values()):
+        if not self.verified_free(model):
             raise ValueError("zero_price_unverified")
         body = {"model": model, "messages": [{"role": "user", "content": prompt}],
                 "temperature": .2, "max_tokens": 1536,
@@ -242,6 +266,8 @@ class Routes:
         if actual.removesuffix(":free") != model.removesuffix(":free"):
             raise ValueError("model_substitution")
         usage = reply.get("usage", {})
+        if model in FRONTIERS and usage.get("cost") is None:
+            raise ValueError("frontier_zero_cost_receipt_missing")
         if Decimal(str(usage.get("cost") or 0)) != 0:
             raise ValueError("provider_reported_nonzero_cost")
         return reply["choices"][0]["message"]["content"], actual, usage
@@ -323,6 +349,48 @@ def record(case, name, p=None, reason="", **fields):
     case["strategies"][name] = item
 
 
+def adjudicate(case, routes, template, checkpoint):
+    arms = case["strategies"]
+    if "p" in arms.get("E", {}):
+        return
+    if any("p" not in arms.get(arm, {}) for arm in ("champion", "A")):
+        record(case, "E", reason="disagreement_unobservable")
+        return
+    pair = [Decimal(str(arms[arm]["p"])) for arm in ("champion", "A")]
+    if abs(pair[0] - pair[1]) < Decimal("0.20"):
+        record(case, "E", reason="disagreement_below_0.20")
+        return
+    if now_utc().date().isoformat() != case["issued_at"][:10]:
+        return
+    # Budget is one inference per case, including failed requests and across reruns.
+    prior = next((a for a in case["attempts"] if a["key"].endswith("/adjudication")), None)
+    if prior:
+        model = prior["model"]
+        reply = case["cache"].get(prior["key"], {}).get("text")
+    else:
+        if not routes.ready(FRONTIERS[0]):
+            record(case, "E", reason="frontier_key_unavailable")
+            return
+        try:
+            model = next((m for m in FRONTIERS if routes.verified_free(m)), None)
+        except (OSError, ValueError, KeyError, TypeError):
+            record(case, "E", reason="frontier_free_catalog_unavailable")
+            return
+        if model is None:
+            record(case, "E", reason="no_verified_free_frontier_route")
+            return
+        evidence = ("Adjudicate two forecasts for this same event. Consider the official as-of evidence and give your own final probability. "
+                    f"Forecaster 1: {pair[0] * 100}%; forecaster 2: {pair[1] * 100}%. "
+                    + json.dumps(case["evidence"], sort_keys=True))
+        reply = get_reply(case, model, "adjudication", render(template, case, evidence), routes, checkpoint)
+    try:
+        p = probability(reply or "")
+    except ValueError:
+        record(case, "E", reason="adjudication_no_valid_free_response", model=model)
+        return
+    record(case, "E", p, "disagreement_triggered_frontier", model=model, inputs=["champion", "A"])
+
+
 def forecast(case, routes, templates, checkpoint):
     e = case["evidence"]
     c = (e["moves_above_threshold_offset"] + 2) / (e["disjoint_intervals"] + 4)
@@ -369,11 +437,9 @@ def forecast(case, routes, templates, checkpoint):
     if "p" in arms["champion"] and "p" in arms["A"]:
         pair = [arms["champion"]["p"], arms["A"]["p"]]
         record(case, "D", statistics.mean(pair), "equal_linear_pool_two_independent_families", inputs=["champion", "A"])
-        e_reason = "credit_only_frontier_unprovisioned" if abs(pair[0]-pair[1]) >= .2 else "disagreement_below_0.20"
     else:
         record(case, "D", reason="two_model_families_required")
-        e_reason = "disagreement_unobservable"
-    record(case, "E", reason=e_reason)
+    adjudicate(case, routes, templates["binary"], checkpoint)
     route = "C" if case["horizon_days"] <= 7 and e["disjoint_intervals"] >= 20 else "B"
     record(case, "F", arms[route].get("p"), "predeclared_horizon_and_analog_count", input=route)
     checkpoint()

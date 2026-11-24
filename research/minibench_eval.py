@@ -147,9 +147,15 @@ def metadata(api, ident):
                     "resolution_set_time",
                 )
             }
-        if not page.get("next"):
+        # Metaculus uses CountlessLimitOffsetPagination (get_count returns infinity),
+        # so next can exist even for the empty terminal page. Respect a finite count
+        # should another server version supply it; an inconsistent page fails closed.
+        if not posts or not page.get("next"):
+            count = page.get("count")
+            if type(count) is int and count > offset + len(posts):
+                raise RuntimeError("Page ended before its advertised total")
             return rows, skipped
-        if not posts or offset > 5000:
+        if offset > 5000:
             raise RuntimeError("Incomplete results pagination")
         offset += len(posts)
 

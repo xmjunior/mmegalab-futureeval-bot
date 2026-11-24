@@ -32,6 +32,9 @@ class FakeRoutes:
     def ready(self, model):
         return True
 
+    def verified_free(self, model):
+        return False
+
     def call(self, model, prompt):
         self.calls.append((model,prompt))
         if "You do not produce forecasts yourself" in prompt:
@@ -69,7 +72,7 @@ class ShadowTests(unittest.TestCase):
         s.forecast(self.case,r,self.templates,lambda:None)
         self.assertEqual(len(r.calls),5)
         self.assertEqual(self.case["strategies"]["D"]["p"],.55)
-        self.assertEqual(self.case["strategies"]["E"]["reason"], "credit_only_frontier_unprovisioned")
+        self.assertEqual(self.case["strategies"]["E"]["reason"], "no_verified_free_frontier_route")
         self.assertIn("Today is 2026-11-24.", r.calls[1][1])
         self.assertIn("The last thing you write is your final answer", r.calls[1][1])
         self.assertIn("Your research assistant says:\nSynthetic evidence.",r.calls[1][1])
@@ -107,6 +110,55 @@ class ShadowTests(unittest.TestCase):
             self.assertEqual(calls.call_count,1)
         with self.assertRaisesRegex(ValueError,"outside_allowlist"):
             r.call("paid_model","test")
+
+    def test_frontier_adjudicates_exactly_once_on_verified_free_route(self):
+        m = s.FRONTIERS[0]
+        self.case["strategies"] = {"champion": {"p": .7}, "A": {"p": .5}}
+        prices = {"id": m, "pricing": {"prompt": "0", "completion": "0", "request": "0"}}
+        reply = {"model": m, "choices": [{"message": {"content": "Probability: 58%"}}], "usage": {"cost": 0}}
+        with mock.patch.dict("os.environ", {"OPENROUTER_API_KEY": "unit-test-only"}), mock.patch.object(
+            s, "request", side_effect=[json.dumps({"data":[prices]}).encode(), json.dumps(reply).encode()]
+        ) as calls:
+            s.adjudicate(self.case,s.Routes(),self.templates["binary"],lambda:None)
+            self.assertEqual(self.case["strategies"]["E"]["p"],.58)
+            self.assertEqual(calls.call_args_list[1].args[1]["provider"]["max_price"],{"prompt":0,"completion":0,"request":0})
+            self.assertEqual(calls.call_args_list[1].args[1]["model"],m)
+            s.adjudicate(self.case,s.Routes(),self.templates["binary"],lambda:None)
+            self.assertEqual(calls.call_count,2)
+
+    def test_frontier_abstains_on_price_missing_comparator_or_small_disagreement(self):
+        self.case["strategies"] = {"champion":{"p": .7}, "A":{"p": .4}}
+        m = s.FRONTIERS[0]
+        paid = [{"id": m, "pricing":{"prompt":"0","completion":"0","request":".00001"}},
+                {"id": m.removesuffix(":free"), "pricing":{"prompt":"0","completion":"0"}}]
+        with mock.patch.dict("os.environ", {"OPENROUTER_API_KEY":"unit-test-only"}), mock.patch.object(
+            s, "request",return_value=json.dumps({"data":paid}).encode()
+        ) as calls:
+            s.adjudicate(self.case,s.Routes(),self.templates["binary"],lambda:None)
+            self.assertEqual(self.case["strategies"]["E"]["reason"],"no_verified_free_frontier_route")
+            self.case["strategies"]["A"] = {"p": .66}
+            s.adjudicate(self.case,s.Routes(),self.templates["binary"],lambda:None)
+            self.assertEqual(self.case["strategies"]["E"]["reason"],"disagreement_below_0.20")
+            self.case["strategies"].pop("A")
+            s.adjudicate(self.case,s.Routes(),self.templates["binary"],lambda:None)
+            self.assertEqual(self.case["strategies"]["E"]["reason"],"disagreement_unobservable")
+            self.assertEqual(calls.call_count,1)
+            self.assertEqual(self.case["attempts"],[])
+
+    def test_frontier_single_failed_call_and_credential_redirect(self):
+        self.case["strategies"] = {"champion":{"p": .7}, "A":{"p": .4}}
+        m = s.FRONTIERS[0]
+        r = s.Routes()
+        r.free_catalog = {m:{"prompt":"0","completion":"0"}}
+        with mock.patch.dict("os.environ", {"OPENROUTER_API_KEY":"unit-test-only"}), mock.patch.object(
+            s, "request",side_effect=HTTPError("https://example.test",503,"fixture",{},None)
+        ) as calls:
+            s.adjudicate(self.case,r,self.templates["binary"],lambda:None)
+            s.adjudicate(self.case,s.Routes(),self.templates["binary"],lambda:None)
+            self.assertEqual(calls.call_count,1)
+            self.assertNotIn("p",self.case["strategies"]["E"])
+        with self.assertRaisesRegex(ValueError,"credentialed_redirect_refused"):
+            s.NoAuthRedirect().redirect_request(None,None,307,"fixture",{},"https://example.test")
 
     def test_invalid_bounds_and_no_label_yet(self):
         for txt in ("Probability: NaN%","Probability: 103%","I guess it is 42%.",""):

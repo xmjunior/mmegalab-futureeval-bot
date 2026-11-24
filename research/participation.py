@@ -86,6 +86,8 @@ def audit(slug, key, userid, created, now):
     project = read(f"/projects/tournaments/{slug}/")
     if "id" not in project:
         raise ValueError(f"Project identifier missing: {list(project)}")
+    if key.startswith("prior-") and not str(project.get("slug","")).startswith("minibench"):
+        raise ValueError("Requested archive is not a MiniBench tournament")
     pid = project["id"]
     questions = {}
     filtered_post_ids = {p["id"] for p in pages("/posts/",tournaments=pid,forecaster_id=userid,
@@ -113,23 +115,35 @@ def audit(slug, key, userid, created, now):
     for post_id in {q["post"] for q in own} | filtered_post_ids:
         for private in ("true","false"):
             for c in pages("/comments/",post=post_id,author=userid,is_private=private):
-                if c.get("author_id",userid) != userid:
-                    raise ValueError("Incorrect author in filtered results")
+                author = c.get("author") or {}
+                if (author.get("id") != userid or author.get("username") != BOT or c.get("on_post") != post_id
+                        or c.get("is_private") is not (private == "true")):
+                    raise ValueError("Filtered comment metadata failed author/post/privacy readback")
                 comments.append({"id":c["id"], "created_at":utc(c.get("created_at")), "post":post_id,
-                                 "is_private":private == "true",
+                                 "author_id":author["id"], "is_private":c["is_private"],
                                  "included_forecast":bool(c.get("included_forecast"))})
     boards = read(f"/leaderboards/project/{pid}/",primary_only="true",with_entries="true")
     ranking = []
     for b in boards:
-        row = b.get("userEntry")
+        explicit = b.get("userEntry") or b.get("user_entry")
+        matches = [entry for entry in b["entries"] if (entry.get("user") or {}).get("id")==userid]
+        if len(matches)>1 or (explicit and (explicit.get("user") or {}).get("id")!=userid):
+            raise ValueError("Unexpected leaderboard account matches")
+        if explicit and matches and (explicit.get("rank"),explicit.get("score"))!=(matches[0].get("rank"),matches[0].get("score")):
+            raise ValueError("Personal leaderboard entry disagrees with the participant table")
+        row = explicit or (matches[0] if matches else None)
         ranking.append({"leaderboard":b.get("id"),"score_type":b.get("score_type"),"ranked_entries":len(b.get("entries",[])),
-                        "coverage_max":b.get("max_coverage"),"own_entry":None if row is None else
+                        "coverage_max":b.get("max_coverage"),"self_entry_key":next((k for k in ("userEntry","user_entry") if k in b),None),
+                        "matched_entries_by_own_user_id":len(matches), "officially_finalized":b.get("finalized"),"own_entry":None if row is None else
                         {k:row.get(k) for k in ("rank","score","coverage","exclusion_status","prize","percent_prize")}})
+    participation = project.get("has_participated")
+    if isinstance(participation, bool) and participation != bool(filtered_post_ids):
+        raise RuntimeError("Project participation flag disagrees with the forecast-owner filter")
     open_now = [q for q in questions.values() if q["state"]=="open"]
     next_times = sorted({q["opens"] for q in questions.values() if q["state"]=="upcoming" and q["opens"] and q["opens"]>now})
     since = [q for q in questions.values() if q["opens"] and q["opens"]<=now and q["closes"] and q["closes"]>=created]
     return {"own_filter_post_ids": sorted(filtered_post_ids)[:20], "own_filter_post_total":len(filtered_post_ids), "mismatching_post_ids":mismatch,"question_history_missing_count":len(missing_history),"own_history_without_post":missing_own,
-            "project":pid,"slug":slug,"canonical_slug":project.get("slug"),"dates":{k:project.get(k) for k in ("start_date","close_date","forecasting_end_date")},
+            "project":pid,"slug":slug,"canonical_slug":project.get("slug"),"api_has_participated":project.get("has_participated"),"dates":{k:project.get(k) for k in ("start_date","close_date","forecasting_end_date")},
             "states":dict(counts),"questions":len(questions),"forecasted_questions":len(own),
             "forecast_events":sum(q["own_count"] for q in own),"duplicate_questions":[q["id"] for q in own if q["own_count"]>1],
             "opportunities_overlapping_account_lifetime":len(since),"unanswered_current":sum(not q["own_count"] for q in open_now),
@@ -144,15 +158,15 @@ now = datetime.now(UTC).isoformat()
 out = {"observed_at":now,"account":{k:me.get(k) for k in ("id","username","is_bot","is_primary_bot","date_joined")},
        "projects":{}}
 args = argparse.ArgumentParser()
-args.add_argument("--prior-minibench-file", type=Path, help="JSON list of previously observed MiniBench slugs")
+args.add_argument("--prior-minibench-file", type=Path, help="JSON list of previously observed MiniBench IDs or archived slugs")
 opts = args.parse_args()
 projects = [("FutureEval","fall-futureeval-2026"),("MiniBench","minibench"),("MarketPulse","market-pulse-26q4")]
 if opts.prior_minibench_file:
     import re
     slugs = json.loads(opts.prior_minibench_file.read_text())
-    if not isinstance(slugs,list) or len(slugs)>10 or not all(isinstance(s,str) and re.fullmatch(r"minibench-[a-z0-9-]{4,60}",s) for s in slugs):
+    if not isinstance(slugs,list) or len(slugs)>10 or not all((type(s) is int and 0<s<1000000) or (isinstance(s,str) and re.fullmatch(r"minibench-[a-z0-9-]{4,60}|[0-9]{1,6}",s)) for s in slugs):
         raise ValueError("Invalid historical MiniBench list")
-    projects += [(s,s) for s in sorted(set(slugs))]
+    projects += [("prior-"+s,s) for s in sorted(set(map(str,slugs)))]
 for name,slug in projects:
     try:
         out["projects"][name]=audit(slug,name,me["id"],created or now,now)
