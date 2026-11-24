@@ -708,7 +708,7 @@ if __name__ == "__main__":
     # whichever default models forecasting-tools picks based on your env vars;
     # uncomment and edit to pin specific models.
     free_model = GeneralLlm(
-        model="openrouter/openrouter/free",
+        model="gemini/gemini-3.5-flash-lite",
         temperature=0.2,
         timeout=90,
         allowed_tries=3,
