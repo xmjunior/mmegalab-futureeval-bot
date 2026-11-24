@@ -2,12 +2,15 @@ import argparse
 import asyncio
 import logging
 import os
+import platform
 import re
 import time
 from datetime import datetime, timezone
 from typing import Literal
 
 import dotenv
+
+from local_forecast import CpuForecaster, MODEL_NAME
 
 # Runtime helpers (env validation, banners, dependency-warning suppression).
 from bot_helpers import (
@@ -68,12 +71,16 @@ class FreeForecastLlm(GeneralLlm):
         ]
         self.available_at = dict.fromkeys(names, 0.0)
         self.lock = asyncio.Lock()
+        self.cpu = None
 
     def to_dict(self):
-        return {"free_routes_in_order": [route.model for route in self.routes]}
+        return {"free_routes_in_order": [route.model for route in self.routes],
+                "cpu_fallback": MODEL_NAME}
 
     async def invoke(self, prompt, system_prompt=None):
         async with self.lock:
+            if self.cpu is not None:
+                return await asyncio.to_thread(self.cpu.invoke, prompt, system_prompt)
             # Try each currently available route before waiting for one short retry.
             for round_number in range(2):
                 wait = min(self.available_at.values()) - time.monotonic()
@@ -116,7 +123,11 @@ class FreeForecastLlm(GeneralLlm):
                         raise ValueError(f"Empty response from {route.model}")
                     logger.info("Model responded: %s", route.model)
                     return answer
-        raise RuntimeError("All configured free model routes are temporarily unavailable")
+            if platform.system() == "Linux" and platform.machine() == "x86_64":
+                logger.info("Hosted routes unavailable; starting CPU inference for this run")
+                self.cpu = await asyncio.to_thread(CpuForecaster)
+                return await asyncio.to_thread(self.cpu.invoke, prompt, system_prompt)
+            raise RuntimeError("Free routes unavailable; CPU fallback requires Linux x86_64")
 
 
 class FallTemplateBot2026(ForecastBot):
