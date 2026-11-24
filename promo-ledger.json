@@ -15,14 +15,38 @@
       "status": "stopped_no_retry"
     },
     "openai": {
+      "evidence_at": "2026-11-24T21:36:46+00:00",
+      "github_run_id": "45493080434",
       "lease_nonce": "b6d5f4cfb0244466916196725e29bedd",
       "max_micro_usd": 19200,
-      "records": {},
+      "records": {
+        "ust-promo-v1-20261202-2y": 0.514286,
+        "ust-promo-v1-20261202-spread": 0.314286,
+        "ust-promo-v1-20261209-2y": 0.5,
+        "ust-promo-v1-20261209-spread": 0.363636
+      },
+      "request": {
+        "billing_reconciliation": "pending_grant_level_statement",
+        "cached_input_tokens": 0,
+        "input_tokens": 512,
+        "issued_at": "2026-11-24T21:38:20.310790+00:00",
+        "model": "gpt-5.6-sol",
+        "output_sha256": "43917ef38355af73d1c18b63f72544a1e55e0ea339f6f9b73ba2255183ee3949",
+        "output_tokens": 166,
+        "prompt_sha256": "feb6205b0bfd71fb34eeb9e304505cf5dccb6d4dff4d105d1d769e264b7c755a",
+        "provider_status": "completed",
+        "reasoning_tokens": 90,
+        "received_at": "2026-11-24T21:38:20.310790+00:00",
+        "response_id_sha256": "030877ec92fbc638a3f33c67aa4b7f30b5dc2e0a326c8fcf7b8ca854efda2692",
+        "standard_token_cost_micro_usd": 5368,
+        "usage_cost_upper_micro_usd": 13560
+      },
       "requests": {
         "single_panel_request": 19200
       },
+      "reviewed_capture_sha256": "25111e93eddc5b1eb5d1296245a1940c0d6483c889c5b6a84436eec9293f68c5",
       "started_at": "2026-11-24T21:38:14.732309+00:00",
-      "status": "reserved"
+      "status": "completed"
     }
   },
   "panel_hash": "173e2c3ade7fa75d0ee51014e22c25fc33959a48a8610905b0690ca4e4791471",
