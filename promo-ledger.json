@@ -79,6 +79,12 @@
               "prompt_tokens": 160
             }
           },
+          "124": {
+            "issued_at": "2026-11-24T23:11:45.078481+00:00",
+            "origin_index": 124,
+            "prompt_sha256": "0db71b7b6fff650467776714f9bcca0d9e8227e3b8c092b3cfe8895adef26532",
+            "status": "leased"
+          },
           "64": {
             "closed_at": "2026-11-24T23:10:10.817018+00:00",
             "issued_at": "2026-11-24T23:10:09.069143+00:00",
