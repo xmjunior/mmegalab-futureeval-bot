@@ -43,6 +43,28 @@ def call(base, suffix, token, method="GET", payload=None, **params):
 
 
 
+def recent_coverage(route, file, token, now):
+    runs = call(GH, route + "/runs", token, per_page=30)["workflow_runs"]
+    relevant = [r for r in runs if r["head_branch"] == "main" or
+                (file == TARGETS["33121"] and r["head_branch"] == "release/futureeval")]
+    active = any(r["status"] != "completed" for r in relevant)
+    recent = [r for r in relevant if datetime.fromisoformat(r["created_at"]) >= now - timedelta(minutes=42)]
+    fresh = any(datetime.fromisoformat(r["created_at"]) >= now - timedelta(minutes=3) for r in recent)
+    # Missing completion time cannot prove that a new question opened after this run.
+    through = max((datetime.fromisoformat(r["updated_at"]) if r.get("updated_at") else now
+                   for r in recent), default=None)
+    return active or fresh, through
+
+
+def needs_poll(open_time, through):
+    if through is None:
+        return True
+    if not open_time:
+        return False
+    opened = datetime.fromisoformat(open_time)
+    return opened.tzinfo is not None and opened > through
+
+
 def main():
     args = argparse.ArgumentParser()
     args.add_argument("--dispatch", action="store_true", help="Call only the whitelisted workflows on main")
@@ -53,14 +75,9 @@ def main():
     now = datetime.now(timezone.utc)
     for ident, file in TARGETS.items():
         route = "/actions/workflows/" + file
-        runs = call(GH,route+"/runs",git_token,per_page=10)["workflow_runs"]
-        relevant = [r for r in runs if r["head_branch"]=="main" or
-                    (file=="run_bot_on_tournament.yaml" and r["head_branch"]=="release/futureeval")]
-        active = any(r["status"]!="completed" for r in relevant)
-        recent = any(now-datetime.fromisoformat(r["created_at"]) < timedelta(minutes=42) for r in relevant)
-        native = next((r for r in relevant if r["event"]=="schedule"),None)
-        if active or recent:
-            print(ident, "original workflow active or recent; no dispatch", "last_native", (native or {}).get('id'))
+        busy, through = recent_coverage(route, file, git_token, now)
+        if busy:
+            print(ident, "original workflow active or just created; no dispatch")
             continue
         if not verified:
             me = call(MC, "/users/me/", mc_token)
@@ -74,27 +91,32 @@ def main():
         feed = call(MC,"/posts/",mc_token,tournaments=pid,statuses="open",with_cp="false",
                     include_descriptions="false",limit=100)
         if len(feed["results"]) >= 100: raise RuntimeError("Tournament batch too large for this guard")
-        candidates = set()
+        candidates = {}
         for post in feed["results"]:
             if post.get("group_of_questions"):
                 post = call(MC, f"/posts/{post['id']}/", mc_token, with_cp="false")
             q = post.get("question")
-            if q and q["status"]=="open": candidates.add(q["id"])
+            if q and q["status"]=="open": candidates[q["id"]] = q.get("open_time")
             for q in (post.get("group_of_questions") or {}).get("questions",[]):
-                if q["status"]=="open": candidates.add(q["id"])
+                if q["status"]=="open": candidates[q["id"]] = q.get("open_time")
             for q in (post.get("conditional") or {}).values():
-                if isinstance(q,dict) and q.get("status")=="open" and q.get("id"): candidates.add(q["id"])
+                if isinstance(q,dict) and q.get("status")=="open" and q.get("id"): candidates[q["id"]] = q.get("open_time")
+        candidates = {qid: opened for qid, opened in candidates.items() if needs_poll(opened, through)}
         if not candidates:
-            print(ident, "no open subquestions; no dispatch")
+            print(ident, "no uncovered open window; no dispatch")
             continue
         history = call(MC,"/questions/bulk-forecast-read/",mc_token, question_ids=sorted(candidates))["results"]
         if any(item.get("author_id") != 313890 for row in history for item in row["forecasts"]):
             raise ValueError("Unverified forecast owner")
         own = {row["question_id"]: bool(row["forecasts"]) for row in history}
-        if candidates-own.keys(): raise RuntimeError("Account history incomplete; refusing dispatch")
+        if candidates.keys()-own.keys(): raise RuntimeError("Account history incomplete; refusing dispatch")
         missed = sorted(qid for qid in candidates if not own[qid])
         print(ident,"unanswered",missed,"dispatch",bool(opts.dispatch and missed))
         if missed and opts.dispatch:
+            busy, through = recent_coverage(route, file, git_token, datetime.now(timezone.utc))
+            if busy or not any(needs_poll(candidates[qid], through) for qid in missed):
+                print(ident, "another original run now covers this window")
+                continue
             call(GH,route+"/dispatches",git_token,method="POST",payload={"ref":"main"})
 
 
