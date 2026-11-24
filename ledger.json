@@ -747,9 +747,17 @@
       "design_sha256": "9d758176607cdd7740b50c5897c38b271650834dbf01d449f1a9f10c6e9cecb7",
       "models": {
         "anchored": {
+          "issued_utc": "2026-11-24T23:19:44.588065+00:00",
           "model": "openai/gpt-oss-120b",
+          "p": 0.342,
           "prompt_sha256": "8e93e3ecb6bad2c822bb8eed339e74a1e02b8412fbb935030e83428934ee64ac",
-          "status": "leased"
+          "response_sha256": "83720e2b1a78b8454e17e55ee10e546168fca86b34c4f631c3dd52aa8016b708",
+          "sha256": "9d7bf00ec5c378af1ea944229ca34c8da780a5bd253089472dba7568c6c15137",
+          "status": "sealed",
+          "tokens": {
+            "completion_tokens": 92,
+            "prompt_tokens": 229
+          }
         },
         "blind": {
           "issued_utc": "2026-11-24T23:19:40.543441+00:00",
@@ -773,7 +781,7 @@
     "additional_cost_usd": 0,
     "issued": 1,
     "model_coverage": {
-      "anchored": 0,
+      "anchored": 1,
       "blind": 1
     },
     "paired": 0,
