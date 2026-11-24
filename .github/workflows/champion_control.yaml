@@ -15,7 +15,7 @@ concurrency:
   group: champion-v2-observations
   cancel-in-progress: false
 env:
-  RESEARCH_SHA: "fa7ec20514fdc65e9d1e4a72a2449067728f3ba7"
+  RESEARCH_SHA: "37bfed3d0e3e16a33292babfc59870e9cbc80f5c"
 jobs:
   evaluate:
     if: (github.ref_name == 'main' || (github.event_name == 'push' && github.ref_name == 'verify/champion-v2-control')) && github.event_name != 'workflow_run' && (github.event_name != 'schedule' || github.event.schedule == '17 7,19 * * *')
@@ -33,12 +33,22 @@ jobs:
           ref: research/champion-observations
           path: previous
           persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: research/openai-promo-ledger-v2
+          path: provider-panel
+          persist-credentials: false
       - name: Restore the committed observations
         run: |
           set -eu
           mkdir -p state
           cp previous/records/treasury.json state/treasury.json
           if test -f previous/records/minibench.json; then cp previous/records/minibench.json state/; fi
+          if test -f previous/records/promo-score.json; then cp previous/records/promo-score.json state/; fi
+      - name: Score the sealed public Treasury panel after official observations mature
+        id: promo
+        continue-on-error: true
+        run: python research/promo/settle.py --state state/promo-score.json --journal provider-panel/promo-ledger.json
       - name: Check configured zero-cost provider capabilities without inference
         run: |
           python research/provider_status.py
@@ -71,6 +81,7 @@ jobs:
           python research/participation.py
       - name: Stage the audit and record actual step outcomes
         env:
+          PROMO: ${{ steps.promo.outcome }}
           TREASURY: ${{ steps.treasury.outcome }}
           MINI: ${{ steps.minibench.outcome }}
           AUDIT: ${{ steps.audit.outcome }}
@@ -79,7 +90,7 @@ jobs:
           python - <<'PY'
           import json, os
           from pathlib import Path
-          keys = ['TREASURY','MINI','AUDIT','RESEARCH_SHA','GITHUB_SHA','GITHUB_EVENT_NAME','GITHUB_RUN_ID','GITHUB_RUN_ATTEMPT']
+          keys = ['TREASURY','MINI','AUDIT','PROMO','RESEARCH_SHA','GITHUB_SHA','GITHUB_EVENT_NAME','GITHUB_RUN_ID','GITHUB_RUN_ATTEMPT']
           info = {k:os.environ[k] for k in keys}
           Path('state/run.json').write_text(json.dumps(info, indent=2)+'\n')
           print(json.dumps(info))
@@ -121,12 +132,12 @@ jobs:
           assert run['GITHUB_RUN_ID'] == os.environ['GITHUB_RUN_ID']
           snapshot=dest/'runs'/(run['GITHUB_RUN_ID']+'-'+run['GITHUB_RUN_ATTEMPT'])
           snapshot.mkdir(parents=True,exist_ok=True)
-          for name,status in [('treasury.json','TREASURY'),('minibench.json','MINI')]:
+          for name,status in [('treasury.json','TREASURY'),('minibench.json','MINI'),('promo-score.json','PROMO')]:
               f=src/name
               if f.exists() and run[status]=='success':
                   json.loads(f.read_text())
                   copyfile(f,dest/name)
-          for name in ['participation.json','provider-status.json','run.json']:
+          for name in ['participation.json','provider-status.json','promo-score.json','run.json']:
               f=src/name
               if f.is_file():
                   json.loads(f.read_text())
@@ -148,7 +159,7 @@ jobs:
           import json
           from pathlib import Path
           run=json.loads(Path('incoming/run.json').read_text())
-          incomplete=[field for field in ('TREASURY','MINI','AUDIT') if run[field]!='success']
+          incomplete=[field for field in ('TREASURY','MINI','AUDIT','PROMO') if run[field]!='success']
           if incomplete: raise SystemExit('Incomplete checks: '+', '.join(incomplete))
           PY
   coverage:
