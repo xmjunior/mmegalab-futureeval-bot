@@ -51,7 +51,7 @@ def main(audit):
     if client.get_current_user_id() <= 0:
         raise PublicationError("Authentication failed")
     # Call the ordinary discovery method rather than auditing older testing-area comments.
-    questions = MetaculusClient.get_all_open_questions_from_tournament(client, TEST_AREA, "exclude")
+    questions = MetaculusClient.get_all_open_questions_from_tournament(client, TEST_AREA, "unpack_subquestions")
     binary = sorted((q for q in questions if type(q) is BinaryQuestion), key=lambda q: q.id_of_question)
     eligible = [q for q in binary if in_test_area(q)]
     print(f"Auth verified project_slug={TEST_AREA} binaries={len(binary)} "
@@ -64,6 +64,9 @@ def main(audit):
         forecasts = client._my_forecasts(q.id_of_question)
         comments = list(client._my_comments(q.id_of_post))
         if q.already_forecasted or forecasts or comments:
+            print(f"Excluded previous records project={ids[0]} post={ids[1]} question={ids[2]} "
+                  f" SDK_prior={int(bool(q.already_forecasted))} own_forecasts={len(forecasts)} "
+                  f"private_comments={len(comments)}", file=audit)
             if PINNED is not None:
                 raise PublicationError("Pinned question has pre-existing records; no write sent")
             continue

@@ -1,5 +1,6 @@
 """Verify prize submissions without writing sealed forecasts to Actions logs."""
 import contextvars
+from contextlib import contextmanager
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -29,6 +30,9 @@ def open_audit_stream():
     return stream
 
 
+_question_routes = contextvars.ContextVar("question_routes", default=None)
+
+
 class ProviderAuditHandler(logging.Handler):
     """Emit only known provider events, with validated scalar arguments."""
     MODELS = frozenset(("gemini/gemma-4-31b-it", "gemini/gemma-4-26b-a4b-it", "openrouter/openrouter/free"))
@@ -43,6 +47,9 @@ class ProviderAuditHandler(logging.Handler):
         if not isinstance(args, tuple) or not args or type(args[0]) is not str or args[0] not in self.MODELS:
             return
         if record.msg == "Model responded: %s" and len(args) == 1:
+            routes = _question_routes.get()
+            if routes is not None:
+                routes.add(args[0])
             print(f"Hosted model responded model={args[0]}", file=self.output)
         elif record.msg == "Free route %s unavailable (%s), cooldown %ss" and len(args) == 3:
             model, status, cooldown = args
@@ -68,6 +75,15 @@ class VerifiedPrizeClient(MetaculusClient):
         self.incomplete_previous = set()
         self.unverified_legacy = set()
         self.owner_id = None
+
+    @contextmanager
+    def track_question_routes(self):
+        # Async research and forecast subtasks inherit this question's set.
+        token = _question_routes.set(set())
+        try:
+            yield
+        finally:
+            _question_routes.reset(token)
 
     def get_current_user_id(self):
         if self.owner_id is None:
@@ -200,6 +216,9 @@ class VerifiedPrizeClient(MetaculusClient):
         question_id, payload = pending
         # The API serializes comment text with Django CharField trim_whitespace.
         comment_text = comment_text.strip()
+        routes = _question_routes.get()
+        if routes:
+            comment_text += "\n\nHosted routes used for this question: " + ", ".join(sorted(routes))
         try:
             self._commit_pair(question_id, post_id, payload, comment_text)
         except PublicationError as exc:

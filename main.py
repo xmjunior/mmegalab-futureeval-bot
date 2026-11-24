@@ -236,6 +236,13 @@ class FallTemplateBot2026(ForecastBot):
     )
     _concurrency_limiter = asyncio.Semaphore(_max_concurrent_questions)
 
+    async def _run_individual_question(self, question):
+        tracker = getattr(self.metaculus_client, "track_question_routes", None)
+        if tracker is None:
+            return await super()._run_individual_question(question)
+        with tracker():
+            return await super()._run_individual_question(question)
+
     ##################################### RESEARCH #####################################
 
     async def run_research(self, question: MetaculusQuestion) -> str:

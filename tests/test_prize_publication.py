@@ -178,6 +178,21 @@ class PublicationTests(unittest.TestCase):
         self.assertIn("responded model=" + model, out)
         self.assertNotIn("SEALED", out)
 
+    def test_only_actual_routes_are_bound_to_private_question_note(self):
+        log = logging.Logger("test-model-note")
+        log.addHandler(ProviderAuditHandler(self.audit))
+        async def child():
+            log.info("Model responded: %s", "gemini/gemma-4-31b-it")
+        async def question():
+            with self.client.track_question_routes():
+                await asyncio.create_task(child())
+                await self.report.publish_report_to_metaculus(self.client)
+        asyncio.run(question())
+        note = self.service.comments[0]["text"]
+        self.assertIn("Hosted routes used for this question: gemini/gemma-4-31b-it", note)
+        self.assertNotIn("26b", note)
+        self.assertNotIn("SEALED", self.audit.getvalue())
+
     def test_legacy_comment_shapes_and_timestamp_precision(self):
         self.submit()
         when = datetime(2026, 1, 1, 12, 10, 10, 350000, tzinfo=timezone.utc)
