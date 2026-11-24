@@ -7,6 +7,7 @@ import platform
 import re
 import time
 from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 from typing import Literal
 
 import dotenv
@@ -106,48 +107,54 @@ class FreeForecastLlm(GeneralLlm):
                 if not self.allow_cpu_fallback:
                     raise RuntimeError("CPU fallback is disabled for this run")
                 return await asyncio.to_thread(self.cpu.invoke, prompt, system_prompt)
-            # Try each currently available route before waiting for one short retry.
-            for round_number in range(2):
-                wait = min(self.available_at.values()) - time.monotonic()
-                if wait > 45:
+            # A 503 on one route can have a later retry time than a 503 on another.
+            # Keep each route eligible for its second attempt even after its peer retries.
+            deadline = time.monotonic() + 180
+            attempts = dict.fromkeys(self.available_at, 0)
+            while time.monotonic() < deadline:
+                pending = [r for r in self.routes if attempts[r.model] < 2
+                           and self.available_at[r.model] < deadline]
+                if not pending:
                     break
-                if wait > 0:
-                    await asyncio.sleep(wait)
-                for route in self.routes:
-                    if self.available_at[route.model] > time.monotonic():
-                        continue
-                    try:
-                        answer = await route.invoke(prompt, system_prompt)
-                    except Exception as exc:
-                        status = getattr(exc, "status_code", None)
-                        retryable = status in (408, 429, 500, 502, 503, 504) or isinstance(
-                            exc, (TimeoutError, ConnectionError)
-                        ) or type(exc).__name__ in ("APIConnectionError", "Timeout")
-                        if not retryable and status not in (401, 402, 403, 404):
-                            raise
-                        headers = getattr(getattr(exc, "response", None), "headers", {})
-                        retry_after = str(headers.get("retry-after", ""))
-                        delay = max(
-                            12 * (round_number + 1),
-                            int(retry_after) if retry_after.isdigit() else 0,
-                        )
-                        daily_limit = (
-                            route.model.startswith("openrouter/")
-                            and status == 429
-                            and "day" in str(exc).lower()
-                        )
-                        if not retryable or daily_limit:
-                            delay = max(delay, 3600)
-                        self.available_at[route.model] = time.monotonic() + delay
-                        logger.warning(
-                            "Free route %s unavailable (%s), cooldown %ss",
-                            route.model, status or type(exc).__name__, delay,
-                        )
-                        continue
-                    if not answer.strip():
-                        raise ValueError(f"Empty response from {route.model}")
-                    logger.info("Model responded: %s", route.model)
-                    return answer
+                now = time.monotonic()
+                ready = [r for r in pending if self.available_at[r.model] <= now]
+                if not ready:
+                    await asyncio.sleep(min(self.available_at[r.model] for r in pending) - now)
+                    continue
+                route = min(ready, key=lambda r: attempts[r.model])
+                attempts[route.model] += 1
+                try:
+                    answer = await route.invoke(prompt, system_prompt)
+                except Exception as exc:
+                    status = getattr(exc, "status_code", None)
+                    retryable = status in (408, 429, 500, 502, 503, 504) or isinstance(
+                        exc, (TimeoutError, ConnectionError)
+                    ) or type(exc).__name__ in ("APIConnectionError", "Timeout")
+                    if not retryable and status not in (401, 402, 403, 404):
+                        raise
+                    headers = getattr(getattr(exc, "response", None), "headers", {}) or {}
+                    hint = str(headers.get("retry-after", "")).strip()
+                    delay = 45 if status == 503 else 12 * attempts[route.model]
+                    if hint.isdigit():
+                        delay = max(delay, int(hint))
+                    elif hint:
+                        try:
+                            until = parsedate_to_datetime(hint)
+                            delay = max(delay, int((until - datetime.now(timezone.utc)).total_seconds()) + 1)
+                        except (ValueError, TypeError, OverflowError):
+                            pass
+                    if not retryable or (route.model.startswith("openrouter/")
+                                         and status == 429 and re.search(r"day|daily", str(exc), re.I)):
+                        delay = max(delay, 3600)
+                    self.available_at[route.model] = time.monotonic() + delay
+                    logger.warning("Free route %s unavailable (%s), cooldown %ss",
+                                   route.model, status or type(exc).__name__, delay)
+                    continue
+                if not isinstance(answer, str) or not answer.strip():
+                    self.available_at[route.model] = time.monotonic() + 12
+                    continue
+                logger.info("Model responded: %s", route.model)
+                return answer
             if self.allow_cpu_fallback and platform.system() == "Linux" and platform.machine() == "x86_64":
                 logger.info("Hosted routes unavailable; starting CPU inference for this run")
                 self.cpu = await asyncio.to_thread(CpuForecaster)
