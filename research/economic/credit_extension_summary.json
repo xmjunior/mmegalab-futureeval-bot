@@ -1,0 +1,86 @@
+{
+  "design": "0245645fe9642076ee3b247b4abec38125f7b2760714145bf8ad0940e9ce77aa",
+  "source_sha256": "b486f96323f62246a034670878ab1cad7f874dab837c0130e1ec278605d7bf72",
+  "input_vintages": 49,
+  "development_dates": 20,
+  "development_rows": 40,
+  "fit_vintage_not_yet_released": [],
+  "C_width": 1.0,
+  "F_routes": {
+    "5": "A",
+    "10": "A"
+  },
+  "omissions": [],
+  "stats": {
+    "C": {
+      "paired_dates": 27,
+      "paired_questions": 54,
+      "four_week_blocks": 13,
+      "mean_log_gain": 0.0,
+      "mean_complete_blocks": 0.0,
+      "ci95_blocks": [
+        0.0,
+        0.0
+      ],
+      "p_sign": 1.0,
+      "wins_ties_losses": [
+        0,
+        27,
+        0
+      ],
+      "two_halves": [
+        0.0,
+        0.0
+      ],
+      "p_holm": 1,
+      "screen": false
+    },
+    "F": {
+      "paired_dates": 27,
+      "paired_questions": 54,
+      "four_week_blocks": 13,
+      "mean_log_gain": 0.0,
+      "mean_complete_blocks": 0.0,
+      "ci95_blocks": [
+        0.0,
+        0.0
+      ],
+      "p_sign": 1.0,
+      "wins_ties_losses": [
+        0,
+        27,
+        0
+      ],
+      "two_halves": [
+        0.0,
+        0.0
+      ],
+      "p_holm": 1,
+      "screen": false
+    },
+    "G": {
+      "paired_dates": 27,
+      "paired_questions": 54,
+      "four_week_blocks": 13,
+      "mean_log_gain": -0.02464672788228116,
+      "mean_complete_blocks": -0.02670515685024237,
+      "ci95_blocks": [
+        -0.1022370815339692,
+        0.03754729712058176
+      ],
+      "p_sign": 0.727783203125,
+      "wins_ties_losses": [
+        16,
+        0,
+        11
+      ],
+      "two_halves": [
+        -0.04182888327451882,
+        -0.008691869303774767
+      ],
+      "p_holm": 1,
+      "screen": false
+    }
+  },
+  "status": "supplementary availability cohort; exploratory only"
+}
