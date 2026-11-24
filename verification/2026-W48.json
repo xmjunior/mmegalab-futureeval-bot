@@ -1,0 +1,9 @@
+{
+  "run_id": "45511542948",
+  "science_sha": "8e136d7a1d54b8af4ec86fcc544b5326d786a26e",
+  "state_sha256": {
+    "ecb": "cfd1e7796dd2b988b93baa7afd8b79cb13d751e30066a6571d2d36d3da2c1181",
+    "unemployment": "05e0b47270db2f98f7bb47a3a260831484fc78bbb2f0ed3d2702a849c73124b6"
+  },
+  "verified_utc": "2026-11-24T23:37:39.360180+00:00"
+}
