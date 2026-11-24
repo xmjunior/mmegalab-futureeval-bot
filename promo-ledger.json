@@ -119,10 +119,17 @@
             }
           },
           "160": {
+            "closed_at": "2026-11-24T23:12:44.691110+00:00",
             "issued_at": "2026-11-24T23:12:42.534681+00:00",
             "origin_index": 160,
+            "output_sha256": "16c81e8620e70cab89d771f67222532d5d1c9582185dd9ef88a8e2f794574e53",
+            "p": 0.46,
             "prompt_sha256": "472ebc416553aa93e88d171237218d84c1e768aee43d77d2e937183f8eaac026",
-            "status": "leased"
+            "status": "completed",
+            "usage": {
+              "completion_tokens": 131,
+              "prompt_tokens": 160
+            }
           },
           "64": {
             "closed_at": "2026-11-24T23:10:10.817018+00:00",
