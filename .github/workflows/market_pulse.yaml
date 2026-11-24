@@ -1,7 +1,7 @@
 name: Market Pulse 26Q4 validation
 on:
   push:
-    branches: [verify/market-pulse-26q4]
+    branches: [verify/market-pulse-26q4, verify/market-checkpoint-simulation]
   workflow_dispatch:
 permissions:
   contents: read
@@ -9,7 +9,42 @@ concurrency:
   group: market-pulse-validation
   cancel-in-progress: false
 jobs:
+  simulate-interruption:
+    if: github.ref_name == 'verify/market-checkpoint-simulation'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Interrupt a synthetic reviewer after its first durable blind decision
+        run: |
+          code=0
+          python check_market_resume.py interrupt .synthetic-decisions || code=$?
+          test "$code" = 86
+      - uses: actions/cache/save@v4
+        with:
+          path: .synthetic-decisions
+          key: synthetic-market-${{ github.run_id }}-${{ github.run_attempt }}
+
+  simulate-recovery:
+    needs: simulate-interruption
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/cache/restore@v4
+        with:
+          path: .synthetic-decisions
+          key: synthetic-market-${{ github.run_id }}-${{ github.run_attempt }}
+          fail-on-cache-miss: true
+      - name: Restore the checkpoint on a fresh runner and assert all guards
+        run: python check_market_resume.py recover .synthetic-decisions
+
   historical-and-dry:
+    if: github.ref_name != 'verify/market-checkpoint-simulation'
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
@@ -23,6 +58,11 @@ jobs:
         with:
           version: "0.13.1"
       - run: uv sync --locked --no-dev
+      - uses: actions/cache/restore@v4
+        with:
+          path: .market-historical-decisions
+          key: market-history-v1-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: market-history-v1-${{ github.sha }}-
       - name: Score resolved questions and rehearse a numeric group without publishing
         run: uv run --locked --no-dev python market_pulse.py validate
         env:
@@ -30,6 +70,12 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           ALLOW_CPU_FALLBACK: 'false'
+      - name: Preserve completed historical decisions after a provider interruption
+        if: always() && hashFiles('.market-historical-decisions/*.json') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: .market-historical-decisions
+          key: market-history-v1-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
       - uses: actions/upload-artifact@v4
         with:
           name: market-pulse-validation

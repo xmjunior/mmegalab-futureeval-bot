@@ -15,6 +15,7 @@ import requests
 from forecasting_tools import GeneralLlm, NumericDistribution, NumericQuestion, Percentile
 
 import market_prices as prices
+from market_checkpoints import Checkpoints, ProviderCooldown, fingerprint, qualify_series
 from main import FreeForecastLlm
 
 PROJECT = 33131
@@ -108,18 +109,22 @@ def options_for(estimate, widths, as_of, resolve):
         {"width": w, "quantiles": list(estimate.quantiles(w).values())} for w in widths]}
 
 
-async def review(routes, rows):
-    # Fixed model identities and explicit free OpenRouter endpoints. The inherited router supplies
-    # transient-error cooldowns. Never invoke an unspecified model or its local CPU fallback.
-    llm = FreeForecastLlm()
-    llm.allow_cpu_fallback = False
-    prompt = (
+def review_prompt(rows):
+    return (
         "You calibrate interval forecasts. Each row is anonymous. Its options are validated "
         "alternative interval widths for the same statistical forecast. You can and should abstain if the evidence is insufficient for a trustworthy numeric distribution. Quantiles are ordered "
         "at 10%, 25%, 50%, 75%, 90%. Review the quantile spacing, data age, sample size and forecast horizon. Choose null for stale data, incoherent quantiles, or inadequate uncertainty coverage. Otherwise choose a listed width. Use 1.0 where "
         "available unless uncertainty warrants a wider choice. Output only a JSON array of "
         "numbers or null values, one per row in order. No prose.\n" + json.dumps(rows)
     )
+
+
+async def review(routes, rows):
+    # Fixed model identities and explicit free OpenRouter endpoints. The inherited router supplies
+    # transient-error cooldowns. Never invoke an unspecified model or its local CPU fallback.
+    llm = FreeForecastLlm()
+    llm.allow_cpu_fallback = False
+    prompt = review_prompt(rows)
     for name in routes:
         try:
             llm.routes = [GeneralLlm(name, temperature=0, timeout=90, allowed_tries=1, num_retries=0)]
@@ -134,7 +139,7 @@ async def review(routes, rows):
         except Exception as exc:
             log.warning("No validated decision from %s (%s)", name, type(exc).__name__)
             if name.startswith("openrouter/") and llm.available_at.get(name, 0) - time.monotonic() > 300:
-                break
+                raise ProviderCooldown("Free hosted quota is exhausted") from exc
     raise RuntimeError("All qualified free models unavailable or invalid; no publication")
 
 
@@ -191,25 +196,28 @@ async def validate(account, history=None):
     historical = sorted((h for h in history if str(h["post_id"]) in widths), key=lambda h: h["question_id"])
     # Reconstruct every eligible case with information available strictly before its scoring time.
     # Neither the identity, date nor resolution is sent to the reviewer.
-    rows = []
+    sealed_cases = []
     scored = []
-    for h in historical:
-        estimate = prices.model(h["post_id"], h["spot"] - timedelta(seconds=1), h["spot"], h["resolve"])
-        rows.append(options_for(estimate, widths[str(h["post_id"])], h["spot"], h["resolve"]))
-        scored.append((h, estimate))
     cases = {row["question_id"]: row for row in stats["cases"]}
-    async def qualify(names):
-        decisions = []
-        selected = names
-        for row in rows:
-            # Independent prompts prevent even anonymous observations from a later
-            # spot date from influencing an earlier historical decision.
-            name, [choice] = await review(selected, [row])
-            selected = [name]
-            decisions.append(choice)
-        return selected[0], decisions
+    revision = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+    q3_hash = hashlib.sha256(Path(__file__).with_name("market_pulse_q3.json").read_bytes()).hexdigest()
+    store = Checkpoints(".market-historical-decisions", revision, PROJECT)
+    for h in historical:
+        as_of = h["spot"] - timedelta(seconds=1)
+        estimate = prices.model(h["post_id"], as_of, h["spot"], h["resolve"])
+        row = options_for(estimate, widths[str(h["post_id"])], h["spot"], h["resolve"])
+        # Labels and source details stay outside the prompt. Their fingerprint binds
+        # the decision to the exact replay evidence, including any later corrections.
+        evidence = {"q3": q3_hash, "q4": cases[h["question_id"]], "sources": list(estimate.sources),
+                    "source_date": estimate.source_date.isoformat(), "baseline": estimate.naive_quantiles.tolist(),
+                    "center": estimate.center, "bounds": [h["low"], h["high"], h["bins"]]}
+        sealed_cases.append({"group": h["post_id"], "question": h["question_id"], "as_of": as_of,
+                             "spot": h["spot"], "resolve": h["resolve"], "row": row,
+                             "prompt_hash": fingerprint(review_prompt([row])), "evidence_hash": fingerprint(evidence)})
+        scored.append((h, estimate))
     providers = [names for key, names in MODEL_NAMES.items() if os.getenv(key)]
-    trials = await asyncio.gather(*(qualify(names) for names in providers), return_exceptions=True)
+    trials = await asyncio.gather(*(qualify_series(names, sealed_cases, store, review) for names in providers),
+                                  return_exceptions=True)
     by_group = {}
     routes_by_group = {}
     for trial in trials:
@@ -241,7 +249,7 @@ async def validate(account, history=None):
     proof = {"code_sha": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(), "project": PROJECT,
              "routes_by_group": routes_by_group, "routes": sorted({n for ns in routes_by_group.values() for n in ns}),
              "allowed_widths": {g:widths[g] for g in routes_by_group},
-             "q3_evidence_sha256": hashlib.sha256(Path(__file__).with_name("market_pulse_q3.json").read_bytes()).hexdigest(),
+             "q3_evidence_sha256": q3_hash,
              "historical": {g: sorted(by_group[g]) for g in routes_by_group}}
     # A second, fresh inference exercises the prospective path, with publication disabled.
     rehearsal = await forecast(account, proof, dry=True)
