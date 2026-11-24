@@ -1,5 +1,6 @@
 import argparse
 import asyncio
+import json
 import logging
 import os
 import platform
@@ -34,7 +35,6 @@ from forecasting_tools import (
     NumericDistribution,
     NumericQuestion,
     DateQuestion,
-    DatePercentile,
     Percentile,
     ConditionalQuestion,
     ConditionalPrediction,
@@ -45,7 +45,6 @@ from forecasting_tools import (
     ReasonedPrediction,
     SmartSearcher,
     clean_indents,
-    structure_output,
 )
 
 dotenv.load_dotenv()
@@ -76,6 +75,23 @@ class FreeForecastLlm(GeneralLlm):
     def to_dict(self):
         return {"free_routes_in_order": [route.model for route in self.routes],
                 "cpu_fallback": MODEL_NAME}
+
+    async def choose_integers(self, prompt: str, count: int, low: int, high: int) -> list[int]:
+        prompt += (f"\nReturn only a JSON array of {count} integers between {low} and {high}, "
+                   "inclusive. Each number must be your own selection.")
+        if self.cpu is None:
+            answer = await self.invoke(prompt)
+            try:
+                values = json.loads(answer.strip().removeprefix("```json").removesuffix("```").strip())
+            except ValueError:
+                values = None
+            if (isinstance(values, list) and len(values) == count
+                    and all(type(n) is int and low <= n <= high for n in values)):
+                return values
+        async with self.lock:
+            if self.cpu is None:
+                self.cpu = await asyncio.to_thread(CpuForecaster)
+            return await asyncio.to_thread(self.cpu.choose_integers, prompt, count, low, high)
 
     async def invoke(self, prompt, system_prompt=None):
         async with self.lock:
@@ -156,8 +172,7 @@ class FallTemplateBot2026(ForecastBot):
 
     Only the research and forecast functions need to be implemented in ForecastBot subclasses,
     though you may want to override other ForecastBot functions.
-    In this example, you can change the prompts to be whatever you want since,
-    structure_output uses an LLM to intelligently reformat the output into the needed structure.
+    The forecast methods validate explicit model outputs and re-elicit ambiguous formats before submission.
 
     By default (i.e. 'tournament' mode), when you run this script, it will forecast on any open questions in the
     primary bot tournament and MiniBench. If you want to forecast on only one or the other, you can remove one
@@ -209,7 +224,6 @@ class FallTemplateBot2026(ForecastBot):
         1  # Set this to whatever works for your search-provider/ai-model rate limits
     )
     _concurrency_limiter = asyncio.Semaphore(_max_concurrent_questions)
-    _structure_output_validation_samples = 1
 
     ##################################### RESEARCH #####################################
 
@@ -334,21 +348,11 @@ class FallTemplateBot2026(ForecastBot):
                 prediction_value=max(0.01, min(0.99, parsed.prediction_in_decimal)),
                 reasoning=reasoning,
             )
-        parsing_instructions = clean_indents(
-            f"""
-            The text given to you is trying to give a probability forecast for a binary question.
-            {self._create_resolved_question_parsing_message()}
-            """
-        )
-        binary_prediction: BinaryPrediction = await structure_output(
-            reasoning,
-            BinaryPrediction,
-            model=self.get_llm("parser", "llm"),
-            num_validation_samples=self._structure_output_validation_samples,
-            additional_instructions=parsing_instructions,
-        )
-        decimal_pred = max(0.01, min(0.99, binary_prediction.prediction_in_decimal))
-
+        request = (f"Question: {question.question_text}\n{question.resolution_criteria}\n"
+                   f"Analysis: {reasoning}\nSelect your final probability of YES as a whole percent.")
+        (percent,) = await self.get_llm("default", "llm").choose_integers(request, 1, 0, 100)
+        decimal_pred = max(0.01, min(0.99, percent / 100))
+        reasoning += f"\nFinal model probability: {percent}%"
         logger.info(
             f"Forecasted URL {question.page_url} with prediction: {decimal_pred}."
         )
@@ -402,16 +406,6 @@ class FallTemplateBot2026(ForecastBot):
         question: MultipleChoiceQuestion,
         prompt: str,
     ) -> ReasonedPrediction[PredictedOptionList]:
-        parsing_instructions = clean_indents(
-            f"""
-            Make sure that all option names are one of the following:
-            {question.options}
-
-            The text you are parsing may prepend these options with some variation of "Option" which you should remove if not part of the option names I just gave you.
-            Additionally, you may sometimes need to parse a 0% probability. Please do not skip options with 0% but rather make it an entry in your final list with 0% probability.
-            {self._create_resolved_question_parsing_message()}
-            """
-        )
         reasoning = await self.get_llm("default", "llm").invoke(prompt)
         logger.info(f"Reasoning for URL {question.page_url}: {reasoning}")
         lines = [line.strip().replace("**", "") for line in reasoning.splitlines() if line.strip()]
@@ -423,16 +417,22 @@ class FallTemplateBot2026(ForecastBot):
                 break
             options.append({"option_name": option, "probability": float(match[1]) / 100})
         if len(options) == len(question.options):
-            parsed = PredictedOptionList.model_validate({"predicted_options": options})
-            return ReasonedPrediction(prediction_value=parsed, reasoning=reasoning)
-        predicted_option_list: PredictedOptionList = await structure_output(
-            text_to_structure=reasoning,
-            output_type=PredictedOptionList,
-            model=self.get_llm("parser", "llm"),
-            num_validation_samples=self._structure_output_validation_samples,
-            additional_instructions=parsing_instructions,
-        )
-
+            try:
+                parsed = PredictedOptionList.model_validate({"predicted_options": options})
+                return ReasonedPrediction(prediction_value=parsed, reasoning=reasoning)
+            except ValueError:
+                pass  # Request explicit relative weights if the percentages didn't sum to 100.
+        request = (f"Question: {question.question_text}\n{question.resolution_criteria}\n"
+                   f"Analysis: {reasoning}\nOptions in order: {question.options}\n"
+                   "Assign one relative likelihood weight to each option in that order. "
+                   "Weights need not sum to 100; they will be divided by their sum.")
+        weights = await self.get_llm("default", "llm").choose_integers(request, len(question.options), 1, 100)
+        total = sum(weights)
+        predicted_option_list = PredictedOptionList.model_validate({"predicted_options": [
+            {"option_name": name, "probability": weight / total}
+            for name, weight in zip(question.options, weights)
+        ]})
+        reasoning += f"\nFinal model weights in option order: {weights}"
         logger.info(
             f"Forecasted URL {question.page_url} with prediction: {predicted_option_list}."
         )
@@ -519,7 +519,10 @@ class FallTemplateBot2026(ForecastBot):
             if isinstance(question, DateQuestion):
                 if not re.fullmatch(r"\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}Z)?", raw):
                     return None
-                value = datetime.fromisoformat(raw).replace(tzinfo=timezone.utc).timestamp()
+                try:
+                    value = datetime.fromisoformat(raw).replace(tzinfo=timezone.utc).timestamp()
+                except ValueError:
+                    return None
             else:
                 if not re.fullmatch(r"[+-]?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?", raw):
                     return None
@@ -527,66 +530,52 @@ class FallTemplateBot2026(ForecastBot):
             result.append(Percentile(percentile=level / 100, value=value))
         return result
 
-    async def _validated_distribution(self, question, reasoning, percentiles):
-        try:
-            forecast = NumericDistribution.from_question(percentiles, question)
-        except ValueError as exc:
-            # Only the forecaster may revise invalid outcomes. Keep the SDK bounds checks.
-            feedback = str(exc).split("[type=")[0][:1200]
-            unit = getattr(question, "unit_of_measure", "") or "the question's stated units"
-            repair = clean_indents(f"""
-                Your distribution did not validate for this question: {question.question_text}
-                Resolution criteria: {question.resolution_criteria}
-                Your original answer: {reasoning}
-                Validation feedback: {feedback}
-                The forecast axis runs from {question.lower_bound} to {question.upper_bound}.
-                Return a revised forecast in {unit}. Anchor it to the expected outcome.
-                Use the same unit and scale for all six outcomes. Check the outcome values
-                are increasing and compatible with the axis. For dates use YYYY-MM-DD.
-                Output exactly six lines, one each for 10, 20, 40, 60, 80 and 90,
-                in this format: Percentile 10: VALUE
-            """)
-            revision = await self.get_llm("default", "llm").invoke(repair)
-            revised = self._parse_percentile_lines(revision, question)
-            if revised is None:
-                raise ValueError("The revised distribution did not contain six percentile lines") from exc
-            forecast = NumericDistribution.from_question(revised, question)
-            reasoning += "\n\nRevised forecast after validation:\n" + revision
-        return ReasonedPrediction(prediction_value=forecast, reasoning=reasoning)
-
-    async def _numeric_prompt_to_forecast(
-        self,
-        question: NumericQuestion,
-        prompt: str,
-    ) -> ReasonedPrediction[NumericDistribution]:
+    async def _numeric_prompt_to_forecast(self, question, prompt):
         reasoning = await self.get_llm("default", "llm").invoke(prompt)
-        logger.info(f"Reasoning for URL {question.page_url}: {reasoning}")
+        logger.info("Reasoning for URL %s: %s", question.page_url, reasoning)
         direct = self._parse_percentile_lines(reasoning, question)
         if direct is not None:
-            return await self._validated_distribution(question, reasoning, direct)
-        parsing_instructions = clean_indents(
-            f"""
-            The text given to you is trying to give a forecast distribution for a numeric question.
-            - This text is trying to answer the numeric question: "{question.question_text}".
-            {self._create_single_distribution_parsing_message(question)}
-            {self._create_resolved_question_parsing_message()}
-            - When parsing the text, please make sure to give the values (the ones assigned to percentiles) in terms of the correct units.
-            - The units for the forecast are: {question.unit_of_measure}
-            - Your work will be shown publicly with these units stated verbatim after the numbers your parse.
-            - As an example, someone else guessed that the answer will be between {question.lower_bound} {question.unit_of_measure} and {question.upper_bound} {question.unit_of_measure}, so the numbers parsed from an answer like this would be verbatim "{question.lower_bound}" and "{question.upper_bound}".
-            - If the answer doesn't give the answer in the correct units, you should parse it in the right units. For instance if the answer gives numbers as $500,000,000 and units are "B $" then you should parse the answer as 0.5 (since $500,000,000 is $0.5 billion).
-            - If percentiles are not explicitly given (e.g. only a single value is given) please don't return a parsed output, but rather indicate that the answer is not explicitly given in the text.
-            - Turn any values that are in scientific notation into regular numbers.
-            """
-        )
-        percentile_list: list[Percentile] = await structure_output(
-            reasoning,
-            list[Percentile],
-            model=self.get_llm("parser", "llm"),
-            additional_instructions=parsing_instructions,
-            num_validation_samples=self._structure_output_validation_samples,
-        )
-        return await self._validated_distribution(question, reasoning, percentile_list)
+            try:
+                prediction = NumericDistribution.from_question(direct, question)
+                return ReasonedPrediction(prediction_value=prediction, reasoning=reasoning)
+            except ValueError as exc:
+                logger.info("Model distribution needs revision for %s: %s", question.page_url, exc)
+
+        # Re-elicit actual outcomes anchored to the question's scale when units,
+        # syntax or bounds are ambiguous. Never silently clamp or invent outcomes.
+        is_date = isinstance(question, DateQuestion)
+        lower = question.lower_bound.timestamp() if is_date else question.lower_bound
+        upper = question.upper_bound.timestamp() if is_date else question.upper_bound
+        zero = question.zero_point
+        grid = []
+        labels = []
+        for index in range(101):
+            fraction = index / 100
+            if zero is None:
+                value = lower + (upper - lower) * fraction
+            else:
+                value = zero + (lower - zero) * ((upper - zero) / (lower - zero)) ** fraction
+            grid.append(value)
+            label = (datetime.fromtimestamp(value, timezone.utc).isoformat() if is_date
+                     else format(value, ".10g"))
+            labels.append(f"{index}={label}")
+        levels = [10, 20, 40, 60, 80, 90]
+        request = (f"Question: {question.question_text}\n{question.resolution_criteria}\n"
+                   f"Prior analysis (check its units and revise if needed): {reasoning}\n"
+                   f"Outcome grid in the question's units: {', '.join(labels)}\n"
+                   "Choose SIX outcome indices for your distribution, from lowest to highest "
+                   "in numeric or date order. Your six selections will be sorted by outcome and "
+                   "assigned to percentiles 10, 20, 40, 60, 80 and 90, respectively. "
+                   "These integers identify outcome values, not percentile levels. "
+                   "Consider the evidence and the uncertainty before choosing.")
+        indices = await self.get_llm("default", "llm").choose_integers(request, 6, 0, 100)
+        points = [Percentile(percentile=level / 100, value=grid[index])
+                  for level, index in zip(levels, sorted(indices))]
+        prediction = NumericDistribution.from_question(points, question)
+        outcomes = [labels[i].split("=", 1)[1] for i in sorted(indices)]
+        reasoning += f"\nFinal model-selected outcomes for percentiles {levels}: {outcomes}"
+        logger.info("Validated model-selected percentiles for %s: %s", question.page_url, outcomes)
+        return ReasonedPrediction(prediction_value=prediction, reasoning=reasoning)
 
     ##################################### DATE QUESTIONS #####################################
 
@@ -646,65 +635,7 @@ class FallTemplateBot2026(ForecastBot):
             "
             """
         )
-        forecast = await self._date_prompt_to_forecast(question, prompt)
-        return forecast
-
-    async def _date_prompt_to_forecast(
-        self,
-        question: DateQuestion,
-        prompt: str,
-    ) -> ReasonedPrediction[NumericDistribution]:
-        reasoning = await self.get_llm("default", "llm").invoke(prompt)
-        logger.info(f"Reasoning for URL {question.page_url}: {reasoning}")
-        direct = self._parse_percentile_lines(reasoning, question)
-        if direct is not None:
-            return await self._validated_distribution(question, reasoning, direct)
-        parsing_instructions = clean_indents(
-            f"""
-            The text given to you is trying to give a forecast distribution for a date question.
-            - This text is trying to answer the question: "{question.question_text}".
-            {self._create_single_distribution_parsing_message(question)}
-            {self._create_resolved_question_parsing_message()}
-            - As an example, someone else guessed that the answer will be between {question.lower_bound} and {question.upper_bound}, so the numbers parsed from an answer like this would be verbatim "{question.lower_bound}" and "{question.upper_bound}".
-            - The output is given as dates/times please format it into a valid datetime parsable string. Assume midnight UTC if no hour is given.
-            - If percentiles are not explicitly given (e.g. only a single value is given) please don't return a parsed output, but rather indicate that the answer is not explicitly given in the text.
-            """
-        )
-        date_percentile_list: list[DatePercentile] = await structure_output(
-            reasoning,
-            list[DatePercentile],
-            model=self.get_llm("parser", "llm"),
-            additional_instructions=parsing_instructions,
-            num_validation_samples=self._structure_output_validation_samples,
-        )
-
-        percentile_list = [
-            Percentile(
-                percentile=percentile.percentile,
-                value=percentile.value.timestamp(),
-            )
-            for percentile in date_percentile_list
-        ]
-        return await self._validated_distribution(question, reasoning, percentile_list)
-
-    def _create_resolved_question_parsing_message(self) -> str:
-        return "- If the text concludes that the question has already resolved *in the past* (i.e. it treats the question as decided rather than something to forecast), please DO NOT return a parsed output, even if a final forecast is also given. Instead indicate that the answer is not explicitly given in the text.\n"
-
-    def _create_single_distribution_parsing_message(
-        self, question: NumericQuestion | DateQuestion
-    ) -> str:
-        message = (
-            "- The text may contain multiple percentile distributions (e.g. forecasts for several related questions/entities, or intermediate drafts before a final answer). You must return exactly ONE distribution: the single final distribution that answers the question stated above.\n"
-            "- Convert percentile labels from percentages to fractions: 10 means 0.10 and 90 means 0.90. Do not rescale the outcome values.\n"
-            "- Never merge or concatenate percentile lists that refer to different entities, options, or scenarios. Each percentile should appear at most once in your output.\n"
-            "- If there are multiple final distributions and you cannot tell which one answers the question stated above, do not guess or combine them. Instead indicate that the answer is not explicitly given in the text."
-        )
-        if question.group_question_option is not None:
-            message += (
-                f'\n- This question is specifically about "{question.group_question_option}" (one subquestion within a group of related questions). '
-                f'If the text gives distributions for multiple subjects, return only the distribution for "{question.group_question_option}".'
-            )
-        return message
+        return await self._numeric_prompt_to_forecast(question, prompt)
 
     def _create_upper_and_lower_bound_messages(
         self, question: NumericQuestion | DateQuestion

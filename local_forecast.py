@@ -1,5 +1,6 @@
 """CPU inference for an outage of all free hosted routes, using pinned public assets."""
 import hashlib
+import json
 import logging
 import os
 import subprocess
@@ -45,7 +46,15 @@ class CpuForecaster:
         download(MODEL_URL, self.weights, "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e")
         logger.info("Verified CPU model weights and inference runtime")
 
-    def invoke(self, prompt: str, system_prompt: str | None = None) -> str:
+    def choose_integers(self, prompt: str, count: int, low: int, high: int) -> list[int]:
+        # Constrain the output alphabet; the model still selects every value.
+        integer = " | ".join(json.dumps(str(i)) for i in range(low, high + 1))
+        elements = ' "," " "? '.join(["integer"] * count)
+        grammar = f'root ::= "[" " "? {elements} " "? "]"\ninteger ::= {integer}'
+        return json.loads(self.invoke(prompt, grammar=grammar, max_tokens=12 + 7 * count))
+
+    def invoke(self, prompt: str, system_prompt: str | None = None, *,
+               grammar: str | None = None, max_tokens: int = 768) -> str:
         system = system_prompt or "Follow the instructions and use the requested final answer format."
         prompt_file = self.root / "prompt.txt"
         prompt_file.write_text(
@@ -57,7 +66,8 @@ class CpuForecaster:
             [self.executable, "-m", self.weights, "-f", prompt_file, "--no-conversation",
              "--no-display-prompt", "--no-warmup", "--log-verbosity", "1", "--offline", "--simple-io",
              "-ngl", "0", "-t", str(min(4, os.cpu_count() or 1)), "-c", "8192",
-             "-n", "768", "--temp", "0.2"],
+             "-n", str(max_tokens), "--temp", "0.2", "--seed", "24",
+             *(["--grammar", grammar] if grammar else [])],
             stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, text=True, check=True,
             timeout=240, env={"PATH": os.defpath, "HOME": str(self.root)},
         )
