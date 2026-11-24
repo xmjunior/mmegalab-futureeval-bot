@@ -236,6 +236,13 @@ class FallTemplateBot2026(ForecastBot):
     )
     _concurrency_limiter = asyncio.Semaphore(_max_concurrent_questions)
 
+    async def _run_individual_question(self, question):
+        tracker = getattr(self.metaculus_client, "track_question_routes", None)
+        if tracker is None:
+            return await super()._run_individual_question(question)
+        with tracker():
+            return await super()._run_individual_question(question)
+
     ##################################### RESEARCH #####################################
 
     async def run_research(self, question: MetaculusQuestion) -> str:
@@ -802,9 +809,17 @@ if __name__ == "__main__":
     args = parser.parse_args()
     run_mode: Literal["seasonal-check", "seasonal", "minibench", "tournament", "metaculus_cup", "test_questions"] = args.mode
 
-    client = MetaculusClient()
+    protected_run = run_mode in {"seasonal", "minibench", "tournament"}
+    if protected_run:
+        from prize_publication import ProviderAuditHandler, VerifiedPrizeClient, finish_prize_run, open_audit_stream
+        client = VerifiedPrizeClient(open_audit_stream())
+        logger.addHandler(ProviderAuditHandler(client.audit))
+    else:
+        client = MetaculusClient()
     if client.get_current_user_id() <= 0:
         raise RuntimeError("Metaculus did not return an authenticated user")
+    if protected_run:
+        print("Metaculus authentication verified", file=client.audit)
     logger.info("Metaculus authentication verified")
     if run_mode == "seasonal-check":
         questions = client.get_all_open_questions_from_tournament(client.CURRENT_AI_COMPETITION_ID)
@@ -910,6 +925,9 @@ if __name__ == "__main__":
             forecast_reports.extend(reports)
             logger.info("Validated %d/%d testing-area reports", len(forecast_reports), len(sample))
 
+    if protected_run:
+        finish_prize_run(forecast_reports, client)
+        raise SystemExit(0)
     template_bot.log_report_summary(forecast_reports)
     print_run_summary_banner(
         forecast_reports,

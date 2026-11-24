@@ -5,7 +5,7 @@ on:
   push:
     branches: [release/futureeval]
   schedule:
-    - cron: "11,31,51 * * * *"
+    - cron: "14,34,54 * * * *"
 
 permissions:
   contents: read

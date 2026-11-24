@@ -3,7 +3,7 @@ name: Forecast on MiniBench
 on:
   workflow_dispatch:
   schedule:
-    - cron: "1,21,41 * * * *"
+    - cron: "6,26,46 * * * *"
 
 permissions:
   contents: read

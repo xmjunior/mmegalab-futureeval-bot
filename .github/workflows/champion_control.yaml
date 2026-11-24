@@ -1,7 +1,7 @@
 name: Champion research and competition control
 on:
   schedule:
-    - cron: "17 19 * * *"
+    - cron: "17 7,19 * * *"
     - cron: "27 * * * *"
   workflow_run:
     workflows: ["Market Pulse 26Q4 spot updates"]
@@ -18,7 +18,7 @@ env:
   RESEARCH_SHA: "fa7ec20514fdc65e9d1e4a72a2449067728f3ba7"
 jobs:
   evaluate:
-    if: (github.ref_name == 'main' || (github.event_name == 'push' && github.ref_name == 'verify/champion-v2-control')) && github.event_name != 'workflow_run' && (github.event_name != 'schedule' || github.event.schedule == '17 19 * * *')
+    if: (github.ref_name == 'main' || (github.event_name == 'push' && github.ref_name == 'verify/champion-v2-control')) && github.event_name != 'workflow_run' && (github.event_name != 'schedule' || github.event.schedule == '17 7,19 * * *')
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
