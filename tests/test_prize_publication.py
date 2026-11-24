@@ -142,6 +142,11 @@ class PublicationTests(unittest.TestCase):
             self.submit()
         self.assertFalse(self.client.verified)
 
+    def test_empty_countless_paginated_comment_feed(self):
+        self.client._read = Mock(return_value={"results": [], "next": "another-page"})
+        self.assertEqual(list(self.client._my_comments(12)), [])
+        self.assertEqual(self.client._read.call_count, 1)
+
     def test_recheck_prior_forecast_without_another_post(self):
         self.submit()
         q=SimpleNamespace(already_forecasted=True,id_of_question=94,id_of_post=12,

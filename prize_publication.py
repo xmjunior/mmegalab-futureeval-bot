@@ -126,10 +126,10 @@ class VerifiedPrizeClient(MetaculusClient):
                 if (c.get("on_post") == post_id and c.get("author", {}).get("id") == self.owner_id
                         and c.get("is_private") is True and not c.get("is_soft_deleted")):
                     yield c
-            if not page.get("next"):
+            # Metaculus CountlessLimitOffsetPagination uses infinite count, so
+            # even the final empty page can advertise a next link.
+            if not comments or not page.get("next"):
                 return
-            if not comments:
-                raise PublicationError("Invalid comment pagination")
             offset += len(comments)
 
     def get_all_open_questions_from_tournament(self, *args, **kwargs):
