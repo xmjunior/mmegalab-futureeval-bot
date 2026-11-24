@@ -13,6 +13,7 @@ def render(path):
     run = read("run.json")
     mini = read("minibench.json")
     treasury = read("treasury.json")
+    promo = read("promo-score.json")
     sha = run["RESEARCH_SHA"]
     base = "https://github.com/xmjunior/mmegalab-futureeval-bot"
     lines = [
@@ -37,6 +38,14 @@ def render(path):
     lines.extend(["", "La cobertura compara preguntas aceptadas con ventanas que coincidieron con la vida de la cuenta. Un guion indica que el organizador todavía no asignó ese dato o que la lectura quedó incompleta.",
         "", f"MiniBench C: {mini.get('descriptive',{}).get('pairs','sin lectura')} pares resueltos. Treasury: {treasury.get('summary',{}).get('cases_resolved','sin lectura')} casos propios resueltos. Consulta los JSON de cada registro para ver fechas, resultados de los pasos y fallos del proveedor.",
         "", f"[Diseños, pruebas y recuperación]({base}/tree/{sha}/research) · [Pronósticos prospectivos y auditorías]({base}/tree/research/champion-observations/records)", ""])
+    if promo and run.get("PROMO") == "success":
+        covered = promo["coverage"]
+        lines[-2:-2] = [
+            f"Panel propio de Treasury. {covered['resolved']} de {covered['cases']} casos resueltos, "
+            f"{len(promo['arms'])} estrategias registradas. "
+            f"[Probabilidades, Brier y pérdida logarítmica]({base}/blob/research/champion-observations/records/promo-score.json).",
+            "",
+        ]
     return "\n".join(lines)
 
 
