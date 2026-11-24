@@ -1,0 +1,45 @@
+name: Verify private forecast and comment in Bot Testing Area
+
+on:
+  push:
+    branches: [verify/champion-operations]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: champion-operations-testing-area
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify research commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          research_sha=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/research/champion-operations" --jq .object.sha)
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_SHA" = "$research_sha"
+          echo "Verified isolated research commit $GITHUB_SHA"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          version: "0.13.1"
+      - name: Install pinned dependencies
+        run: uv sync --locked --no-dev
+      - name: Exercise transport failures offline
+        run: uv run --locked --no-dev python -m unittest discover -s tests -p test_prize_publication.py -v
+      - name: Verify unscored Bot Testing Area only
+        env:
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: uv run --locked --no-dev python verify_test_transport.py
