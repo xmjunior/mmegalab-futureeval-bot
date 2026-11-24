@@ -173,10 +173,19 @@ def prepare_openai(text, grant):
     public = shadow.request("https://developers.openai.com/api/docs/models/gpt-5.6-sol.md", timeout=15).decode()
     require("| Input | $4 | 1M tokens |" in public and "| Output | $20 | 1M tokens |" in public,
             "published_pricing_changed")
+    return count_input(text, grant)
+
+
+def count_input(text, scope=None):
     inp = {"model": MODEL, "input": text, "tools": []}
-    count = oai("/input_tokens", inp, grant)
+    if scope is None:
+        headers = {"Authorization": "Bearer " + os.environ["OPENAI_API_KEY"]}
+        count = json.loads(shadow.request(OAI + "/input_tokens", inp, headers, timeout=30))
+    else:
+        count = oai("/input_tokens", inp, scope)
     require(count.get("object") == "response.input_tokens", "invalid_input_count")
-    return inp, count["input_tokens"], plan(count["input_tokens"])
+    n = count["input_tokens"]
+    return inp, n, plan(n)
 
 
 def try_openai(inp, expected, scope):
@@ -258,9 +267,16 @@ def run(arm, journal, panel, scope=None):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("action", choices=("dry","gemma","openai"))
+    p.add_argument("action", choices=("dry","count","gemma","openai"))
     a = p.parse_args()
     panel = load_panel()
+    if a.action == "count":
+        require(bool(os.getenv("OPENAI_API_KEY")), "missing_openai_key")
+        _, n, reserve = count_input(prompt())
+        print(json.dumps({"model":MODEL, "cases":len(panel["cases"]), "input_tokens":n,
+                          "max_output_tokens":MAX_OUTPUT, "reservation_micro_usd":reserve,
+                          "prompt_sha256":PROMPT_SHA, "inference_requests":0, "billed_usd":0}))
+        return
     if a.action == "dry":
         print(json.dumps({"panel_sha":PANEL_SHA, "cases":len(panel["cases"]), "model":MODEL,
                           "panel_reservation_upper_usd":plan(MAX_INPUT)/1e6,
