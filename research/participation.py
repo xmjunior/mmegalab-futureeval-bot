@@ -93,27 +93,31 @@ def audit(slug, key, userid, created, now):
     for p in pages("/posts/", tournaments=pid, include_descriptions="false", with_cp="false"):
         for q in extract(p):
             questions[q["id"]] = q
-    own = [q for q in questions.values() if q["own_count"]]
-    # Verify detail where filters confirm an own forecast even if the list hid history.
-    questions_by_post = {q["post"] for q in questions.values()}
-    relevant_filtered = filtered_post_ids & questions_by_post
-    for post_id in relevant_filtered - {q["post"] for q in own}:
-        for q in extract(read(f"/posts/{post_id}/",with_cp="false")):
-            questions[q["id"]] = q
-    own = [q for q in questions.values() if q["own_count"]]
-    mismatch = sorted(relevant_filtered ^ {q["post"] for q in own})
+    # This endpoint returns only the token owner's authoritative timestamped forecasts.
+    # Read only the identifiers and timestamps; never log or store forecast distributions.
+    response = read("/questions/bulk-forecast-read/", project=pid)
+    if not isinstance(response.get("results"),list):
+        raise RuntimeError("Authenticated forecast history unavailable")
+    history = {r["question_id"]:[utc(f["start_time"]) for f in r["forecasts"]] for r in response["results"]}
     for q in questions.values():
-        if q["own_count"] is None and q["post"] not in filtered_post_ids:
-            q["own_count"] = 0  # Exhaustive, separately paginated own-forecaster filter.
+        if q["id"] in history:
+            q["own_count"] = len(history[q["id"]])
+            if history[q["id"]]:
+                q["own_times"] = history[q["id"]]
+    missing_history = [q["id"] for q in questions.values() if q["id"] not in history]
+    missing_own = {k:v for k,v in history.items() if v and k not in questions}
+    own = [q for q in questions.values() if q["own_count"]]
+    mismatch = sorted(filtered_post_ids ^ {q["post"] for q in own})
     counts = Counter(q["state"] for q in questions.values())
     comments = []
-    for post_id in {q["post"] for q in own} | relevant_filtered:
-        for c in pages("/comments/",post=post_id,author=userid):
-            if c.get("author_id",userid) != userid:
-                raise ValueError("Incorrect author in filtered results")
-            comments.append({"id":c["id"], "created_at":utc(c.get("created_at")), "post":post_id,
-                             "is_private":c.get("is_private") if isinstance(c.get("is_private"),bool) else None,
-                             "included_forecast":bool(c.get("included_forecast"))})
+    for post_id in {q["post"] for q in own} | filtered_post_ids:
+        for private in ("true","false"):
+            for c in pages("/comments/",post=post_id,author=userid,is_private=private):
+                if c.get("author_id",userid) != userid:
+                    raise ValueError("Incorrect author in filtered results")
+                comments.append({"id":c["id"], "created_at":utc(c.get("created_at")), "post":post_id,
+                                 "is_private":private == "true",
+                                 "included_forecast":bool(c.get("included_forecast"))})
     boards = read(f"/leaderboards/project/{pid}/",primary_only="true",with_entries="true")
     ranking = []
     for b in boards:
@@ -124,7 +128,7 @@ def audit(slug, key, userid, created, now):
     open_now = [q for q in questions.values() if q["state"]=="open"]
     next_times = sorted({q["opens"] for q in questions.values() if q["state"]=="upcoming" and q["opens"] and q["opens"]>now})
     since = [q for q in questions.values() if q["opens"] and q["opens"]<=now and q["closes"] and q["closes"]>=created]
-    return {"own_filter_post_ids": sorted(filtered_post_ids)[:20], "own_filter_post_total":len(filtered_post_ids), "mismatching_post_ids":mismatch,
+    return {"own_filter_post_ids": sorted(filtered_post_ids)[:20], "own_filter_post_total":len(filtered_post_ids), "mismatching_post_ids":mismatch,"question_history_missing_count":len(missing_history),"own_history_without_post":missing_own,
             "project":pid,"slug":slug,"dates":{k:project.get(k) for k in ("start_date","close_date","forecasting_end_date")},
             "states":dict(counts),"questions":len(questions),"forecasted_questions":len(own),
             "forecast_events":sum(q["own_count"] for q in own),"duplicate_questions":[q["id"] for q in own if q["own_count"]>1],
@@ -157,4 +161,4 @@ for name,slug in projects:
     print("AUDIT",name,json.dumps(out["projects"][name],sort_keys=True),flush=True)
 print("ACCOUNT",json.dumps(out["account"],sort_keys=True))
 Path("participation-audit.json").write_text(json.dumps(out,indent=2)+"\n")
-if any("error" in p for p in out["projects"].values()): raise RuntimeError("One or more project audits incomplete")
+if any("error" in p or p.get("mismatching_post_ids") or p.get("own_history_without_post") for p in out["projects"].values()): raise RuntimeError("One or more project audits incomplete")
