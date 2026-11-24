@@ -35,16 +35,23 @@ def replay(block):
     with TemporaryDirectory() as tmp:
         work = Path(tmp) / block
         shutil.copytree(ROOT / block, work, ignore=shutil.ignore_patterns("__pycache__"))
+        if block == "forecastbench_shadow":
+            for sibling in ("binary", "forecastbench_export"):
+                shutil.copytree(ROOT / sibling, work.parent / sibling, ignore=shutil.ignore_patterns("__pycache__"))
+
         def python(*args):
             return subprocess.check_output([sys.executable, *args], cwd=work, text=True)
-        if block in {"continuous", "binary", "evidence", "forecastbench_export"}:
+        if block in {"continuous", "binary", "evidence", "forecastbench_export", "forecastbench_shadow"}:
             if not list(work.glob("test*.py")):
                 raise ValueError("missing regression tests for " + block)
             python("-m", "unittest", "discover", "-v")
         if block == "forecastbench_export":
             print("forecastbench_export: fixtures and results reproduced by unit tests")
             return
-        if block == "continuous":
+        if block == "forecastbench_shadow":
+            expected = json.loads((work / "results.json").read_bytes())
+            actual = json.loads(python("model.py"))
+        elif block == "continuous":
             expected = json.loads((work / "results.json").read_bytes())
             python("evaluate.py")
             actual = json.loads((work / "results.json").read_bytes())
@@ -64,5 +71,5 @@ def replay(block):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("block", choices=("binary", "continuous", "evidence", "economics", "forecastbench_export"))
+    parser.add_argument("block", choices=("binary", "continuous", "evidence", "economics", "forecastbench_export", "forecastbench_shadow"))
     replay(parser.parse_args().block)

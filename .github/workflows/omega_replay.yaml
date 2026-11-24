@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        block: [binary, continuous, evidence, economics, forecastbench_export]
+        block: [binary, continuous, evidence, economics, forecastbench_export, forecastbench_shadow]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,3 +33,6 @@ jobs:
         env:
           BLOCK: ${{ matrix.block }}
         run: python research/omega/replay.py "$BLOCK"
+      - name: Verify immutable forecasts and publication timestamps
+        if: matrix.block == 'forecastbench_shadow'
+        run: python -m unittest discover -s research/omega/forecastbench_shadow_ops -v
