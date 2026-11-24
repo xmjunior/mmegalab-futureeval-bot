@@ -1,9 +1,0 @@
-{
-  "id": "minibench-c-v1",
-  "frozen_before_first_open": "2026-11-25T00:00:00+00:00",
-  "target": "Official MiniBench only. Binary solo questions first opened at or after registration. Use the primary bot's single accepted probability strictly before question close; resolve only yes/no, exclude void, ambiguous, duplicates, missing owner/history and late forecasts. No question text or community forecast used.",
-  "challenger": "C(p) = 0.90 * p + 0.05, without refitting. Compute after resolution from the timestamped original probability; this gives the identical value that would have been produced at submission. Never submit another forecast.",
-  "primary_endpoint": "Mean paired decrease in natural-log loss (baseline minus C), measured per question. Brier gain, reliability by five fixed width bins, and resolved coverage are descriptive. Official peer score is reported separately if available and is never inferred from these gains.",
-  "inference": "One primary comparison. At first review after 12 completed rounds with at least 100 paired questions, compute a 95% cluster bootstrap interval and a two-sided round-cluster sign randomization test, fixed seed 77411. Eligibility for a new prospective replication requires positive gain, lower interval above zero and p<0.05. No automatic promotion. Do not repeatedly test as outcomes accumulate.",
-  "persistence": "Keep only aggregate totals, bins, missing/exclusion counts and block statistics per round. Refresh unfinalized rounds by ID after the alias rotates. Freeze final eligible data; show observed coverage separately for both the preregistered binary subset and all resolved formats."
-}

@@ -1,7 +1,0 @@
-# Treasury volatility challenger · frozen design
-
-Use every first calendar day from January 2023 through October 2026. Each origin has four binary events: 2Y above the last known level plus 0.02 percentage points and 10Y minus 2Y above the last spread plus 0.01 points, each at seven and twelve joint observations after that date. Source levels use US percent units. Equality resolves false.
-
-Fit on up to 252 joint ALFRED observations visible in the vintage of the preceding calendar day. Reference probabilities use disjoint changes and Beta(2,2) smoothing. The challenger multiplies every analog change by the ratio of the last 20 daily changes' standard deviation to the full-window standard deviation, clipped to [0.5,2]. Both apply identical thresholds and smoothing. For outcomes use the vintage 40 days after each origin and start counting observations the day after the origin.
-
-The sole primary comparison is the paired mean Brier gain over the reference. Report natural log loss as descriptive, and a 95% circular moving-block bootstrap interval using four-month blocks, 5,000 replicates and a fixed seed. Months are the resampling units. Require all 46 months for a reported result. No parameter search. Positive results need a separate prospective replication before deployment. No LLM sees historical resolutions. These historical events are analogues of the Treasury panel, not that panel's eventual scores.
