@@ -1,0 +1,143 @@
+name: Champion research and competition control
+on:
+  schedule:
+    - cron: "17 19 * * *"
+  workflow_dispatch:
+  push:
+    branches: [verify/champion-v2-control]
+permissions:
+  contents: read
+concurrency:
+  group: champion-v2-observations
+  cancel-in-progress: false
+env:
+  RESEARCH_SHA: "bd49fabb6a4deb9a5323158c44d2d36981aa0fb6"
+jobs:
+  evaluate:
+    if: github.ref_name == 'main' || (github.event_name == 'push' && github.ref_name == 'verify/champion-v2-control')
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RESEARCH_SHA }}
+          persist-credentials: false
+      - name: Verify the frozen code revision
+        run: test "$(git rev-parse HEAD)" = "$RESEARCH_SHA"
+      - uses: actions/checkout@v4
+        with:
+          ref: research/champion-observations
+          path: previous
+          persist-credentials: false
+      - name: Restore the committed observations
+        run: |
+          set -eu
+          mkdir -p state
+          cp previous/records/treasury.json state/treasury.json
+          if test -f previous/records/minibench.json; then cp previous/records/minibench.json state/; fi
+      - name: Check configured zero-cost provider capabilities without inference
+        run: |
+          python research/provider_status.py
+          mv provider-status.json state/
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          ASKNEWS_API_KEY: ${{ secrets.ASKNEWS_API_KEY }}
+          ASKNEWS_CLIENT_ID: ${{ secrets.ASKNEWS_CLIENT_ID }}
+          ASKNEWS_SECRET: ${{ secrets.ASKNEWS_SECRET }}
+      - name: Forecast and settle only the independent Treasury benchmark
+        id: treasury
+        continue-on-error: true
+        run: python research/shadow.py --ledger state/treasury.json
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      - name: Evaluate the frozen MiniBench challenger on resolved own forecasts
+        id: minibench
+        continue-on-error: true
+        run: python research/minibench_eval.py --ledger state/minibench.json
+        env:
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
+      - name: Audit tournament participation independently of forecast generation
+        id: audit
+        continue-on-error: true
+        env:
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
+        run: |
+          python research/participation.py
+      - name: Stage the audit and record actual step outcomes
+        env:
+          TREASURY: ${{ steps.treasury.outcome }}
+          MINI: ${{ steps.minibench.outcome }}
+          AUDIT: ${{ steps.audit.outcome }}
+        run: |
+          if test -f participation-audit.json; then cp participation-audit.json state/participation.json; fi
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          keys = ['TREASURY','MINI','AUDIT','RESEARCH_SHA','GITHUB_SHA','GITHUB_EVENT_NAME','GITHUB_RUN_ID','GITHUB_RUN_ATTEMPT']
+          info = {k:os.environ[k] for k in keys}
+          Path('state/run.json').write_text(json.dumps(info, indent=2)+'\n')
+          print(json.dumps(info))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: champion-records-${{ github.run_id }}-${{ github.run_attempt }}
+          path: state/*.json
+          retention-days: 3
+          if-no-files-found: error
+  record:
+    needs: evaluate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/champion-observations
+      - uses: actions/download-artifact@v4
+        with:
+          name: champion-records-${{ github.run_id }}-${{ github.run_attempt }}
+          path: incoming
+      - name: Commit the ledger and dated audit to its own branch
+        run: |
+          set -eu
+          test "$(git branch --show-current)" = research/champion-observations
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          from shutil import copyfile
+          src=Path('incoming')
+          dest=Path('records')
+          run=json.loads((src/'run.json').read_text())
+          assert run['GITHUB_RUN_ID'] == os.environ['GITHUB_RUN_ID']
+          snapshot=dest/'runs'/(run['GITHUB_RUN_ID']+'-'+run['GITHUB_RUN_ATTEMPT'])
+          snapshot.mkdir(parents=True,exist_ok=True)
+          for name,status in [('treasury.json','TREASURY'),('minibench.json','MINI')]:
+              f=src/name
+              if f.exists() and run[status]=='success':
+                  json.loads(f.read_text())
+                  copyfile(f,dest/name)
+          for name in ['participation.json','provider-status.json','run.json']:
+              f=src/name
+              if f.is_file():
+                  json.loads(f.read_text())
+                  copyfile(f,snapshot/name)
+          PY
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -- records/
+          if ! git diff --cached --quiet; then
+            git commit -m "Record autonomous forecast checks for run $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
+            git push origin HEAD:refs/heads/research/champion-observations
+          fi
+      - name: Require all three data collectors to have completed
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          run=json.loads(Path('incoming/run.json').read_text())
+          incomplete=[field for field in ('TREASURY','MINI','AUDIT') if run[field]!='success']
+          if incomplete: raise SystemExit('Incomplete checks: '+', '.join(incomplete))
+          PY
