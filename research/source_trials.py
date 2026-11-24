@@ -1,7 +1,6 @@
 """Independent checks of additional research sources with redacted receipts."""
 import argparse
 import csv
-import hashlib
 import http.client
 import json
 import os
@@ -17,7 +16,7 @@ from resource_access import QUERY
 HERE = Path(__file__).resolve().parent
 GROQ_MODEL = "openai/gpt-oss-120b"
 EXA_MCP = "/mcp?tools=web_search_exa"
-OFFICIAL = re.compile(r"https://(?:www\.)?federalreserve\.gov/newsevents/pressreleases/monetary(2026\d{4})a\.htm")
+OFFICIAL = re.compile(r"https://(?:www\.)?federalreserve\.gov/newsevents/pressreleases/monetary(\d{8})a\.htm")
 
 
 def fetch(host, path, headers=None, body=None):
@@ -93,7 +92,7 @@ def exa_auth():
     return {"authenticated":True, "billable_searches":0}
 
 
-def exa_free_research():
+def exa_free_research(query=QUERY, earliest="20261001", latest="20261123"):
     headers = {"Accept":"application/json, text/event-stream"}
 
     def rpc(method, params, n=None):
@@ -116,11 +115,11 @@ def exa_free_research():
     result = rpc("tools/list", {}, 2)
     if not any(t["name"] == "web_search_exa" for t in result["tools"]):
         raise ValueError("search_unavailable")
-    result = rpc("tools/call", {"name":"web_search_exa","arguments":{"query":QUERY,"numResults":3}}, 3)
+    result = rpc("tools/call", {"name":"web_search_exa","arguments":{"query":query,"numResults":3}}, 3)
     if result.get("isError"):
         raise ValueError("free_search_error")
     raw = " ".join(x.get("text","") for x in result["content"] if x.get("type") == "text")
-    urls = sorted({m[0] for m in OFFICIAL.finditer(raw) if "20261001" <= m[1] <= "20261123"})
+    urls = sorted({m[0] for m in OFFICIAL.finditer(raw) if earliest <= m[1] <= latest})
     return {"sources":urls, "eligible_official_source":bool(urls), "credentialed_searches":0}
 
 

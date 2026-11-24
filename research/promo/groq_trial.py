@@ -31,7 +31,19 @@ def free_tier():
                 bool(re.search(r"(?:your (?:organization|account) is (?:on|in) (?:the )?free (?:tier|plan)|"
                                r"(?:not available|not supported|unavailable) (?:for|on) (?:the )?free (?:tier|plan)|"
                                r"upgrade (?:your (?:account|organization) )?to (?:the )?developer (?:plan|tier))", message)))
-        return free, "explicit_free_or_upgrade_required" if free else "indeterminate_http_" + str(response.status)
+        vocab = {"the","this","on","only","tier","tiers","free","paid","developer","plan","plans",
+                 "organization","organizations","org","orgs","your","upgrade","upgraded","requires",
+                 "required","billing","available","unavailable","batch","api","not","have","access",
+                 "please","enabled","endpoint","is","a","for","users","denied","permission",
+                 "feature","supported","subscription","to","higher"}
+        words = [w for w in re.findall(r"[a-z]+",message) if w in vocab][:45]
+        evidence = " ".join(words)
+        if re.search(r"free (?:organizations?|orgs?|users)", evidence) and any(
+            w in words for w in ("unavailable","not","upgrade")
+        ):
+            free = True
+        return free, ("explicit_free_or_upgrade_required" if free else
+                      "indeterminate_http_" + str(response.status) + ": " + evidence)
     finally:
         connection.close()
 

@@ -120,6 +120,18 @@ def sofr_evidence(today):
         d, rate = max(observations)
         return {"url": SOFR, "document_sha256": digest(raw), "effective_date": d, "rate_percent": rate}
     except (OSError, ValueError, KeyError, TypeError):
+        if os.getenv("FRED_API_KEY"):
+            from source_trials import fred_vintage
+            asof = (today - timedelta(days=1)).isoformat()
+            try:
+                rows = fred_vintage("SOFR", asof, (today - timedelta(days=10)).isoformat())
+                observed = max(rows)
+                if -20 <= rows[observed] <= 100:
+                    return {"url": "https://fred.stlouisfed.org/series/SOFR", "vintage": asof,
+                            "effective_date": observed, "rate_percent": float(rows[observed]),
+                            "primary_status": "unavailable_at_issue"}
+            except (OSError, RuntimeError, ValueError, KeyError, TypeError, ArithmeticError):
+                pass
         return {"url": SOFR, "status": "unavailable_at_issue"}
 
 
