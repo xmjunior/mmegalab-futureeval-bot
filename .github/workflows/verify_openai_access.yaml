@@ -22,12 +22,12 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || secrets.MEGALAB_OPENAI_API_KEY || secrets.OPENAI_PROJECT_API_KEY || secrets.OPENAI_API_KEY_MEGALAB }}
         run: python research/resource_access.py openai
       - name: AskNews rate limits without using tokens
-        if: "!cancelled()"
+        if: "!cancelled() && !contains(github.event.head_commit.message, '[openai-only]')"
         env:
           ASKNEWS_API_KEY: ${{ secrets.ASKNEWS_API_KEY }}
         run: python research/resource_access.py asknews
   tavily:
-    if: github.repository == 'xmjunior/mmegalab-futureeval-bot'
+    if: github.repository == 'xmjunior/mmegalab-futureeval-bot' && !contains(github.event.head_commit.message, '[openai-only]')
     permissions:
       contents: write
     runs-on: ubuntu-latest
