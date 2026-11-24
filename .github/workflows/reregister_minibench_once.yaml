@@ -1,0 +1,53 @@
+name: Re-register only the empty MiniBench timer
+on:
+  push:
+    branches: [ops/reregister-minibench-once]
+permissions:
+  contents: read
+  actions: write
+jobs:
+  timer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify MiniBench has no open opportunity and no active workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
+        run: |
+          python - <<'PY'
+          import json,urllib.request,os
+          base="https://www.metaculus.com/api/posts/?tournaments=minibench&statuses=open&limit=1&include_descriptions=false&with_cp=false"
+          req=urllib.request.Request(base,headers={"Authorization":"Token "+os.environ["METACULUS_TOKEN"],"User-Agent":"tournament-operations"})
+          with urllib.request.urlopen(req,timeout=30) as r:
+              if json.load(r)["results"]: raise RuntimeError("MiniBench has an open question; refusing timer reset")
+          print("MiniBench now: zero open questions")
+          PY
+          route="repos/$GITHUB_REPOSITORY/actions/workflows/run_bot_on_minibench.yaml"
+          count=$(gh api --method GET "$route/runs" -f per_page=20 --jq '[.workflow_runs[]|select(.status!="completed")]|length')
+          test "$count" = 0
+          echo "MiniBench active workflows: $count"
+      - name: Disable then immediately enable the single timer and verify both states
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          route="repos/$GITHUB_REPOSITORY/actions/workflows/run_bot_on_minibench.yaml"
+          test "$(gh api "$route" --jq .state)" = active
+          restore() {
+            for attempt in 1 2 3; do
+              if gh api --method PUT "$route/enable" && [ "$(gh api "$route" --jq .state)" = active ]; then
+                return 0
+              fi
+              sleep 2
+            done
+            return 1
+          }
+          trap restore EXIT
+          gh api --method PUT "$route/disable"
+          state=$(gh api "$route" --jq .state)
+          echo "MiniBench observed after disable: $state"
+          test "$state" = disabled_manually
+          restore
+          echo "MiniBench observed after re-enable: $(gh api "$route" --jq .state)"
+          trap - EXIT
