@@ -71,10 +71,15 @@ class FreeForecastLlm(GeneralLlm):
         self.available_at = dict.fromkeys(names, 0.0)
         self.lock = asyncio.Lock()
         self.cpu = None
+        # CPU fallback is useful for dry-run diagnostics, but it is intentionally
+        # disabled by default for prize-bearing runs because a tiny local model can
+        # produce badly calibrated forecasts. Enable only with an explicit env flag.
+        self.allow_cpu_fallback = os.getenv("ALLOW_CPU_FALLBACK", "false").lower() in {"1", "true", "yes"}
 
     def to_dict(self):
         return {"free_routes_in_order": [route.model for route in self.routes],
-                "cpu_fallback": MODEL_NAME}
+                "cpu_fallback": MODEL_NAME,
+                "cpu_fallback_enabled": self.allow_cpu_fallback}
 
     async def choose_integers(self, prompt: str, count: int, low: int, high: int) -> list[int]:
         prompt += (f"\nReturn only a JSON array of {count} integers between {low} and {high}, "
@@ -88,6 +93,8 @@ class FreeForecastLlm(GeneralLlm):
             if (isinstance(values, list) and len(values) == count
                     and all(type(n) is int and low <= n <= high for n in values)):
                 return values
+        if not self.allow_cpu_fallback:
+            raise RuntimeError("Hosted model returned an invalid structured answer; CPU fallback is disabled")
         async with self.lock:
             if self.cpu is None:
                 self.cpu = await asyncio.to_thread(CpuForecaster)
@@ -96,6 +103,8 @@ class FreeForecastLlm(GeneralLlm):
     async def invoke(self, prompt, system_prompt=None):
         async with self.lock:
             if self.cpu is not None:
+                if not self.allow_cpu_fallback:
+                    raise RuntimeError("CPU fallback is disabled for this run")
                 return await asyncio.to_thread(self.cpu.invoke, prompt, system_prompt)
             # Try each currently available route before waiting for one short retry.
             for round_number in range(2):
@@ -139,10 +148,12 @@ class FreeForecastLlm(GeneralLlm):
                         raise ValueError(f"Empty response from {route.model}")
                     logger.info("Model responded: %s", route.model)
                     return answer
-            if platform.system() == "Linux" and platform.machine() == "x86_64":
+            if self.allow_cpu_fallback and platform.system() == "Linux" and platform.machine() == "x86_64":
                 logger.info("Hosted routes unavailable; starting CPU inference for this run")
                 self.cpu = await asyncio.to_thread(CpuForecaster)
                 return await asyncio.to_thread(self.cpu.invoke, prompt, system_prompt)
+            if not self.allow_cpu_fallback:
+                raise RuntimeError("All hosted free routes unavailable; refusing degraded CPU forecast")
             raise RuntimeError("Free routes unavailable; CPU fallback requires Linux x86_64")
 
 
