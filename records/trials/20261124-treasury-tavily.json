@@ -1,0 +1,33 @@
+{
+  "at": "2026-11-24T20:43:13.711330+00:00",
+  "before": {
+    "included": 1000,
+    "key_limit": 700,
+    "key_used": 0,
+    "paygo_limit": null,
+    "paygo_used": 0,
+    "plan": "Researcher",
+    "used": 5
+  },
+  "commit": "8014c699fb4e80cc59d369ca9e0354048b6226a4",
+  "cutoff": "2026-11-23",
+  "free_credit_cap": 1,
+  "purpose": "Retrieve an official dated monetary-policy source for the prospective Treasury panel.",
+  "query": {
+    "auto_parameters": false,
+    "end_date": "2026-11-23",
+    "include_answer": false,
+    "include_domains": [
+      "federalreserve.gov"
+    ],
+    "include_usage": true,
+    "max_results": 3,
+    "query": "October 2026 FOMC statement October Federal Open Market Committee target range federal funds rate site:federalreserve.gov",
+    "search_depth": "basic",
+    "start_date": "2026-10-01",
+    "topic": "general"
+  },
+  "research_only": true,
+  "run": "45483690885",
+  "status": "reserved"
+}
