@@ -4,6 +4,7 @@ import asyncio
 import hashlib
 import json
 import logging
+import math
 import os
 import time
 from datetime import datetime, timedelta, timezone
@@ -100,8 +101,9 @@ def numeric_cdf(q, quantiles):
     return values
 
 
-def options_for(estimate, widths):
-    return {"observations": estimate.sample_size, "choices": [
+def options_for(estimate, widths, as_of, resolve):
+    return {"observations": estimate.sample_size, "quote_age_days": (as_of.date() - estimate.source_date).days,
+            "days_until_measurement": (resolve.date() - as_of.date()).days, "choices": [
         {"width": w, "quantiles": list(estimate.quantiles(w).values())} for w in widths]}
 
 
@@ -112,10 +114,10 @@ async def review(routes, rows):
     llm.allow_cpu_fallback = False
     prompt = (
         "You calibrate interval forecasts. Each row is anonymous. Its options are validated "
-        "alternative interval widths for the same statistical forecast. Quantiles are ordered "
-        "at 10%, 25%, 50%, 75%, 90%. Choose a listed width for each row. Use 1.0 where "
+        "alternative interval widths for the same statistical forecast. You can and should abstain if the evidence is insufficient for a trustworthy numeric distribution. Quantiles are ordered "
+        "at 10%, 25%, 50%, 75%, 90%. Review the quantile spacing, data age, sample size and forecast horizon. Choose null for stale data, incoherent quantiles, or inadequate uncertainty coverage. Otherwise choose a listed width. Use 1.0 where "
         "available unless uncertainty warrants a wider choice. Output only a JSON array of "
-        "numbers, one per row in order. No prose or missing values.\n" + json.dumps(rows)
+        "numbers or null values, one per row in order. No prose.\n" + json.dumps(rows)
     )
     for name in routes:
         try:
@@ -124,7 +126,7 @@ async def review(routes, rows):
             result = await llm.invoke(prompt)
             choices = json.loads(result.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip())
             if (not isinstance(choices, list) or len(choices) != len(rows)
-                    or any(type(w) not in (int, float) or w not in [x["width"] for x in row["choices"]]
+                    or any(w is not None and (type(w) not in (int, float) or w not in [x["width"] for x in row["choices"]])
                            for w, row in zip(choices, rows))):
                 raise ValueError("Model selected invalid intervals")
             return name, choices
@@ -150,6 +152,25 @@ def checked_proof(proof):
     return routes
 
 
+def cross_quarter_menu():
+    evidence = json.loads(Path(__file__).with_name("market_pulse_q3.json").read_text())
+    groups = {}
+    for case in evidence["cases"]:
+        if case.get("status") != "scored":
+            continue
+        group_id = str(case["model_mapped_q4"])
+        for width, mass in case["candidate_mass"].items():
+            groups.setdefault((group_id, float(width)), []).append(math.log(mass / case["baseline_mass"]))
+    result = {}
+    for (group, width), gains in groups.items():
+        # Require all six Q3 periods, a positive average, and a majority of individual wins.
+        if len(gains) == 6 and sum(gains) > 0 and sum(v > 0 for v in gains) > len(gains)/2:
+            result.setdefault(group, []).append(width)
+    log.info("Independent Q3 validation approved widths=%s. Community comparison=%s",
+             result, evidence["summary"])
+    return result
+
+
 async def validate(account, history=None):
     history = prices.HISTORY if history is None else history
     # Spot-check the exact authenticated history shape before any hosted inference.
@@ -159,7 +180,10 @@ async def validate(account, history=None):
         log.info("Authenticated group preflight question=%s cdf_size=%s previous=%s",
                  sample.id_of_question, sample.cdf_size, latest_forecast(sample) is not None)
     stats = prices.benchmark(history)
-    widths = {str(g): stats["allowed_widths"][str(g)] for g in stats["eligible"]}
+    external = cross_quarter_menu()
+    widths = {str(g): sorted(set(stats["allowed_widths"][str(g)]) & set(external.get(str(g), [])))
+              for g in stats["eligible"]}
+    widths = {g: ws for g, ws in widths.items() if ws}
     log.info("Historical scorecard=%s", json.dumps(stats, default=str))
     if not widths:
         raise RuntimeError("No market family passed the historical gate")
@@ -170,11 +194,19 @@ async def validate(account, history=None):
     scored = []
     for h in historical:
         estimate = prices.model(h["post_id"], h["spot"] - timedelta(seconds=1), h["spot"], h["resolve"])
-        rows.append(options_for(estimate, widths[str(h["post_id"])]))
+        rows.append(options_for(estimate, widths[str(h["post_id"])], h["spot"], h["resolve"]))
         scored.append((h, estimate))
     cases = {row["question_id"]: row for row in stats["cases"]}
     async def qualify(names):
-        return await review(names, rows)
+        decisions = []
+        selected = names
+        for row in rows:
+            # Independent prompts prevent even anonymous observations from a later
+            # spot date from influencing an earlier historical decision.
+            name, [choice] = await review(selected, [row])
+            selected = [name]
+            decisions.append(choice)
+        return selected[0], decisions
     providers = [names for key, names in MODEL_NAMES.items() if os.getenv(key)]
     trials = await asyncio.gather(*(qualify(names) for names in providers), return_exceptions=True)
     by_group = {}
@@ -185,8 +217,13 @@ async def validate(account, history=None):
             continue
         name, picks = trial
         chosen = {}
+        abstained = set()
         for (h, est), width in zip(scored, picks):
             group = str(h["post_id"])
+            if width is None:
+                abstained.add(group)
+                log.info("Hosted reviewer abstained on historical question=%s", h["question_id"])
+                continue
             gain = cases[h["question_id"]]["widths"][width]
             chosen.setdefault(group, []).append((h["spot"], gain))
             by_group.setdefault(group, set()).add(h["question_id"])
@@ -194,7 +231,7 @@ async def validate(account, history=None):
                      name, h["question_id"], est.source_date, h["outcome"], width, gain)
         for group, gains in chosen.items():
             gains.sort()
-            if len(gains) >= 3 and sum(v for _,v in gains[:-1]) > 0 and gains[-1][1] > 0:
+            if group not in abstained and len(gains) >= 3 and sum(v for _,v in gains[:-1]) > 0 and gains[-1][1] > 0:
                 routes_by_group.setdefault(group, []).append(name)
     if not any(not isinstance(trial, BaseException) for trial in trials):
         raise RuntimeError("No free hosted provider returned valid decisions; no forecasts can be published")
@@ -203,6 +240,7 @@ async def validate(account, history=None):
     proof = {"code_sha": os.getenv("GITHUB_SHA"), "project": PROJECT,
              "routes_by_group": routes_by_group, "routes": sorted({n for ns in routes_by_group.values() for n in ns}),
              "allowed_widths": {g:widths[g] for g in routes_by_group},
+             "q3_evidence_sha256": hashlib.sha256(Path(__file__).with_name("market_pulse_q3.json").read_bytes()).hexdigest(),
              "historical": {g: sorted(by_group[g]) for g in routes_by_group}}
     # A second, fresh inference exercises the prospective path, with publication disabled.
     rehearsal = await forecast(account, proof, dry=True)
@@ -264,8 +302,11 @@ async def forecast_one(account, proof, routes, q, spot, deadline, now, dry):
     ):
         log.info("Previous CDF still current; skipped question=%s source_date=%s", q.id_of_question, estimate.source_date)
         return 0
-    options = options_for(estimate, proof["allowed_widths"][group])
+    options = options_for(estimate, proof["allowed_widths"][group], now, prices.period_end(q.group_question_option, spot))
     name, [width] = await review([r for r in proof["routes_by_group"][group] if r in routes], [options])
+    if width is None:
+        log.info("Reviewer abstained question=%s; no publication", q.id_of_question)
+        return 0
     quantiles = estimate.quantiles(width)
     values = numeric_cdf(q, quantiles)
     log.info("mode=%s group=%s question=%s spot=%s model=%s source_date=%s sources=%s "

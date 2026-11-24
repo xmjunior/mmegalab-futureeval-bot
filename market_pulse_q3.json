@@ -1,0 +1,577 @@
+{
+  "method": "Q4 prices-only frozen widths tested on every resolved Q3 subquestion of the same economic target, peer-independent log mass ratios relative to matched historical baseline. Retrospective cross-period evidence, not a live ranking. No LLM. Q3 numeric scale and original bin edges used by both distributions.",
+  "frozen_sha256": "d55bd7eb0f5860c0f51821722c0ba83128c7d5d76ff29bbf9cd5539c89da58b8",
+  "model_git_blob_sha": "508a5a0b7b848959819c0364319c889ed937bba5",
+  "widths": {
+    "44530": [
+      1.25,
+      1.5
+    ],
+    "44534": [
+      1.0
+    ]
+  },
+  "summary": {
+    "44530": {
+      "scored": 6,
+      "omitted": 0,
+      "widths": {
+        "1.25": {
+          "mean_log_gain": 0.048602402227403335,
+          "sum_log_gain": 0.29161441336442007,
+          "wins": 5,
+          "ties": 0,
+          "losses": 1,
+          "vs_crowd": {
+            "mean_log_gain": -0.21204477948456593,
+            "sum_log_gain": -1.2722686769073954,
+            "wins": 1,
+            "ties": 0,
+            "losses": 5
+          }
+        },
+        "1.5": {
+          "mean_log_gain": -0.07610028198762994,
+          "sum_log_gain": -0.4566016919257796,
+          "wins": 2,
+          "ties": 0,
+          "losses": 4,
+          "vs_crowd": {
+            "mean_log_gain": -0.33674746369959924,
+            "sum_log_gain": -2.0204847821975953,
+            "wins": 0,
+            "ties": 0,
+            "losses": 6
+          }
+        }
+      }
+    },
+    "44534": {
+      "scored": 6,
+      "omitted": 0,
+      "widths": {
+        "1.0": {
+          "mean_log_gain": -0.3938465358525745,
+          "sum_log_gain": -2.363079215115447,
+          "wins": 4,
+          "ties": 0,
+          "losses": 2,
+          "vs_crowd": {
+            "mean_log_gain": -0.20816556996731578,
+            "sum_log_gain": -1.2489934198038948,
+            "wins": 4,
+            "ties": 0,
+            "losses": 2
+          }
+        }
+      }
+    }
+  },
+  "cases": [
+    {
+      "post_id": 44530,
+      "question_id": 44666,
+      "label": "Jul 13 - Jul 24",
+      "model_mapped_q4": 46010,
+      "q3_url": "https://www.metaculus.com/questions/44530/",
+      "spot": "2026-07-13T03:00:00Z",
+      "resolution": "2.79",
+      "scale": {
+        "range_min": 1.745,
+        "range_max": 3.505,
+        "open_lower_bound": true,
+        "open_upper_bound": true,
+        "zero_point": null,
+        "inbound_outcome_count": 176
+      },
+      "resolve_period_end": "2026-07-24T20:00:00+00:00",
+      "asof": "2026-07-13T02:59:59+00:00",
+      "source_date": "2026-07-10",
+      "model_sources": [
+        "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-04-22&vintage_date=2026-07-11"
+      ],
+      "sample_size": 495,
+      "baseline_mass": 0.01769967529999994,
+      "candidate_mass": {
+        "1.25": 0.017716498400000003,
+        "1.5": 0.014773218300000002
+      },
+      "log_gain": {
+        "1.25": 0.0009500236478319154,
+        "1.5": -0.18073032759049001
+      },
+      "status": "scored",
+      "recency_weighted_crowd_at_spot": {
+        "valid_from_utc": "2026-07-13T01:52:49.933099+00:00",
+        "forecaster_count": 27,
+        "outcome_mass": 0.022293862563437128,
+        "log_gain_vs_crowd": {
+          "1.25": -0.22981510078860995,
+          "1.5": -0.41149545202693194
+        }
+      }
+    },
+    {
+      "post_id": 44530,
+      "question_id": 44667,
+      "label": "Jul 27 - Aug 7",
+      "model_mapped_q4": 46010,
+      "q3_url": "https://www.metaculus.com/questions/44530/",
+      "spot": "2026-07-27T03:00:00Z",
+      "resolution": "2.7",
+      "scale": {
+        "range_min": 1.745,
+        "range_max": 3.505,
+        "open_lower_bound": true,
+        "open_upper_bound": true,
+        "zero_point": null,
+        "inbound_outcome_count": 176
+      },
+      "resolve_period_end": "2026-08-07T20:00:00+00:00",
+      "asof": "2026-07-27T02:59:59+00:00",
+      "source_date": "2026-07-24",
+      "model_sources": [
+        "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-05-06&vintage_date=2026-07-25"
+      ],
+      "sample_size": 495,
+      "baseline_mass": 0.01947904039999998,
+      "candidate_mass": {
+        "1.25": 0.024215151200000007,
+        "1.5": 0.022060501600000004
+      },
+      "log_gain": {
+        "1.25": 0.21763948367854713,
+        "1.5": 0.12444971533341144
+      },
+      "status": "scored",
+      "recency_weighted_crowd_at_spot": {
+        "valid_from_utc": "2026-07-27T02:29:11.413661+00:00",
+        "forecaster_count": 29,
+        "outcome_mass": 0.027334460366356728,
+        "log_gain_vs_crowd": {
+          "1.25": -0.1211696707622845,
+          "1.5": -0.21435943910742034
+        }
+      }
+    },
+    {
+      "post_id": 44530,
+      "question_id": 44668,
+      "label": "Aug 10 - Aug 21",
+      "model_mapped_q4": 46010,
+      "q3_url": "https://www.metaculus.com/questions/44530/",
+      "spot": "2026-08-10T03:00:00Z",
+      "resolution": "2.7",
+      "scale": {
+        "range_min": 1.745,
+        "range_max": 3.505,
+        "open_lower_bound": true,
+        "open_upper_bound": true,
+        "zero_point": null,
+        "inbound_outcome_count": 176
+      },
+      "resolve_period_end": "2026-08-21T20:00:00+00:00",
+      "asof": "2026-08-10T02:59:59+00:00",
+      "source_date": "2026-08-07",
+      "model_sources": [
+        "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-05-20&vintage_date=2026-08-08"
+      ],
+      "sample_size": 495,
+      "baseline_mass": 0.024070707000000025,
+      "candidate_mass": {
+        "1.25": 0.024657995200000005,
+        "1.5": 0.020557798999999988
+      },
+      "log_gain": {
+        "1.25": 0.024105572756673202,
+        "1.5": -0.1577552416994295
+      },
+      "status": "scored",
+      "recency_weighted_crowd_at_spot": {
+        "valid_from_utc": "2026-08-10T02:52:45.432959+00:00",
+        "forecaster_count": 29,
+        "outcome_mass": 0.026275672658880755,
+        "log_gain_vs_crowd": {
+          "1.25": -0.06354232037055192,
+          "1.5": -0.2454031348266547
+        }
+      }
+    },
+    {
+      "post_id": 44530,
+      "question_id": 44669,
+      "label": "Aug 24 - Sep 4",
+      "model_mapped_q4": 46010,
+      "q3_url": "https://www.metaculus.com/questions/44530/",
+      "spot": "2026-08-24T03:00:00Z",
+      "resolution": "2.68",
+      "scale": {
+        "range_min": 1.745,
+        "range_max": 3.505,
+        "open_lower_bound": true,
+        "open_upper_bound": true,
+        "zero_point": null,
+        "inbound_outcome_count": 176
+      },
+      "resolve_period_end": "2026-09-04T20:00:00+00:00",
+      "asof": "2026-08-24T02:59:59+00:00",
+      "source_date": "2026-08-21",
+      "model_sources": [
+        "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-06-03&vintage_date=2026-08-22"
+      ],
+      "sample_size": 495,
+      "baseline_mass": 0.027501262599999965,
+      "candidate_mass": {
+        "1.25": 0.027719138800000043,
+        "1.5": 0.02310875200000001
+      },
+      "log_gain": {
+        "1.25": 0.00789118967218148,
+        "1.5": -0.17402049611402168
+      },
+      "status": "scored",
+      "recency_weighted_crowd_at_spot": {
+        "valid_from_utc": "2026-08-24T02:06:16.118344+00:00",
+        "forecaster_count": 29,
+        "outcome_mass": 0.02580662677483242,
+        "log_gain_vs_crowd": {
+          "1.25": 0.07149179533351932,
+          "1.5": -0.11041989045268372
+        }
+      }
+    },
+    {
+      "post_id": 44530,
+      "question_id": 44670,
+      "label": "Sep 7 - Sep 18",
+      "model_mapped_q4": 46010,
+      "q3_url": "https://www.metaculus.com/questions/44530/",
+      "spot": "2026-09-07T03:00:00Z",
+      "resolution": "2.68",
+      "scale": {
+        "range_min": 1.745,
+        "range_max": 3.505,
+        "open_lower_bound": true,
+        "open_upper_bound": true,
+        "zero_point": null,
+        "inbound_outcome_count": 176
+      },
+      "resolve_period_end": "2026-09-18T20:00:00+00:00",
+      "asof": "2026-09-07T02:59:59+00:00",
+      "source_date": "2026-09-04",
+      "model_sources": [
+        "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-06-17&vintage_date=2026-09-05"
+      ],
+      "sample_size": 495,
+      "baseline_mass": 0.025785984900000003,
+      "candidate_mass": {
+        "1.25": 0.027232365300000005,
+        "1.5": 0.022703107399999978
+      },
+      "log_gain": {
+        "1.25": 0.05457504326704924,
+        "1.5": -0.12732931841276077
+      },
+      "status": "scored",
+      "recency_weighted_crowd_at_spot": {
+        "valid_from_utc": "2026-09-07T01:31:09.023716+00:00",
+        "forecaster_count": 26,
+        "outcome_mass": 0.03112111474922008,
+        "log_gain_vs_crowd": {
+          "1.25": -0.1334803529925526,
+          "1.5": -0.3153847146723625
+        }
+      }
+    },
+    {
+      "post_id": 44530,
+      "question_id": 44671,
+      "label": "Sep 21 - Oct 2",
+      "model_mapped_q4": 46010,
+      "q3_url": "https://www.metaculus.com/questions/44530/",
+      "spot": "2026-09-21T03:00:00Z",
+      "resolution": "3.1",
+      "scale": {
+        "range_min": 1.745,
+        "range_max": 3.505,
+        "open_lower_bound": true,
+        "open_upper_bound": true,
+        "zero_point": null,
+        "inbound_outcome_count": 176
+      },
+      "resolve_period_end": "2026-10-02T20:00:00+00:00",
+      "asof": "2026-09-21T02:59:59+00:00",
+      "source_date": "2026-09-18",
+      "model_sources": [
+        "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-07-01&vintage_date=2026-09-19"
+      ],
+      "sample_size": 495,
+      "baseline_mass": 0.0008898705000000007,
+      "candidate_mass": {
+        "1.25": 0.0008778967999999443,
+        "1.5": 0.0009437486999999134
+      },
+      "log_gain": {
+        "1.25": -0.01354689965786296,
+        "1.5": 0.05878397655751088
+      },
+      "status": "scored",
+      "recency_weighted_crowd_at_spot": {
+        "valid_from_utc": "2026-09-21T02:19:14.683481+00:00",
+        "forecaster_count": 27,
+        "outcome_mass": 0.0019455151394840442,
+        "log_gain_vs_crowd": {
+          "1.25": -0.7957530273269159,
+          "1.5": -0.7234221511115421
+        }
+      }
+    },
+    {
+      "post_id": 44534,
+      "question_id": 44679,
+      "label": "Jul 13 - Jul 24",
+      "model_mapped_q4": 46015,
+      "q3_url": "https://www.metaculus.com/questions/44534/",
+      "spot": "2026-07-13T03:00:00Z",
+      "resolution": "20.31",
+      "scale": {
+        "range_min": 10,
+        "range_max": 50,
+        "open_lower_bound": true,
+        "open_upper_bound": true,
+        "zero_point": 0,
+        "inbound_outcome_count": 200
+      },
+      "resolve_period_end": "2026-07-24T20:00:00+00:00",
+      "asof": "2026-07-13T02:59:59+00:00",
+      "source_date": "2026-07-10",
+      "model_sources": [
+        "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv"
+      ],
+      "sample_size": 165,
+      "baseline_mass": 0.014349193499999968,
+      "candidate_mass": {
+        "1.0": 0.022083470399999916
+      },
+      "log_gain": {
+        "1.0": 0.43113564443576996
+      },
+      "status": "scored",
+      "recency_weighted_crowd_at_spot": {
+        "valid_from_utc": "2026-07-13T01:47:29.184746+00:00",
+        "forecaster_count": 29,
+        "outcome_mass": 0.014040534937182159,
+        "log_gain_vs_crowd": {
+          "1.0": 0.45288088416066596
+        }
+      }
+    },
+    {
+      "post_id": 44534,
+      "question_id": 44680,
+      "label": "Jul 27 - Aug 7",
+      "model_mapped_q4": 46015,
+      "q3_url": "https://www.metaculus.com/questions/44534/",
+      "spot": "2026-07-27T03:00:00Z",
+      "resolution": "20.88",
+      "scale": {
+        "range_min": 10,
+        "range_max": 50,
+        "open_lower_bound": true,
+        "open_upper_bound": true,
+        "zero_point": 0,
+        "inbound_outcome_count": 200
+      },
+      "resolve_period_end": "2026-08-07T20:00:00+00:00",
+      "asof": "2026-07-27T02:59:59+00:00",
+      "source_date": "2026-07-24",
+      "model_sources": [
+        "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv"
+      ],
+      "sample_size": 165,
+      "baseline_mass": 0.022956656399999997,
+      "candidate_mass": {
+        "1.0": 0.024323258099999967
+      },
+      "log_gain": {
+        "1.0": 0.05782508238369675
+      },
+      "status": "scored",
+      "recency_weighted_crowd_at_spot": {
+        "valid_from_utc": "2026-07-27T02:18:23.699222+00:00",
+        "forecaster_count": 34,
+        "outcome_mass": 0.021409399574278842,
+        "log_gain_vs_crowd": {
+          "1.0": 0.12760295801628518
+        }
+      }
+    },
+    {
+      "post_id": 44534,
+      "question_id": 44681,
+      "label": "Aug 10 - Aug 21",
+      "model_mapped_q4": 46015,
+      "q3_url": "https://www.metaculus.com/questions/44534/",
+      "spot": "2026-08-10T03:00:00Z",
+      "resolution": "16.14",
+      "scale": {
+        "range_min": 10,
+        "range_max": 50,
+        "open_lower_bound": true,
+        "open_upper_bound": true,
+        "zero_point": 0,
+        "inbound_outcome_count": 200
+      },
+      "resolve_period_end": "2026-08-21T20:00:00+00:00",
+      "asof": "2026-08-10T02:59:59+00:00",
+      "source_date": "2026-08-07",
+      "model_sources": [
+        "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv"
+      ],
+      "sample_size": 165,
+      "baseline_mass": 0.018367677900000018,
+      "candidate_mass": {
+        "1.0": 0.0008445455000000018
+      },
+      "log_gain": {
+        "1.0": -3.0795491502026544
+      },
+      "status": "scored",
+      "recency_weighted_crowd_at_spot": {
+        "valid_from_utc": "2026-08-10T02:59:56.041971+00:00",
+        "forecaster_count": 30,
+        "outcome_mass": 0.009763991833923097,
+        "log_gain_vs_crowd": {
+          "1.0": -2.4476579823362306
+        }
+      }
+    },
+    {
+      "post_id": 44534,
+      "question_id": 44682,
+      "label": "Aug 24 - Sep 4",
+      "model_mapped_q4": 46015,
+      "q3_url": "https://www.metaculus.com/questions/44534/",
+      "spot": "2026-08-24T03:00:00Z",
+      "resolution": "16.82",
+      "scale": {
+        "range_min": 10,
+        "range_max": 50,
+        "open_lower_bound": true,
+        "open_upper_bound": true,
+        "zero_point": 0,
+        "inbound_outcome_count": 200
+      },
+      "resolve_period_end": "2026-09-04T20:00:00+00:00",
+      "asof": "2026-08-24T02:59:59+00:00",
+      "source_date": "2026-08-21",
+      "model_sources": [
+        "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv"
+      ],
+      "sample_size": 165,
+      "baseline_mass": 0.023665704599999948,
+      "candidate_mass": {
+        "1.0": 0.025585692900000012
+      },
+      "log_gain": {
+        "1.0": 0.0780063873223918
+      },
+      "status": "scored",
+      "recency_weighted_crowd_at_spot": {
+        "valid_from_utc": "2026-08-24T02:03:45.276472+00:00",
+        "forecaster_count": 26,
+        "outcome_mass": 0.01488087953155931,
+        "log_gain_vs_crowd": {
+          "1.0": 0.5419561882032718
+        }
+      }
+    },
+    {
+      "post_id": 44534,
+      "question_id": 44683,
+      "label": "Sep 7 - Sep 18",
+      "model_mapped_q4": 46015,
+      "q3_url": "https://www.metaculus.com/questions/44534/",
+      "spot": "2026-09-07T03:00:00Z",
+      "resolution": "18.94",
+      "scale": {
+        "range_min": 10,
+        "range_max": 50,
+        "open_lower_bound": true,
+        "open_upper_bound": true,
+        "zero_point": 0,
+        "inbound_outcome_count": 200
+      },
+      "resolve_period_end": "2026-09-18T20:00:00+00:00",
+      "asof": "2026-09-07T02:59:59+00:00",
+      "source_date": "2026-09-04",
+      "model_sources": [
+        "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv"
+      ],
+      "sample_size": 165,
+      "baseline_mass": 0.015493230599999963,
+      "candidate_mass": {
+        "1.0": 0.018675855200000036
+      },
+      "log_gain": {
+        "1.0": 0.18682833076780198
+      },
+      "status": "scored",
+      "recency_weighted_crowd_at_spot": {
+        "valid_from_utc": "2026-09-07T01:42:28.119899+00:00",
+        "forecaster_count": 28,
+        "outcome_mass": 0.014702235859411328,
+        "log_gain_vs_crowd": {
+          "1.0": 0.23923194231396167
+        }
+      }
+    },
+    {
+      "post_id": 44534,
+      "question_id": 44684,
+      "label": "Sep 21 - Oct 2",
+      "model_mapped_q4": 46015,
+      "q3_url": "https://www.metaculus.com/questions/44534/",
+      "spot": "2026-09-21T03:00:00Z",
+      "resolution": "17.59",
+      "scale": {
+        "range_min": 10,
+        "range_max": 50,
+        "open_lower_bound": true,
+        "open_upper_bound": true,
+        "zero_point": 0,
+        "inbound_outcome_count": 200
+      },
+      "resolve_period_end": "2026-10-02T20:00:00+00:00",
+      "asof": "2026-09-21T02:59:59+00:00",
+      "source_date": "2026-09-18",
+      "model_sources": [
+        "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv"
+      ],
+      "sample_size": 165,
+      "baseline_mass": 0.020147152700000004,
+      "candidate_mass": {
+        "1.0": 0.01940901140000001
+      },
+      "log_gain": {
+        "1.0": -0.0373255098224531
+      },
+      "status": "scored",
+      "recency_weighted_crowd_at_spot": {
+        "valid_from_utc": "2026-09-21T02:16:51.180005+00:00",
+        "forecaster_count": 27,
+        "outcome_mass": 0.0228452878150347,
+        "log_gain_vs_crowd": {
+          "1.0": -0.16300741016184878
+        }
+      }
+    }
+  ],
+  "omitted": [],
+  "commit": "2bc87a992d8171ebc894ab8109739e5267b6604d",
+  "input_snapshot_sha256": {
+    "44530": "d0a7d5bce547bd51e62151704b0fb5cc7f328db38db68af5e2e7b0f566a1a5e2",
+    "44534": "85d5f595bfa8c73b394b7578fa8012379146581c982a8656801e8823db61e481"
+  },
+  "additional_comparator": "Published recency-weighted community aggregate active at the exact spot time. Only supplied to the scoring routine, never to the candidate. Pairwise natural log-mass difference is not the official winner or peer score."
+}
