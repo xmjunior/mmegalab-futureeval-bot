@@ -28,6 +28,7 @@ concurrency:
   group: ${{ github.event_name == 'workflow_run' && 'champion-recovery-seeds' || github.event_name == 'workflow_dispatch' && inputs.mode == 'recovery' && 'champion-recovery-clock' || github.event_name == 'workflow_dispatch' && inputs.mode == 'recovery_check' && 'champion-recovery-inspection' || 'champion-v2-observations' }}
   cancel-in-progress: false
 env:
+  ARENA_SHA: "b7ae51518d9ea78add74cd6b02ba9685576efbb2"
   RECOVERY_SHA: "8b6e3f028991fe112e2aae1998afb0f1656dcc7c"
   RECOVERY_MODE: ${{ inputs.mode }}
   RECOVERY_CYCLE: ${{ inputs.recovery_cycle || '0' }}
@@ -66,6 +67,20 @@ jobs:
         id: promo
         continue-on-error: true
         run: python research/promo/settle.py --state state/promo-score.json --journal provider-panel/promo-ledger.json
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ARENA_SHA }}
+          path: arena-code
+          persist-credentials: false
+      - name: Score the independent sealed ARENA panel
+        id: arena
+        if: steps.promo.outcome == 'success'
+        continue-on-error: true
+        run: |
+          set -eu
+          test "$(git -C arena-code rev-parse HEAD)" = "$ARENA_SHA"
+          python arena-code/research/arena/arena.py score state/promo-score.json > state/arena.tmp
+          mv state/arena.tmp state/arena.json
       - name: Check configured zero-cost provider capabilities without inference
         run: |
           python research/provider_status.py
@@ -102,6 +117,7 @@ jobs:
       - name: Stage the audit and record actual step outcomes
         env:
           PROMO: ${{ steps.promo.outcome }}
+          ARENA: ${{ steps.arena.outcome }}
           TREASURY: ${{ steps.treasury.outcome }}
           MINI: ${{ steps.minibench.outcome }}
           AUDIT: ${{ steps.audit.outcome }}
@@ -110,7 +126,7 @@ jobs:
           python - <<'PY'
           import json, os
           from pathlib import Path
-          keys = ['TREASURY','MINI','AUDIT','PROMO','RESEARCH_SHA','GITHUB_SHA','GITHUB_EVENT_NAME','GITHUB_RUN_ID','GITHUB_RUN_ATTEMPT']
+          keys = ['TREASURY','MINI','AUDIT','PROMO','ARENA','ARENA_SHA','RESEARCH_SHA','GITHUB_SHA','GITHUB_EVENT_NAME','GITHUB_RUN_ID','GITHUB_RUN_ATTEMPT']
           info = {k:os.environ[k] for k in keys}
           Path('state/run.json').write_text(json.dumps(info, indent=2)+'\n')
           print(json.dumps(info))
@@ -152,12 +168,12 @@ jobs:
           assert run['GITHUB_RUN_ID'] == os.environ['GITHUB_RUN_ID']
           snapshot=dest/'runs'/(run['GITHUB_RUN_ID']+'-'+run['GITHUB_RUN_ATTEMPT'])
           snapshot.mkdir(parents=True,exist_ok=True)
-          for name,status in [('treasury.json','TREASURY'),('minibench.json','MINI'),('promo-score.json','PROMO')]:
+          for name,status in [('treasury.json','TREASURY'),('minibench.json','MINI'),('promo-score.json','PROMO'),('arena.json','ARENA')]:
               f=src/name
               if f.exists() and run[status]=='success':
                   json.loads(f.read_text())
                   copyfile(f,dest/name)
-          for name in ['participation.json','provider-status.json','promo-score.json','run.json']:
+          for name in ['participation.json','provider-status.json','promo-score.json','arena.json','run.json']:
               f=src/name
               if f.is_file():
                   json.loads(f.read_text())
@@ -173,13 +189,13 @@ jobs:
             git commit -m "Record autonomous forecast checks for run $GITHUB_RUN_ID/$GITHUB_RUN_ATTEMPT"
             git push origin HEAD:refs/heads/research/champion-observations
           fi
-      - name: Require all three data collectors to have completed
+      - name: Require all collectors and scores to have completed
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
           run=json.loads(Path('incoming/run.json').read_text())
-          incomplete=[field for field in ('TREASURY','MINI','AUDIT','PROMO') if run[field]!='success']
+          incomplete=[field for field in ('TREASURY','MINI','AUDIT','PROMO','ARENA') if run[field]!='success']
           if incomplete: raise SystemExit('Incomplete checks: '+', '.join(incomplete))
           PY
   coverage:
@@ -288,3 +304,22 @@ jobs:
         run: |
           test "$(git rev-parse HEAD)" = "$RECOVERY_SHA"
           python research/recovery_clock.py seed
+  recovery-bundle:
+    needs: record
+    if: ${{ !cancelled() && (needs.record.result == 'success' || needs.record.result == 'failure') }}
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Restore a fresh mirror and verify all branch and tag identities
+        run: bash tools/recovery_bundle.sh "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git" recovery
+      - uses: actions/upload-artifact@v4
+        with:
+          name: megalab-recovery-${{ github.run_id }}-${{ github.run_attempt }}
+          path: recovery/
+          retention-days: 14
+          if-no-files-found: error
