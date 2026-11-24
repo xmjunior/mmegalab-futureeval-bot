@@ -29,6 +29,16 @@
         "ust-promo-v1-20261209-2y": 0.49,
         "ust-promo-v1-20261209-spread": 0.38
       }
+    },
+    "openai": {
+      "forecast_sha256": "43917ef38355af73d1c18b63f72544a1e55e0ea339f6f9b73ba2255183ee3949",
+      "issued_at": "2026-11-24T21:38:20.310790+00:00",
+      "probabilities": {
+        "ust-promo-v1-20261202-2y": 0.514286,
+        "ust-promo-v1-20261202-spread": 0.314286,
+        "ust-promo-v1-20261209-2y": 0.5,
+        "ust-promo-v1-20261209-spread": 0.363636
+      }
     }
   },
   "coverage": {
@@ -59,6 +69,13 @@
       "submitted": 4
     },
     "gemini-web-4-neon": {
+      "mean_brier": null,
+      "mean_log_loss_nats": null,
+      "paired_scored": 0,
+      "scores_by_case": {},
+      "submitted": 4
+    },
+    "openai": {
       "mean_brier": null,
       "mean_log_loss_nats": null,
       "paired_scored": 0,
