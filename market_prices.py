@@ -85,6 +85,56 @@ for _post, _id, _label, _spot, _low, _high, _bins, _result in _CLOSED:
                         outcome=_result, bins=_bins, source=f"https://www.metaculus.com/questions/{_post}/"))
 
 
+# Exact training inputs for six resolved FRED questions. Each frozen row gives its
+# original as-of, spot, target, source URL, source-file SHA-256, last observation,
+# sample size, center, forecast quantiles and plain baseline quantiles. It has
+# no resolution labels. Never use an expired snapshot to predict an open question.
+_FRED_REPLAY = {
+    (46010, '2026-10-12T02:59:59+00:00', '2026-10-12T03:00:00+00:00', '2026-10-23T20:00:00+00:00'): (
+        'https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-07-22&vintage_date=2026-10-10',
+        '9b62266bdf5a990e57c0cf9a4cbce4edb4548398cd25d630ada2bbd0f861ee3e',
+        '2026-10-09', 495, 3.11,
+        (2.9033250711645926, 3.0150982469633334, 3.11, 3.2365356707155555, 3.3630713414311115),
+        (2.914, 3.02, 3.11, 3.23, 3.35),
+    ),
+    (46010, '2026-10-26T02:59:59+00:00', '2026-10-26T03:00:00+00:00', '2026-11-06T21:00:00+00:00'): (
+        'https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-08-05&vintage_date=2026-10-24',
+        '45bb8f556b0938617b6e7c1212b01f7dcdf74a92c54a11198b22030f864f1ebc',
+        '2026-10-23', 495, 3.38,
+        (3.160018835887344, 3.278988240968678, 3.38, 3.525905874156354, 3.6605882195314496),
+        (3.184, 3.29, 3.38, 3.51, 3.63),
+    ),
+    (46010, '2026-11-06T12:59:59+00:00', '2026-11-06T13:00:00+00:00', '2026-11-20T21:00:00+00:00'): (
+        'https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-08-17&vintage_date=2026-11-05',
+        '5235fcf36a760250b080d8904ba04a24857158ceb6114ec27902b2bac3ae079b',
+        '2026-11-05', 494, 3.48,
+        (3.2173440939313136, 3.3674331831134197, 3.48, 3.642596513280615, 3.7926856024627216),
+        (3.27, 3.3899999999999997, 3.48, 3.61, 3.73),
+    ),
+    (46014, '2026-10-12T02:59:59+00:00', '2026-10-12T03:00:00+00:00', '2026-10-23T20:00:00+00:00'): (
+        'https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&cosd=2024-07-22&vintage_date=2026-10-10',
+        'a1c1396fc219fd3e7a102ba9960a361fc773c19ce13c70bc544644e6db5c35b1',
+        '2026-10-08', 494, 5.22,
+        (5.005271563104419, 5.123372203396988, 5.22, 5.316627796603011, 5.423992015050801),
+        (5.02, 5.129999999999999, 5.22, 5.31, 5.409999999999999),
+    ),
+    (46014, '2026-10-26T02:59:59+00:00', '2026-10-26T03:00:00+00:00', '2026-11-06T21:00:00+00:00'): (
+        'https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&cosd=2024-08-05&vintage_date=2026-10-24',
+        'fb1977ae50d920ed377b87172ce0c49f2fab952c33464f300930ca79e93b0269',
+        '2026-10-22', 494, 4.96,
+        (4.713824255094553, 4.845918557238939, 4.96, 5.062072869838844, 5.1821585990610135),
+        (4.755000000000001, 4.865, 4.96, 5.045, 5.145),
+    ),
+    (46014, '2026-11-09T03:59:59+00:00', '2026-11-09T04:00:00+00:00', '2026-11-20T21:00:00+00:00'): (
+        'https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&cosd=2024-08-19&vintage_date=2026-11-07',
+        '6f26572115505d31cc6c57bce7252c0bc159228c99b9ca071d1b99935ea60608',
+        '2026-11-05', 494, 4.84,
+        (4.608716849967671, 4.7188516833164, 4.84, 4.939121350013856, 5.038242700027712),
+        (4.63, 4.73, 4.84, 4.930000000000001, 5.0200000000000005),
+    ),
+}
+
+
 def _get(url: str) -> bytes:
     request = Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; MarketPulse26Q4/1.0)"})
     with urlopen(request, timeout=18) as response:
@@ -128,6 +178,22 @@ def _fred(code: str, vintage: date):
             for row in rows if row.get(field) not in (None, "", ".")}, url
 
 
+@lru_cache(maxsize=8)
+def _current_fred(code: str, cutoff: date):
+    # Day-before-only observations, plus one extra calendar day for release lag.
+    # A current-vintage release must never substitute for a historical vintage.
+    eligible_day = cutoff - timedelta(days=1)
+    query = urlencode({"id": code, "cosd": (cutoff-timedelta(days=810)).isoformat(),
+                       "coed": eligible_day.isoformat()})
+    url = "https://fred.stlouisfed.org/graph/fredgraph.csv?" + query
+    rows = csv.DictReader(io.StringIO(_get(url).decode()))
+    if not rows.fieldnames or code not in rows.fieldnames:
+        raise ValueError(f"FRED returned the wrong series for {code}")
+    return {date.fromisoformat(row["observation_date"]): float(row[code])
+            for row in rows if row.get(code) not in (None, "", ".")
+            and date.fromisoformat(row["observation_date"]) <= eligible_day}, url
+
+
 @lru_cache(maxsize=1)
 def _vix():
     rows = csv.DictReader(io.StringIO(_get(CBOE).decode("utf-8-sig")))
@@ -141,13 +207,13 @@ class MarketEstimate:
     sources: tuple[str, ...]
     sample_size: int
     center: float
-    outcomes: np.ndarray
-    naive: np.ndarray
+    base_quantiles: np.ndarray
+    naive_quantiles: np.ndarray
 
     def quantiles(self, width: float = 1.0) -> dict[float, float]:
         if width not in WIDTHS:
             raise ValueError("Unvalidated distribution width")
-        values = self.center + width * (np.quantile(self.outcomes, LEVELS) - self.center)
+        values = self.center + width * (self.base_quantiles - self.center)
         return dict(zip(LEVELS, map(float, values), strict=True))
 
 
@@ -165,7 +231,24 @@ def model(post_id: int, as_of: datetime, spot: datetime, resolve: datetime) -> M
     # at an intraday cutoff. At a Sunday-night/Monday-UTC spot, Friday is available.
     cutoff = as_of.astimezone(NY).date() - timedelta(days=1)
     if kind == "level":
-        quotes, source = _fred(symbols[0], cutoff)
+        now = datetime.now(timezone.utc)
+        key = (post_id, *(dt.astimezone(timezone.utc).isoformat() for dt in (as_of, spot, resolve)))
+        replay = _FRED_REPLAY.get(key)
+        if replay and resolve < now:
+            url, file_hash, observed, count, center, adjusted, naive = replay
+            return MarketEstimate(date.fromisoformat(observed), (url, "sha256:" + file_hash), count,
+                                  center, np.asarray(adjusted), np.asarray(naive))
+        # The current public FRED chart is suitable only for an actual present-time
+        # prediction. An arbitrary past as-of always needs its original ALFRED vintage.
+        if timedelta(0) <= now-as_of <= timedelta(minutes=30) and now < spot:
+            try:
+                quotes, source = _current_fred(symbols[0], cutoff)
+                if not quotes or _weekdays(max(quotes)+timedelta(days=1), cutoff) > 2:
+                    raise ValueError("Current FRED observations stale")
+            except (OSError, ValueError, KeyError):
+                quotes, source = _fred(symbols[0], cutoff)
+        else:
+            quotes, source = _fred(symbols[0], cutoff)
         dates = sorted(d for d in quotes if d <= cutoff)[-505:]
         values = np.array([quotes[d] for d in dates])
         sources = (source,)
@@ -212,7 +295,8 @@ def model(post_id: int, as_of: datetime, spot: datetime, resolve: datetime) -> M
         naive = historical * values[-1]
         nearest = np.argsort(np.abs(np.log(values[left] / values[-1])))[:max(80, len(left)//3)]
         outcomes = historical[nearest] * values[-1]
-        return MarketEstimate(dates[-1], sources, len(nearest), float(np.median(outcomes)), outcomes, naive)
+        return MarketEstimate(dates[-1], sources, len(nearest), float(np.median(outcomes)),
+                              np.quantile(outcomes, LEVELS), np.quantile(naive, LEVELS))
     long_vol = np.std(daily[-252:], ddof=1)
     short_vol = np.std(daily[-30:], ddof=1)
     if not np.isfinite(long_vol) or long_vol <= 0:
@@ -221,7 +305,9 @@ def model(post_id: int, as_of: datetime, spot: datetime, resolve: datetime) -> M
     # Zero directional drift is fixed in advance. The plain benchmark uses the same
     # as-of returns and horizon, without the short/long regime adjustment.
     changes = historical - np.median(historical)
-    return MarketEstimate(dates[-1], sources, len(left), center, center + multiplier * changes, center + changes)
+    return MarketEstimate(dates[-1], sources, len(left), center,
+                          np.quantile(center + multiplier * changes, LEVELS),
+                          np.quantile(center + changes, LEVELS))
 
 
 def _mass(quantiles: dict[float, float], low: float, high: float, outcome: float, bins: int) -> float:
@@ -249,7 +335,7 @@ def benchmark(history=None) -> dict:
     def evaluate(row):
         estimate = model(row['post_id'], row['spot'] - timedelta(seconds=1), row['spot'], row['resolve'])
         args = row['low'], row['high'], row['outcome'], row['bins']
-        naive = dict(zip(LEVELS, np.quantile(estimate.naive, LEVELS)))
+        naive = dict(zip(LEVELS, estimate.naive_quantiles))
         baseline = _mass(naive, *args)
         return dict(post_id=row['post_id'], question_id=row['question_id'], spot=row['spot'].isoformat(),
                     source_date=estimate.source_date.isoformat(), outcome=row['outcome'], sample_size=estimate.sample_size,

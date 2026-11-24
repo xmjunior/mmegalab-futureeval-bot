@@ -5,6 +5,7 @@ import hashlib
 import json
 import logging
 import os
+import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -118,7 +119,7 @@ async def review(routes, rows):
     )
     for name in routes:
         try:
-            llm.routes = [GeneralLlm(name, temperature=0, timeout=45, allowed_tries=1, num_retries=0)]
+            llm.routes = [GeneralLlm(name, temperature=0, timeout=90, allowed_tries=1, num_retries=0)]
             llm.available_at = {name: 0.0}
             result = await llm.invoke(prompt)
             choices = json.loads(result.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip())
@@ -129,6 +130,8 @@ async def review(routes, rows):
             return name, choices
         except Exception as exc:
             log.warning("No validated decision from %s (%s)", name, type(exc).__name__)
+            if name.startswith("openrouter/") and llm.available_at.get(name, 0) - time.monotonic() > 300:
+                break
     raise RuntimeError("All qualified free models unavailable or invalid; no publication")
 
 
@@ -149,6 +152,12 @@ def checked_proof(proof):
 
 async def validate(account, history=None):
     history = prices.HISTORY if history is None else history
+    # Spot-check the exact authenticated history shape before any hosted inference.
+    sample = next((q for q in account.group(46015).values()
+                   if q.api_json["question"]["status"] in ("open", "upcoming")), None)
+    if sample:
+        log.info("Authenticated group preflight question=%s cdf_size=%s previous=%s",
+                 sample.id_of_question, sample.cdf_size, latest_forecast(sample) is not None)
     stats = prices.benchmark(history)
     widths = {str(g): stats["allowed_widths"][str(g)] for g in stats["eligible"]}
     log.info("Historical scorecard=%s", json.dumps(stats, default=str))
@@ -187,8 +196,10 @@ async def validate(account, history=None):
             gains.sort()
             if len(gains) >= 3 and sum(v for _,v in gains[:-1]) > 0 and gains[-1][1] > 0:
                 routes_by_group.setdefault(group, []).append(name)
+    if not any(not isinstance(trial, BaseException) for trial in trials):
+        raise RuntimeError("No free hosted provider returned valid decisions; no forecasts can be published")
     if not routes_by_group:
-        raise RuntimeError("No named hosted route beat the baseline on a qualifying held-out spot")
+        raise RuntimeError("Hosted forecasts failed the held-out baseline; publication disabled")
     proof = {"code_sha": os.getenv("GITHUB_SHA"), "project": PROJECT,
              "routes_by_group": routes_by_group, "routes": sorted({n for ns in routes_by_group.values() for n in ns}),
              "allowed_widths": {g:widths[g] for g in routes_by_group},
@@ -243,15 +254,16 @@ async def forecast(account, proof, dry=False):
 async def forecast_one(account, proof, routes, q, spot, deadline, now, dry):
     group = str(q.id_of_post)
     estimate = prices.model(q.id_of_post, now, spot, prices.period_end(q.group_question_option, spot))
-    if not dry:
-        previous = latest_forecast(q)
-        if previous:
-            old_time = timestamp(previous["start_time"])
-            # Compare the evidence available at both submission times, rather than calendar dates.
-            old_est = prices.model(q.id_of_post, old_time, spot, prices.period_end(q.group_question_option, spot))
-            if estimate.source_date <= old_est.source_date:
-                log.info("Unchanged market data; skipping question=%s source_date=%s", q.id_of_question, estimate.source_date)
-                return 0
+    previous = latest_forecast(q)
+    log.info("Authenticated history question=%s previous=%s", q.id_of_question, previous is not None)
+    # If today's admissible CDFs include the stored forecast, no model call or update
+    # is needed. This also works after process restarts without an external ledger.
+    if previous and not dry and any(
+        same_cdf(numeric_cdf(q, estimate.quantiles(w)), previous["forecast_values"])
+        for w in proof["allowed_widths"][group]
+    ):
+        log.info("Previous CDF still current; skipped question=%s source_date=%s", q.id_of_question, estimate.source_date)
+        return 0
     options = options_for(estimate, proof["allowed_widths"][group])
     name, [width] = await review([r for r in proof["routes_by_group"][group] if r in routes], [options])
     quantiles = estimate.quantiles(width)
