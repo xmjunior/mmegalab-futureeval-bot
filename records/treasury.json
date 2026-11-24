@@ -56,6 +56,33 @@
           "retry_at": "2026-11-24T21:04:25.784826+00:00",
           "seconds": 0.15,
           "status": "http_429"
+        },
+        {
+          "at": "2026-11-24T21:10:19.379872+00:00",
+          "key": "gemma-4-31b-it/research",
+          "model": "gemma-4-31b-it",
+          "prompt_sha256": "2518ab4bce1771ab2f212d964217485b91e308c260d0e76cdaff6326c522ee49",
+          "retry_at": "2026-11-24T22:11:08.743715+00:00",
+          "seconds": 49.36,
+          "status": "http_503"
+        },
+        {
+          "at": "2026-11-24T21:11:08.744556+00:00",
+          "key": "gemma-4-26b-a4b-it/research",
+          "model": "gemma-4-26b-a4b-it",
+          "prompt_sha256": "2518ab4bce1771ab2f212d964217485b91e308c260d0e76cdaff6326c522ee49",
+          "retry_at": "2026-11-24T22:11:08.964324+00:00",
+          "seconds": 0.22,
+          "status": "http_503"
+        },
+        {
+          "at": "2026-11-24T21:11:08.965116+00:00",
+          "key": "nvidia/nemotron-3-ultra-550b-a55b:free/research",
+          "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+          "prompt_sha256": "2518ab4bce1771ab2f212d964217485b91e308c260d0e76cdaff6326c522ee49",
+          "retry_at": "2026-11-24T22:11:09.093466+00:00",
+          "seconds": 0.13,
+          "status": "http_429"
         }
       ],
       "cache": {},
