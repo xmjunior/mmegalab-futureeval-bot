@@ -1,0 +1,28 @@
+name: Champion independent source trials
+on:
+  push:
+    branches: [verify/openai-access-audit]
+    paths: ['.github/workflows/champion_sources.yaml', 'research/source_trials.py']
+permissions:
+  contents: read
+jobs:
+  sources:
+    strategy:
+      fail-fast: false
+      matrix:
+        provider: [fred, exa_auth, exa_search, groq]
+    if: github.repository == 'xmjunior/mmegalab-futureeval-bot'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 719878e0e6cfa1c134331ba78b732f298073ae18
+          persist-credentials: false
+      - name: Query only the selected source
+        env:
+          FRED_API_KEY: ${{ matrix.provider == 'fred' && secrets.FRED_API_KEY || '' }}
+          EXA_API_KEY: ${{ matrix.provider == 'exa_auth' && secrets.EXA_API_KEY || '' }}
+          GROQ_API_KEY: ${{ matrix.provider == 'groq' && secrets.GROQ_API_KEY || '' }}
+          SOURCE: ${{ matrix.provider }}
+        run: python research/source_trials.py "$SOURCE"
