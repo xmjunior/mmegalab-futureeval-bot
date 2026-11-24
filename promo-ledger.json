@@ -13,6 +13,16 @@
       },
       "started_at": "2026-11-24T19:45:52.911831+00:00",
       "status": "stopped_no_retry"
+    },
+    "openai": {
+      "lease_nonce": "b6d5f4cfb0244466916196725e29bedd",
+      "max_micro_usd": 19200,
+      "records": {},
+      "requests": {
+        "single_panel_request": 19200
+      },
+      "started_at": "2026-11-24T21:38:14.732309+00:00",
+      "status": "reserved"
     }
   },
   "panel_hash": "173e2c3ade7fa75d0ee51014e22c25fc33959a48a8610905b0690ca4e4791471",
