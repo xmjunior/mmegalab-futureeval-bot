@@ -52,7 +52,14 @@
   "free_experiments": {
     "arena-ust-closed-blind-1": {
       "groq-gpt-oss-120b": {
-        "cases": {},
+        "cases": {
+          "64": {
+            "issued_at": "2026-11-24T23:10:09.069143+00:00",
+            "origin_index": 64,
+            "prompt_sha256": "d5110609924ce3bf7d475315d9c107a72f330d8f707047f0f0f2cab866fa5afd",
+            "status": "leased"
+          }
+        },
         "created_at": "2026-11-24T23:10:07.772756+00:00",
         "max_micro_usd": 0,
         "model": "openai/gpt-oss-120b",
