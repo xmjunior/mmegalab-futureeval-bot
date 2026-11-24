@@ -1,0 +1,34 @@
+name: Verify Groq Free fallback
+on:
+  push:
+    branches: [verify/futureeval-groq]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: futureeval-groq-validation
+  cancel-in-progress: false
+jobs:
+  synthetic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          version: "0.13.1"
+      - run: uv sync --locked --no-dev
+      - name: Run offline routing and publication regression tests
+        env:
+          LITELLM_LOCAL_MODEL_COST_MAP: "True"
+        run: uv run --locked --no-dev python -m unittest discover -s tests -v
+      - name: Run one synthetic provider call after checking the same key's Free plan
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GROQ_FREE_ACCOUNT_CONFIRMED: "true"
+        run: uv run --locked --no-dev python groq_free.py

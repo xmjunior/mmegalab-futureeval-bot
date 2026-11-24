@@ -14,6 +14,8 @@ import sys
 import warnings
 from typing import Any, Sequence
 
+from groq_free import configured as groq_configured
+
 
 # Placeholder values shipped in .env.template. If a real env var still equals
 # one of these the user forgot to replace it; we'd rather fail loudly here than
@@ -72,9 +74,9 @@ def check_environment(strict: bool = True) -> None:
         _is_real_env(k)
         for k in ("GEMINI_API_KEY", "OPENROUTER_API_KEY")
     )
-    if not has_llm_key:
+    if not has_llm_key and not groq_configured():
         problems.append(
-            "Set GEMINI_API_KEY or OPENROUTER_API_KEY for a free model route."
+            "Configure Gemini, OpenRouter, or the validated Groq Free route."
         )
 
     if problems:

@@ -12,6 +12,7 @@ from typing import Literal
 
 import dotenv
 
+import groq_free
 from local_forecast import CpuForecaster, MODEL_NAME
 
 # Runtime helpers (env validation, banners, dependency-warning suppression).
@@ -61,11 +62,14 @@ class FreeForecastLlm(GeneralLlm):
             names.extend(["gemini/gemma-4-31b-it", "gemini/gemma-4-26b-a4b-it"])
         if os.getenv("OPENROUTER_API_KEY"):
             names.append("openrouter/openrouter/free")
+        if groq_free.configured():
+            names.append(groq_free.ROUTE)
         if not names:
-            raise ValueError("A Gemini or OpenRouter API key is required")
+            raise ValueError("A configured free model route is required")
 
         super().__init__(names[0], allowed_tries=1)
         self.routes = [
+            groq_free.GroqFreeRoute() if name == groq_free.ROUTE else
             GeneralLlm(name, temperature=0.2, timeout=55, allowed_tries=1, num_retries=0)
             for name in names
         ]
@@ -127,6 +131,12 @@ class FreeForecastLlm(GeneralLlm):
                     answer = await route.invoke(prompt, system_prompt)
                 except Exception as exc:
                     status = getattr(exc, "status_code", None)
+                    if isinstance(exc, groq_free.Unavailable) and status in (400, 413, 422):
+                        # The current prompt exceeded a Groq request constraint.
+                        # Try the remaining routes; keep Groq eligible for other prompts.
+                        attempts[route.model] = 2
+                        logger.warning("Free route %s unavailable (%s), cooldown %ss", route.model, status, 0)
+                        continue
                     retryable = status in (408, 429, 500, 502, 503, 504) or isinstance(
                         exc, (TimeoutError, ConnectionError)
                     ) or type(exc).__name__ in ("APIConnectionError", "Timeout")

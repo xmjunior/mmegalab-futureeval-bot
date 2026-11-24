@@ -11,6 +11,7 @@ import sys
 import time
 
 import requests
+from groq_free import ROUTE as GROQ_ROUTE
 from forecasting_tools import ConditionalQuestion, MetaculusClient
 
 
@@ -35,7 +36,7 @@ _question_routes = contextvars.ContextVar("question_routes", default=None)
 
 class ProviderAuditHandler(logging.Handler):
     """Emit only known provider events, with validated scalar arguments."""
-    MODELS = frozenset(("gemini/gemma-4-31b-it", "gemini/gemma-4-26b-a4b-it", "openrouter/openrouter/free"))
+    MODELS = frozenset(("gemini/gemma-4-31b-it", "gemini/gemma-4-26b-a4b-it", "openrouter/openrouter/free", GROQ_ROUTE))
     CONNECTION_ERRORS = frozenset(("Timeout", "TimeoutError", "ConnectionError", "APIConnectionError"))
 
     def __init__(self, output):
