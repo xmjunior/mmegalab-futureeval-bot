@@ -80,10 +80,17 @@
             }
           },
           "88": {
+            "closed_at": "2026-11-24T23:10:49.258566+00:00",
             "issued_at": "2026-11-24T23:10:47.417016+00:00",
             "origin_index": 88,
+            "output_sha256": "d3d6f4b42cb15fb4d5aa496100567e614e97a3d4bbe82b56e0c9515860a4425b",
+            "p": 0.55,
             "prompt_sha256": "9678c410190c82a756a124a05b0fd354f8710fd304ab7df28efdd3c31a08c9ae",
-            "status": "leased"
+            "status": "completed",
+            "usage": {
+              "completion_tokens": 105,
+              "prompt_tokens": 160
+            }
           }
         },
         "created_at": "2026-11-24T23:10:07.772756+00:00",
