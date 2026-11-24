@@ -1,0 +1,25 @@
+name: Champion participation audit
+on:
+  push:
+    branches: [verify/champion-v2-audit]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Read Metaculus account participation metadata
+        run: python research/participation.py
+        env:
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: competition-participation-metadata
+          path: participation-audit.json
+          retention-days: 30
