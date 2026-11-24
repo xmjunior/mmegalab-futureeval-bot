@@ -211,10 +211,48 @@
           }
         },
         "created_at": "2026-11-24T23:10:07.772756+00:00",
+        "finished_at": "2026-11-24T23:13:43.786089+00:00",
         "max_micro_usd": 0,
         "model": "openai/gpt-oss-120b",
+        "report": {
+          "baseline": {
+            "brier": 0.23274739583333334,
+            "log_loss": 0.6580124369610638,
+            "mean_probability": 0.578125,
+            "n": 12,
+            "observed_fraction": 0.75
+          },
+          "competition_submissions": 0,
+          "groq": {
+            "brier": 0.33748427416666665,
+            "log_loss": 0.8789842646543559,
+            "mean_probability": 0.4839416666666667,
+            "n": 12,
+            "observed_fraction": 0.75
+          },
+          "inference_cost_usd": 0,
+          "kind": "date_masked_retrospective",
+          "missing": 0,
+          "model": "openai/gpt-oss-120b",
+          "neutral": {
+            "brier": 0.25,
+            "log_loss": 0.6931471805599453,
+            "mean_probability": 0.5,
+            "n": 12,
+            "observed_fraction": 0.75
+          },
+          "openai_inference_calls": 0,
+          "openai_paired_n": 0,
+          "paired_brier_gain_vs_baseline": -0.10473687833333331,
+          "paired_log_loss_gain_vs_baseline": -0.22097182769329204,
+          "planned": 12,
+          "promotion_allowed": false,
+          "scored": 12,
+          "source_sha256": "802ac4001ae8dae72a7b01132db702f7136d96ddf94c07da4f4dfa0f7c23ac25",
+          "study": "arena-ust-closed-blind-1"
+        },
         "source_sha256": "802ac4001ae8dae72a7b01132db702f7136d96ddf94c07da4f4dfa0f7c23ac25",
-        "status": "running"
+        "status": "completed"
       }
     }
   },
