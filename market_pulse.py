@@ -311,9 +311,9 @@ async def forecast_one(account, proof, routes, q, spot, deadline, now, dry):
     quantiles = estimate.quantiles(width)
     values = numeric_cdf(q, quantiles)
     log.info("mode=%s group=%s question=%s spot=%s model=%s source_date=%s sources=%s "
-             "width=%s quantiles=%s cdf_sha256=%s cdf=%s",
+             "cdf_points=%d cdf_sha256=%s",
              "dry" if dry else "live", group, q.id_of_question, spot.isoformat(), name,
-             estimate.source_date, estimate.sources, width, quantiles, digest(values), values)
+             estimate.source_date, estimate.sources, len(values), digest(values))
     if dry:
         return 1
     # Recheck the individual authenticated history and deadline immediately before submission.
