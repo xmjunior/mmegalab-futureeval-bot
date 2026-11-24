@@ -1,0 +1,1861 @@
+{
+  "cases": [
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2023-01-01",
+      "outcome": 0,
+      "reference": 0.6410256410256411,
+      "scaled": 0.6410256410256411,
+      "target": "2023-01-11",
+      "threshold": "4.36"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2023-01-01",
+      "outcome": 0,
+      "reference": 0.7083333333333334,
+      "scaled": 0.7083333333333334,
+      "target": "2023-01-19",
+      "threshold": "4.36"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2023-01-01",
+      "outcome": 0,
+      "reference": 0.358974358974359,
+      "scaled": 0.358974358974359,
+      "target": "2023-01-11",
+      "threshold": "-0.50"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2023-01-01",
+      "outcome": 0,
+      "reference": 0.25,
+      "scaled": 0.25,
+      "target": "2023-01-19",
+      "threshold": "-0.50"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2023-02-01",
+      "outcome": 1,
+      "reference": 0.5384615384615384,
+      "scaled": 0.5384615384615384,
+      "target": "2023-02-10",
+      "threshold": "4.27"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2023-02-01",
+      "outcome": 1,
+      "reference": 0.5416666666666666,
+      "scaled": 0.5416666666666666,
+      "target": "2023-02-17",
+      "threshold": "4.27"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2023-02-01",
+      "outcome": 0,
+      "reference": 0.3076923076923077,
+      "scaled": 0.3076923076923077,
+      "target": "2023-02-10",
+      "threshold": "-0.69"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2023-02-01",
+      "outcome": 0,
+      "reference": 0.375,
+      "scaled": 0.375,
+      "target": "2023-02-17",
+      "threshold": "-0.69"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2023-03-01",
+      "outcome": 0,
+      "reference": 0.6410256410256411,
+      "scaled": 0.6410256410256411,
+      "target": "2023-03-10",
+      "threshold": "4.80"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2023-03-01",
+      "outcome": 0,
+      "reference": 0.625,
+      "scaled": 0.625,
+      "target": "2023-03-17",
+      "threshold": "4.80"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2023-03-01",
+      "outcome": 0,
+      "reference": 0.28205128205128205,
+      "scaled": 0.28205128205128205,
+      "target": "2023-03-10",
+      "threshold": "-0.85"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2023-03-01",
+      "outcome": 1,
+      "reference": 0.3333333333333333,
+      "scaled": 0.3333333333333333,
+      "target": "2023-03-17",
+      "threshold": "-0.85"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2023-04-01",
+      "outcome": 0,
+      "reference": 0.5128205128205128,
+      "scaled": 0.5128205128205128,
+      "target": "2023-04-11",
+      "threshold": "4.12"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2023-04-01",
+      "outcome": 1,
+      "reference": 0.5416666666666666,
+      "scaled": 0.5416666666666666,
+      "target": "2023-04-18",
+      "threshold": "4.12"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2023-04-01",
+      "outcome": 0,
+      "reference": 0.358974358974359,
+      "scaled": 0.38461538461538464,
+      "target": "2023-04-11",
+      "threshold": "-0.54"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2023-04-01",
+      "outcome": 0,
+      "reference": 0.375,
+      "scaled": 0.4166666666666667,
+      "target": "2023-04-18",
+      "threshold": "-0.54"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2023-05-01",
+      "outcome": 0,
+      "reference": 0.5384615384615384,
+      "scaled": 0.5384615384615384,
+      "target": "2023-05-10",
+      "threshold": "4.09"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2023-05-01",
+      "outcome": 1,
+      "reference": 0.5833333333333334,
+      "scaled": 0.5833333333333334,
+      "target": "2023-05-17",
+      "threshold": "4.09"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2023-05-01",
+      "outcome": 1,
+      "reference": 0.38461538461538464,
+      "scaled": 0.38461538461538464,
+      "target": "2023-05-10",
+      "threshold": "-0.53"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2023-05-01",
+      "outcome": 0,
+      "reference": 0.375,
+      "scaled": 0.375,
+      "target": "2023-05-17",
+      "threshold": "-0.53"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2023-06-01",
+      "outcome": 1,
+      "reference": 0.5128205128205128,
+      "scaled": 0.5128205128205128,
+      "target": "2023-06-12",
+      "threshold": "4.48"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2023-06-01",
+      "outcome": 1,
+      "reference": 0.5416666666666666,
+      "scaled": 0.5416666666666666,
+      "target": "2023-06-20",
+      "threshold": "4.48"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2023-06-01",
+      "outcome": 0,
+      "reference": 0.3333333333333333,
+      "scaled": 0.3333333333333333,
+      "target": "2023-06-12",
+      "threshold": "-0.76"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2023-06-01",
+      "outcome": 0,
+      "reference": 0.375,
+      "scaled": 0.375,
+      "target": "2023-06-20",
+      "threshold": "-0.76"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2023-07-01",
+      "outcome": 0,
+      "reference": 0.5641025641025641,
+      "scaled": 0.5641025641025641,
+      "target": "2023-07-12",
+      "threshold": "4.89"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2023-07-01",
+      "outcome": 0,
+      "reference": 0.5833333333333334,
+      "scaled": 0.5833333333333334,
+      "target": "2023-07-19",
+      "threshold": "4.89"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2023-07-01",
+      "outcome": 1,
+      "reference": 0.3333333333333333,
+      "scaled": 0.3333333333333333,
+      "target": "2023-07-12",
+      "threshold": "-1.01"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2023-07-01",
+      "outcome": 1,
+      "reference": 0.375,
+      "scaled": 0.375,
+      "target": "2023-07-19",
+      "threshold": "-1.01"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2023-08-01",
+      "outcome": 0,
+      "reference": 0.5897435897435898,
+      "scaled": 0.5897435897435898,
+      "target": "2023-08-10",
+      "threshold": "4.89"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2023-08-01",
+      "outcome": 1,
+      "reference": 0.625,
+      "scaled": 0.625,
+      "target": "2023-08-17",
+      "threshold": "4.89"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2023-08-01",
+      "outcome": 1,
+      "reference": 0.38461538461538464,
+      "scaled": 0.38461538461538464,
+      "target": "2023-08-10",
+      "threshold": "-0.90"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2023-08-01",
+      "outcome": 1,
+      "reference": 0.4166666666666667,
+      "scaled": 0.4166666666666667,
+      "target": "2023-08-17",
+      "threshold": "-0.90"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2023-09-01",
+      "outcome": 1,
+      "reference": 0.5641025641025641,
+      "scaled": 0.5641025641025641,
+      "target": "2023-09-13",
+      "threshold": "4.92"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2023-09-01",
+      "outcome": 1,
+      "reference": 0.5416666666666666,
+      "scaled": 0.5,
+      "target": "2023-09-20",
+      "threshold": "4.92"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2023-09-01",
+      "outcome": 1,
+      "reference": 0.358974358974359,
+      "scaled": 0.358974358974359,
+      "target": "2023-09-13",
+      "threshold": "-0.77"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2023-09-01",
+      "outcome": 0,
+      "reference": 0.2916666666666667,
+      "scaled": 0.2916666666666667,
+      "target": "2023-09-20",
+      "threshold": "-0.77"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2023-10-01",
+      "outcome": 0,
+      "reference": 0.5128205128205128,
+      "scaled": 0.5128205128205128,
+      "target": "2023-10-11",
+      "threshold": "5.06"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2023-10-01",
+      "outcome": 1,
+      "reference": 0.5,
+      "scaled": 0.4166666666666667,
+      "target": "2023-10-18",
+      "threshold": "5.06"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2023-10-01",
+      "outcome": 1,
+      "reference": 0.41025641025641024,
+      "scaled": 0.41025641025641024,
+      "target": "2023-10-11",
+      "threshold": "-0.44"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2023-10-01",
+      "outcome": 1,
+      "reference": 0.375,
+      "scaled": 0.375,
+      "target": "2023-10-18",
+      "threshold": "-0.44"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2023-11-01",
+      "outcome": 0,
+      "reference": 0.48717948717948717,
+      "scaled": 0.48717948717948717,
+      "target": "2023-11-10",
+      "threshold": "5.05"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2023-11-01",
+      "outcome": 0,
+      "reference": 0.5,
+      "scaled": 0.4583333333333333,
+      "target": "2023-11-17",
+      "threshold": "5.05"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2023-11-01",
+      "outcome": 0,
+      "reference": 0.4358974358974359,
+      "scaled": 0.4358974358974359,
+      "target": "2023-11-10",
+      "threshold": "-0.14"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2023-11-01",
+      "outcome": 0,
+      "reference": 0.5,
+      "scaled": 0.5,
+      "target": "2023-11-17",
+      "threshold": "-0.14"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2023-12-01",
+      "outcome": 1,
+      "reference": 0.46153846153846156,
+      "scaled": 0.46153846153846156,
+      "target": "2023-12-12",
+      "threshold": "4.66"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2023-12-01",
+      "outcome": 0,
+      "reference": 0.5,
+      "scaled": 0.5,
+      "target": "2023-12-19",
+      "threshold": "4.66"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2023-12-01",
+      "outcome": 0,
+      "reference": 0.46153846153846156,
+      "scaled": 0.46153846153846156,
+      "target": "2023-12-12",
+      "threshold": "-0.36"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2023-12-01",
+      "outcome": 0,
+      "reference": 0.4166666666666667,
+      "scaled": 0.4166666666666667,
+      "target": "2023-12-19",
+      "threshold": "-0.36"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2024-01-01",
+      "outcome": 1,
+      "reference": 0.48717948717948717,
+      "scaled": 0.48717948717948717,
+      "target": "2024-01-10",
+      "threshold": "4.28"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2024-01-01",
+      "outcome": 1,
+      "reference": 0.4583333333333333,
+      "scaled": 0.4583333333333333,
+      "target": "2024-01-18",
+      "threshold": "4.28"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2024-01-01",
+      "outcome": 1,
+      "reference": 0.4358974358974359,
+      "scaled": 0.4358974358974359,
+      "target": "2024-01-10",
+      "threshold": "-0.41"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2024-01-01",
+      "outcome": 1,
+      "reference": 0.5,
+      "scaled": 0.5,
+      "target": "2024-01-18",
+      "threshold": "-0.41"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2024-02-01",
+      "outcome": 1,
+      "reference": 0.48717948717948717,
+      "scaled": 0.48717948717948717,
+      "target": "2024-02-12",
+      "threshold": "4.38"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2024-02-01",
+      "outcome": 1,
+      "reference": 0.4166666666666667,
+      "scaled": 0.4166666666666667,
+      "target": "2024-02-20",
+      "threshold": "4.38"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2024-02-01",
+      "outcome": 0,
+      "reference": 0.46153846153846156,
+      "scaled": 0.46153846153846156,
+      "target": "2024-02-12",
+      "threshold": "-0.29"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2024-02-01",
+      "outcome": 0,
+      "reference": 0.5416666666666666,
+      "scaled": 0.5416666666666666,
+      "target": "2024-02-20",
+      "threshold": "-0.29"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2024-03-01",
+      "outcome": 0,
+      "reference": 0.41025641025641024,
+      "scaled": 0.41025641025641024,
+      "target": "2024-03-12",
+      "threshold": "4.66"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2024-03-01",
+      "outcome": 1,
+      "reference": 0.5,
+      "scaled": 0.5,
+      "target": "2024-03-19",
+      "threshold": "4.66"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2024-03-01",
+      "outcome": 0,
+      "reference": 0.38461538461538464,
+      "scaled": 0.358974358974359,
+      "target": "2024-03-12",
+      "threshold": "-0.36"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2024-03-01",
+      "outcome": 0,
+      "reference": 0.5,
+      "scaled": 0.5,
+      "target": "2024-03-19",
+      "threshold": "-0.36"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2024-04-01",
+      "outcome": 1,
+      "reference": 0.41025641025641024,
+      "scaled": 0.41025641025641024,
+      "target": "2024-04-10",
+      "threshold": "4.61"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2024-04-01",
+      "outcome": 1,
+      "reference": 0.4583333333333333,
+      "scaled": 0.4583333333333333,
+      "target": "2024-04-17",
+      "threshold": "4.61"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2024-04-01",
+      "outcome": 0,
+      "reference": 0.358974358974359,
+      "scaled": 0.358974358974359,
+      "target": "2024-04-10",
+      "threshold": "-0.38"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2024-04-01",
+      "outcome": 1,
+      "reference": 0.4583333333333333,
+      "scaled": 0.4583333333333333,
+      "target": "2024-04-17",
+      "threshold": "-0.38"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2024-05-01",
+      "outcome": 0,
+      "reference": 0.4358974358974359,
+      "scaled": 0.4358974358974359,
+      "target": "2024-05-10",
+      "threshold": "4.99"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2024-05-01",
+      "outcome": 0,
+      "reference": 0.5416666666666666,
+      "scaled": 0.5416666666666666,
+      "target": "2024-05-17",
+      "threshold": "4.99"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2024-05-01",
+      "outcome": 0,
+      "reference": 0.358974358974359,
+      "scaled": 0.358974358974359,
+      "target": "2024-05-10",
+      "threshold": "-0.33"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2024-05-01",
+      "outcome": 0,
+      "reference": 0.4583333333333333,
+      "scaled": 0.4583333333333333,
+      "target": "2024-05-17",
+      "threshold": "-0.33"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2024-06-01",
+      "outcome": 0,
+      "reference": 0.5128205128205128,
+      "scaled": 0.48717948717948717,
+      "target": "2024-06-11",
+      "threshold": "4.94"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2024-06-01",
+      "outcome": 0,
+      "reference": 0.4583333333333333,
+      "scaled": 0.4583333333333333,
+      "target": "2024-06-18",
+      "threshold": "4.94"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2024-06-01",
+      "outcome": 0,
+      "reference": 0.41025641025641024,
+      "scaled": 0.41025641025641024,
+      "target": "2024-06-11",
+      "threshold": "-0.36"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2024-06-01",
+      "outcome": 0,
+      "reference": 0.5,
+      "scaled": 0.5,
+      "target": "2024-06-18",
+      "threshold": "-0.36"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2024-07-01",
+      "outcome": 0,
+      "reference": 0.48717948717948717,
+      "scaled": 0.48717948717948717,
+      "target": "2024-07-11",
+      "threshold": "4.72"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2024-07-01",
+      "outcome": 0,
+      "reference": 0.375,
+      "scaled": 0.375,
+      "target": "2024-07-18",
+      "threshold": "4.72"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2024-07-01",
+      "outcome": 1,
+      "reference": 0.46153846153846156,
+      "scaled": 0.46153846153846156,
+      "target": "2024-07-11",
+      "threshold": "-0.40"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2024-07-01",
+      "outcome": 1,
+      "reference": 0.4166666666666667,
+      "scaled": 0.4166666666666667,
+      "target": "2024-07-18",
+      "threshold": "-0.40"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2024-08-01",
+      "outcome": 0,
+      "reference": 0.3076923076923077,
+      "scaled": 0.3076923076923077,
+      "target": "2024-08-12",
+      "threshold": "4.37"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2024-08-01",
+      "outcome": 0,
+      "reference": 0.25,
+      "scaled": 0.25,
+      "target": "2024-08-19",
+      "threshold": "4.37"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2024-08-01",
+      "outcome": 1,
+      "reference": 0.38461538461538464,
+      "scaled": 0.38461538461538464,
+      "target": "2024-08-12",
+      "threshold": "-0.19"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2024-08-01",
+      "outcome": 0,
+      "reference": 0.5416666666666666,
+      "scaled": 0.5416666666666666,
+      "target": "2024-08-19",
+      "threshold": "-0.19"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2024-09-01",
+      "outcome": 0,
+      "reference": 0.41025641025641024,
+      "scaled": 0.4358974358974359,
+      "target": "2024-09-11",
+      "threshold": "3.89"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2024-09-01",
+      "outcome": 0,
+      "reference": 0.3333333333333333,
+      "scaled": 0.4166666666666667,
+      "target": "2024-09-18",
+      "threshold": "3.89"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2024-09-01",
+      "outcome": 1,
+      "reference": 0.41025641025641024,
+      "scaled": 0.41025641025641024,
+      "target": "2024-09-11",
+      "threshold": "0.01"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2024-09-01",
+      "outcome": 1,
+      "reference": 0.5,
+      "scaled": 0.5,
+      "target": "2024-09-18",
+      "threshold": "0.01"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2024-10-01",
+      "outcome": 1,
+      "reference": 0.2564102564102564,
+      "scaled": 0.2564102564102564,
+      "target": "2024-10-10",
+      "threshold": "3.57"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2024-10-01",
+      "outcome": 1,
+      "reference": 0.4166666666666667,
+      "scaled": 0.4166666666666667,
+      "target": "2024-10-18",
+      "threshold": "3.57"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2024-10-01",
+      "outcome": 0,
+      "reference": 0.38461538461538464,
+      "scaled": 0.38461538461538464,
+      "target": "2024-10-10",
+      "threshold": "0.21"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2024-10-01",
+      "outcome": 0,
+      "reference": 0.5416666666666666,
+      "scaled": 0.5416666666666666,
+      "target": "2024-10-18",
+      "threshold": "0.21"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2024-11-01",
+      "outcome": 1,
+      "reference": 0.4358974358974359,
+      "scaled": 0.4358974358974359,
+      "target": "2024-11-13",
+      "threshold": "4.17"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2024-11-01",
+      "outcome": 1,
+      "reference": 0.4166666666666667,
+      "scaled": 0.4166666666666667,
+      "target": "2024-11-20",
+      "threshold": "4.17"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2024-11-01",
+      "outcome": 1,
+      "reference": 0.38461538461538464,
+      "scaled": 0.38461538461538464,
+      "target": "2024-11-13",
+      "threshold": "0.15"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2024-11-01",
+      "outcome": 0,
+      "reference": 0.5,
+      "scaled": 0.5,
+      "target": "2024-11-20",
+      "threshold": "0.15"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2024-12-01",
+      "outcome": 0,
+      "reference": 0.41025641025641024,
+      "scaled": 0.41025641025641024,
+      "target": "2024-12-10",
+      "threshold": "4.21"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2024-12-01",
+      "outcome": 1,
+      "reference": 0.4583333333333333,
+      "scaled": 0.4583333333333333,
+      "target": "2024-12-17",
+      "threshold": "4.21"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2024-12-01",
+      "outcome": 0,
+      "reference": 0.5128205128205128,
+      "scaled": 0.5128205128205128,
+      "target": "2024-12-10",
+      "threshold": "0.07"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2024-12-01",
+      "outcome": 1,
+      "reference": 0.5416666666666666,
+      "scaled": 0.5416666666666666,
+      "target": "2024-12-17",
+      "threshold": "0.07"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2025-01-01",
+      "outcome": 1,
+      "reference": 0.41025641025641024,
+      "scaled": 0.358974358974359,
+      "target": "2025-01-10",
+      "threshold": "4.26"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2025-01-01",
+      "outcome": 1,
+      "reference": 0.5,
+      "scaled": 0.5,
+      "target": "2025-01-17",
+      "threshold": "4.26"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2025-01-01",
+      "outcome": 1,
+      "reference": 0.5128205128205128,
+      "scaled": 0.5128205128205128,
+      "target": "2025-01-10",
+      "threshold": "0.32"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2025-01-01",
+      "outcome": 1,
+      "reference": 0.4583333333333333,
+      "scaled": 0.4583333333333333,
+      "target": "2025-01-17",
+      "threshold": "0.32"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2025-02-01",
+      "outcome": 1,
+      "reference": 0.41025641025641024,
+      "scaled": 0.41025641025641024,
+      "target": "2025-02-11",
+      "threshold": "4.20"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2025-02-01",
+      "outcome": 1,
+      "reference": 0.5,
+      "scaled": 0.5,
+      "target": "2025-02-19",
+      "threshold": "4.20"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2025-02-01",
+      "outcome": 0,
+      "reference": 0.5128205128205128,
+      "scaled": 0.5128205128205128,
+      "target": "2025-02-11",
+      "threshold": "0.35"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2025-02-01",
+      "outcome": 0,
+      "reference": 0.5,
+      "scaled": 0.5,
+      "target": "2025-02-19",
+      "threshold": "0.35"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2025-03-01",
+      "outcome": 0,
+      "reference": 0.38461538461538464,
+      "scaled": 0.38461538461538464,
+      "target": "2025-03-11",
+      "threshold": "4.09"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2025-03-01",
+      "outcome": 0,
+      "reference": 0.3333333333333333,
+      "scaled": 0.3333333333333333,
+      "target": "2025-03-18",
+      "threshold": "4.09"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2025-03-01",
+      "outcome": 1,
+      "reference": 0.5128205128205128,
+      "scaled": 0.5128205128205128,
+      "target": "2025-03-11",
+      "threshold": "0.23"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2025-03-01",
+      "outcome": 1,
+      "reference": 0.5833333333333334,
+      "scaled": 0.5833333333333334,
+      "target": "2025-03-18",
+      "threshold": "0.23"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2025-04-01",
+      "outcome": 0,
+      "reference": 0.358974358974359,
+      "scaled": 0.358974358974359,
+      "target": "2025-04-10",
+      "threshold": "3.91"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2025-04-01",
+      "outcome": 0,
+      "reference": 0.3333333333333333,
+      "scaled": 0.3333333333333333,
+      "target": "2025-04-17",
+      "threshold": "3.91"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2025-04-01",
+      "outcome": 1,
+      "reference": 0.5128205128205128,
+      "scaled": 0.5128205128205128,
+      "target": "2025-04-10",
+      "threshold": "0.39"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2025-04-01",
+      "outcome": 1,
+      "reference": 0.5416666666666666,
+      "scaled": 0.5416666666666666,
+      "target": "2025-04-17",
+      "threshold": "0.39"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2025-05-01",
+      "outcome": 1,
+      "reference": 0.358974358974359,
+      "scaled": 0.38461538461538464,
+      "target": "2025-05-12",
+      "threshold": "3.67"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2025-05-01",
+      "outcome": 1,
+      "reference": 0.4166666666666667,
+      "scaled": 0.4166666666666667,
+      "target": "2025-05-19",
+      "threshold": "3.67"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2025-05-01",
+      "outcome": 0,
+      "reference": 0.48717948717948717,
+      "scaled": 0.5384615384615384,
+      "target": "2025-05-12",
+      "threshold": "0.55"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2025-05-01",
+      "outcome": 0,
+      "reference": 0.5833333333333334,
+      "scaled": 0.5833333333333334,
+      "target": "2025-05-19",
+      "threshold": "0.55"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2025-06-01",
+      "outcome": 1,
+      "reference": 0.38461538461538464,
+      "scaled": 0.38461538461538464,
+      "target": "2025-06-10",
+      "threshold": "3.94"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2025-06-01",
+      "outcome": 0,
+      "reference": 0.4166666666666667,
+      "scaled": 0.4166666666666667,
+      "target": "2025-06-17",
+      "threshold": "3.94"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2025-06-01",
+      "outcome": 0,
+      "reference": 0.5384615384615384,
+      "scaled": 0.5384615384615384,
+      "target": "2025-06-10",
+      "threshold": "0.52"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2025-06-01",
+      "outcome": 0,
+      "reference": 0.625,
+      "scaled": 0.625,
+      "target": "2025-06-17",
+      "threshold": "0.52"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2025-07-01",
+      "outcome": 1,
+      "reference": 0.46153846153846156,
+      "scaled": 0.46153846153846156,
+      "target": "2025-07-11",
+      "threshold": "3.75"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2025-07-01",
+      "outcome": 1,
+      "reference": 0.3333333333333333,
+      "scaled": 0.3333333333333333,
+      "target": "2025-07-18",
+      "threshold": "3.75"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2025-07-01",
+      "outcome": 0,
+      "reference": 0.48717948717948717,
+      "scaled": 0.48717948717948717,
+      "target": "2025-07-11",
+      "threshold": "0.57"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2025-07-01",
+      "outcome": 0,
+      "reference": 0.5833333333333334,
+      "scaled": 0.5833333333333334,
+      "target": "2025-07-18",
+      "threshold": "0.57"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2025-08-01",
+      "outcome": 0,
+      "reference": 0.46153846153846156,
+      "scaled": 0.46153846153846156,
+      "target": "2025-08-12",
+      "threshold": "3.96"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2025-08-01",
+      "outcome": 0,
+      "reference": 0.4166666666666667,
+      "scaled": 0.4166666666666667,
+      "target": "2025-08-19",
+      "threshold": "3.96"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2025-08-01",
+      "outcome": 1,
+      "reference": 0.46153846153846156,
+      "scaled": 0.46153846153846156,
+      "target": "2025-08-12",
+      "threshold": "0.45"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2025-08-01",
+      "outcome": 1,
+      "reference": 0.4583333333333333,
+      "scaled": 0.4583333333333333,
+      "target": "2025-08-19",
+      "threshold": "0.45"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2025-09-01",
+      "outcome": 0,
+      "reference": 0.4358974358974359,
+      "scaled": 0.46153846153846156,
+      "target": "2025-09-10",
+      "threshold": "3.64"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2025-09-01",
+      "outcome": 0,
+      "reference": 0.4166666666666667,
+      "scaled": 0.4166666666666667,
+      "target": "2025-09-17",
+      "threshold": "3.64"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2025-09-01",
+      "outcome": 0,
+      "reference": 0.48717948717948717,
+      "scaled": 0.5384615384615384,
+      "target": "2025-09-10",
+      "threshold": "0.61"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2025-09-01",
+      "outcome": 0,
+      "reference": 0.4583333333333333,
+      "scaled": 0.5416666666666666,
+      "target": "2025-09-17",
+      "threshold": "0.61"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2025-10-01",
+      "outcome": 0,
+      "reference": 0.46153846153846156,
+      "scaled": 0.46153846153846156,
+      "target": "2025-10-10",
+      "threshold": "3.65"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2025-10-01",
+      "outcome": 0,
+      "reference": 0.4166666666666667,
+      "scaled": 0.4166666666666667,
+      "target": "2025-10-20",
+      "threshold": "3.65"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2025-10-01",
+      "outcome": 0,
+      "reference": 0.4358974358974359,
+      "scaled": 0.4358974358974359,
+      "target": "2025-10-10",
+      "threshold": "0.53"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2025-10-01",
+      "outcome": 1,
+      "reference": 0.5416666666666666,
+      "scaled": 0.5416666666666666,
+      "target": "2025-10-20",
+      "threshold": "0.53"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2025-11-01",
+      "outcome": 0,
+      "reference": 0.358974358974359,
+      "scaled": 0.358974358974359,
+      "target": "2025-11-12",
+      "threshold": "3.63"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2025-11-01",
+      "outcome": 0,
+      "reference": 0.4166666666666667,
+      "scaled": 0.4166666666666667,
+      "target": "2025-11-19",
+      "threshold": "3.63"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2025-11-01",
+      "outcome": 1,
+      "reference": 0.46153846153846156,
+      "scaled": 0.41025641025641024,
+      "target": "2025-11-12",
+      "threshold": "0.51"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2025-11-01",
+      "outcome": 1,
+      "reference": 0.4166666666666667,
+      "scaled": 0.375,
+      "target": "2025-11-19",
+      "threshold": "0.51"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2025-12-01",
+      "outcome": 1,
+      "reference": 0.38461538461538464,
+      "scaled": 0.38461538461538464,
+      "target": "2025-12-10",
+      "threshold": "3.47"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2025-12-01",
+      "outcome": 1,
+      "reference": 0.3333333333333333,
+      "scaled": 0.3333333333333333,
+      "target": "2025-12-17",
+      "threshold": "3.47"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2025-12-01",
+      "outcome": 1,
+      "reference": 0.48717948717948717,
+      "scaled": 0.38461538461538464,
+      "target": "2025-12-10",
+      "threshold": "0.56"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2025-12-01",
+      "outcome": 1,
+      "reference": 0.5416666666666666,
+      "scaled": 0.5,
+      "target": "2025-12-17",
+      "threshold": "0.56"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2026-01-01",
+      "outcome": 1,
+      "reference": 0.358974358974359,
+      "scaled": 0.3333333333333333,
+      "target": "2026-01-12",
+      "threshold": "3.47"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2026-01-01",
+      "outcome": 1,
+      "reference": 0.2916666666666667,
+      "scaled": 0.2916666666666667,
+      "target": "2026-01-20",
+      "threshold": "3.47"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2026-01-01",
+      "outcome": 0,
+      "reference": 0.46153846153846156,
+      "scaled": 0.46153846153846156,
+      "target": "2026-01-12",
+      "threshold": "0.70"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2026-01-01",
+      "outcome": 0,
+      "reference": 0.5,
+      "scaled": 0.5,
+      "target": "2026-01-20",
+      "threshold": "0.70"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2026-02-01",
+      "outcome": 0,
+      "reference": 0.41025641025641024,
+      "scaled": 0.358974358974359,
+      "target": "2026-02-10",
+      "threshold": "3.55"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2026-02-01",
+      "outcome": 0,
+      "reference": 0.4166666666666667,
+      "scaled": 0.4166666666666667,
+      "target": "2026-02-18",
+      "threshold": "3.55"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2026-02-01",
+      "outcome": 0,
+      "reference": 0.46153846153846156,
+      "scaled": 0.46153846153846156,
+      "target": "2026-02-10",
+      "threshold": "0.72"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2026-02-01",
+      "outcome": 0,
+      "reference": 0.5,
+      "scaled": 0.5,
+      "target": "2026-02-18",
+      "threshold": "0.72"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2026-03-01",
+      "outcome": 1,
+      "reference": 0.2564102564102564,
+      "scaled": 0.2564102564102564,
+      "target": "2026-03-10",
+      "threshold": "3.44"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2026-03-01",
+      "outcome": 1,
+      "reference": 0.3333333333333333,
+      "scaled": 0.3333333333333333,
+      "target": "2026-03-17",
+      "threshold": "3.44"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2026-03-01",
+      "outcome": 0,
+      "reference": 0.41025641025641024,
+      "scaled": 0.41025641025641024,
+      "target": "2026-03-10",
+      "threshold": "0.61"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2026-03-01",
+      "outcome": 0,
+      "reference": 0.5,
+      "scaled": 0.5,
+      "target": "2026-03-17",
+      "threshold": "0.61"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2026-04-01",
+      "outcome": 0,
+      "reference": 0.41025641025641024,
+      "scaled": 0.4358974358974359,
+      "target": "2026-04-10",
+      "threshold": "3.84"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2026-04-01",
+      "outcome": 0,
+      "reference": 0.4166666666666667,
+      "scaled": 0.4166666666666667,
+      "target": "2026-04-17",
+      "threshold": "3.84"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2026-04-01",
+      "outcome": 0,
+      "reference": 0.358974358974359,
+      "scaled": 0.4358974358974359,
+      "target": "2026-04-10",
+      "threshold": "0.54"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2026-04-01",
+      "outcome": 1,
+      "reference": 0.4166666666666667,
+      "scaled": 0.5416666666666666,
+      "target": "2026-04-17",
+      "threshold": "0.54"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2026-05-01",
+      "outcome": 1,
+      "reference": 0.38461538461538464,
+      "scaled": 0.38461538461538464,
+      "target": "2026-05-12",
+      "threshold": "3.94"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2026-05-01",
+      "outcome": 1,
+      "reference": 0.4166666666666667,
+      "scaled": 0.4166666666666667,
+      "target": "2026-05-19",
+      "threshold": "3.94"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2026-05-01",
+      "outcome": 0,
+      "reference": 0.38461538461538464,
+      "scaled": 0.38461538461538464,
+      "target": "2026-05-12",
+      "threshold": "0.51"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2026-05-01",
+      "outcome": 1,
+      "reference": 0.5,
+      "scaled": 0.5,
+      "target": "2026-05-19",
+      "threshold": "0.51"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2026-06-01",
+      "outcome": 1,
+      "reference": 0.41025641025641024,
+      "scaled": 0.4358974358974359,
+      "target": "2026-06-10",
+      "threshold": "4.01"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2026-06-01",
+      "outcome": 1,
+      "reference": 0.4583333333333333,
+      "scaled": 0.5416666666666666,
+      "target": "2026-06-17",
+      "threshold": "4.01"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2026-06-01",
+      "outcome": 0,
+      "reference": 0.358974358974359,
+      "scaled": 0.358974358974359,
+      "target": "2026-06-10",
+      "threshold": "0.47"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2026-06-01",
+      "outcome": 0,
+      "reference": 0.4166666666666667,
+      "scaled": 0.4166666666666667,
+      "target": "2026-06-17",
+      "threshold": "0.47"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2026-07-01",
+      "outcome": 1,
+      "reference": 0.41025641025641024,
+      "scaled": 0.4358974358974359,
+      "target": "2026-07-13",
+      "threshold": "4.12"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2026-07-01",
+      "outcome": 1,
+      "reference": 0.375,
+      "scaled": 0.375,
+      "target": "2026-07-20",
+      "threshold": "4.12"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2026-07-01",
+      "outcome": 1,
+      "reference": 0.3333333333333333,
+      "scaled": 0.38461538461538464,
+      "target": "2026-07-13",
+      "threshold": "0.29"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2026-07-01",
+      "outcome": 1,
+      "reference": 0.375,
+      "scaled": 0.375,
+      "target": "2026-07-20",
+      "threshold": "0.29"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2026-08-01",
+      "outcome": 0,
+      "reference": 0.4358974358974359,
+      "scaled": 0.4358974358974359,
+      "target": "2026-08-11",
+      "threshold": "4.25"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2026-08-01",
+      "outcome": 0,
+      "reference": 0.5416666666666666,
+      "scaled": 0.5416666666666666,
+      "target": "2026-08-18",
+      "threshold": "4.25"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2026-08-01",
+      "outcome": 1,
+      "reference": 0.41025641025641024,
+      "scaled": 0.48717948717948717,
+      "target": "2026-08-11",
+      "threshold": "0.46"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2026-08-01",
+      "outcome": 1,
+      "reference": 0.4583333333333333,
+      "scaled": 0.5,
+      "target": "2026-08-18",
+      "threshold": "0.46"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2026-09-01",
+      "outcome": 1,
+      "reference": 0.4358974358974359,
+      "scaled": 0.46153846153846156,
+      "target": "2026-09-11",
+      "threshold": "4.36"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2026-09-01",
+      "outcome": 1,
+      "reference": 0.5416666666666666,
+      "scaled": 0.5416666666666666,
+      "target": "2026-09-18",
+      "threshold": "4.36"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2026-09-01",
+      "outcome": 0,
+      "reference": 0.38461538461538464,
+      "scaled": 0.46153846153846156,
+      "target": "2026-09-11",
+      "threshold": "0.40"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2026-09-01",
+      "outcome": 0,
+      "reference": 0.4166666666666667,
+      "scaled": 0.4166666666666667,
+      "target": "2026-09-18",
+      "threshold": "0.40"
+    },
+    {
+      "lag": 7,
+      "leg": "2y",
+      "origin": "2026-10-01",
+      "outcome": 0,
+      "reference": 0.48717948717948717,
+      "scaled": 0.5128205128205128,
+      "target": "2026-10-13",
+      "threshold": "4.91"
+    },
+    {
+      "lag": 12,
+      "leg": "2y",
+      "origin": "2026-10-01",
+      "outcome": 0,
+      "reference": 0.5,
+      "scaled": 0.5,
+      "target": "2026-10-20",
+      "threshold": "4.91"
+    },
+    {
+      "lag": 7,
+      "leg": "spread",
+      "origin": "2026-10-01",
+      "outcome": 1,
+      "reference": 0.38461538461538464,
+      "scaled": 0.46153846153846156,
+      "target": "2026-10-13",
+      "threshold": "0.38"
+    },
+    {
+      "lag": 12,
+      "leg": "spread",
+      "origin": "2026-10-01",
+      "outcome": 0,
+      "reference": 0.375,
+      "scaled": 0.5,
+      "target": "2026-10-20",
+      "threshold": "0.38"
+    }
+  ],
+  "ci95_month_blocks": [
+    -0.006901,
+    0.002861
+  ],
+  "improved_months": 8,
+  "months": 46,
+  "paired_brier_gain": -0.002073,
+  "pairs": 184,
+  "reference": {
+    "brier": 0.258713,
+    "log_loss": 0.711476
+  },
+  "scaled": {
+    "brier": 0.260786,
+    "log_loss": 0.715744
+  },
+  "tied_months": 26
+}
