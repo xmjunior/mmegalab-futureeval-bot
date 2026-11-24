@@ -1,0 +1,16 @@
+name: Recheck existing Market Pulse qualification
+on:
+  push:
+    branches: [ops/recheck-market-pulse]
+permissions:
+  actions: write
+  contents: read
+jobs:
+  start:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Ask the original scheduled workflow to enforce its qualification gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/actions/workflows/market_pulse.yaml/dispatches" -f ref=main

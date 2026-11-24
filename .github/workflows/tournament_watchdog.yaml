@@ -1,0 +1,24 @@
+name: Tournament polling watchdog
+on:
+  push:
+    branches: [ops/tournament-watchdog]
+  workflow_dispatch:
+permissions:
+  actions: write
+  contents: read
+concurrency:
+  group: champion-tournament-watchdog
+  cancel-in-progress: false
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Reconcile open unanswered opportunities with original workflow runs
+        run: python research/watchdog.py --dispatch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
