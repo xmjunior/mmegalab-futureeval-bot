@@ -1,0 +1,98 @@
+{
+  "descriptive": {
+    "base": {
+      "brier": null,
+      "five_bin_ece": null,
+      "mean_log_loss": null
+    },
+    "c": {
+      "brier": null,
+      "five_bin_ece": null,
+      "mean_log_loss": null
+    },
+    "pairs": 0
+  },
+  "evaluated_utc": "2026-11-24T18:58:12.805755+00:00",
+  "fixed_review": null,
+  "protocol_sha256": "7c66f59eb9ad2634ed93322a6d2f4fa9d9817b253d4289fe388989430550730c",
+  "rounds": {
+    "33169": {
+      "complete": false,
+      "coverage": {
+        "all_formats_own_post_registration": 0,
+        "all_formats_post_registration": 0,
+        "all_resolved_solo": 0,
+        "binary_post_registration": 0,
+        "eligible_pairs": 0,
+        "non_solo_resolved_posts": 0
+      },
+      "exclusions": {},
+      "project": 33169,
+      "slug": "minibench",
+      "start": "2026-11-16T00:00:00Z",
+      "stats": {
+        "bins": {
+          "base": [
+            [
+              0,
+              0.0,
+              0
+            ],
+            [
+              0,
+              0.0,
+              0
+            ],
+            [
+              0,
+              0.0,
+              0
+            ],
+            [
+              0,
+              0.0,
+              0
+            ],
+            [
+              0,
+              0.0,
+              0
+            ]
+          ],
+          "c": [
+            [
+              0,
+              0.0,
+              0
+            ],
+            [
+              0,
+              0.0,
+              0
+            ],
+            [
+              0,
+              0.0,
+              0
+            ],
+            [
+              0,
+              0.0,
+              0
+            ],
+            [
+              0,
+              0.0,
+              0
+            ]
+          ]
+        },
+        "brier_base_sum": 0.0,
+        "brier_c_sum": 0.0,
+        "ln_base_sum": 0.0,
+        "ln_c_sum": 0.0,
+        "n": 0
+      }
+    }
+  }
+}

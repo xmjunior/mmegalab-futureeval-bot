@@ -1,0 +1,171 @@
+{
+  "observed_at": "2026-11-24T18:58:25.441956+00:00",
+  "account": {
+    "id": 313890,
+    "username": "megalab-mario-bot",
+    "is_bot": true,
+    "is_primary_bot": true,
+    "date_joined": "2026-11-24T12:35:27.315240Z"
+  },
+  "projects": {
+    "FutureEval": {
+      "own_filter_post_ids": [
+        46633
+      ],
+      "own_filter_post_total": 1,
+      "mismatching_post_ids": [],
+      "question_history_missing_count": 0,
+      "own_history_without_post": {},
+      "project": 33121,
+      "slug": "fall-futureeval-2026",
+      "canonical_slug": "fall-futureeval-2026",
+      "api_has_participated": true,
+      "dates": {
+        "start_date": "2026-09-28T00:00:00Z",
+        "close_date": "2027-03-05T00:00:00Z",
+        "forecasting_end_date": "2027-01-06T00:00:00Z"
+      },
+      "states": {
+        "closed": 130,
+        "open": 1,
+        "resolved": 47
+      },
+      "questions": 178,
+      "forecasted_questions": 1,
+      "forecast_events": 1,
+      "duplicate_questions": [],
+      "opportunities_overlapping_account_lifetime": 3,
+      "unanswered_current": 1,
+      "current_windows": [
+        {
+          "id": 46894,
+          "opens": "2026-11-24T18:00:00+00:00",
+          "closes": "2026-11-24T21:00:00+00:00",
+          "own_count": 0
+        }
+      ],
+      "next_visible_open": [],
+      "submitted": [
+        {
+          "id": 46893,
+          "post": 46633,
+          "state": "closed",
+          "opens": "2026-11-24T15:00:00+00:00",
+          "closes": "2026-11-24T18:00:00+00:00",
+          "own_count": 1,
+          "own_times": [
+            "2026-11-24T17:45:55.946887+00:00"
+          ]
+        }
+      ],
+      "comments": [
+        {
+          "id": 1358345,
+          "created_at": "2026-11-24T17:46:00.631149+00:00",
+          "post": 46633,
+          "author_id": 313890,
+          "is_private": true,
+          "included_forecast": true
+        }
+      ],
+      "leaderboards": [
+        {
+          "leaderboard": 991,
+          "score_type": "spot_peer_tournament",
+          "ranked_entries": 606,
+          "coverage_max": 46,
+          "self_entry_key": null,
+          "matched_entries_by_own_user_id": 0,
+          "officially_finalized": false,
+          "own_entry": null
+        }
+      ]
+    },
+    "MiniBench": {
+      "own_filter_post_ids": [],
+      "own_filter_post_total": 0,
+      "mismatching_post_ids": [],
+      "question_history_missing_count": 0,
+      "own_history_without_post": {},
+      "project": 33169,
+      "slug": "minibench",
+      "canonical_slug": "minibench",
+      "api_has_participated": false,
+      "dates": {
+        "start_date": "2026-11-16T00:00:00Z",
+        "close_date": "2026-12-04T00:00:00Z",
+        "forecasting_end_date": "2026-11-18T21:43:57Z"
+      },
+      "states": {
+        "closed": 60
+      },
+      "questions": 60,
+      "forecasted_questions": 0,
+      "forecast_events": 0,
+      "duplicate_questions": [],
+      "opportunities_overlapping_account_lifetime": 0,
+      "unanswered_current": 0,
+      "current_windows": [],
+      "next_visible_open": [],
+      "submitted": [],
+      "comments": [],
+      "leaderboards": [
+        {
+          "leaderboard": 1046,
+          "score_type": "spot_peer_tournament",
+          "ranked_entries": 0,
+          "coverage_max": 0,
+          "self_entry_key": null,
+          "matched_entries_by_own_user_id": 0,
+          "officially_finalized": false,
+          "own_entry": null
+        }
+      ]
+    },
+    "MarketPulse": {
+      "own_filter_post_ids": [],
+      "own_filter_post_total": 0,
+      "mismatching_post_ids": [],
+      "question_history_missing_count": 0,
+      "own_history_without_post": {},
+      "project": 33131,
+      "slug": "market-pulse-26q4",
+      "canonical_slug": "market-pulse-26q4",
+      "api_has_participated": false,
+      "dates": {
+        "start_date": "2026-10-07T17:00:00Z",
+        "close_date": "2027-01-06T18:00:00Z",
+        "forecasting_end_date": "2026-12-31T00:00:00Z"
+      },
+      "states": {
+        "resolved": 45,
+        "closed": 8,
+        "upcoming": 16
+      },
+      "questions": 69,
+      "forecasted_questions": 0,
+      "forecast_events": 0,
+      "duplicate_questions": [],
+      "opportunities_overlapping_account_lifetime": 0,
+      "unanswered_current": 0,
+      "current_windows": [],
+      "next_visible_open": [
+        "2026-11-30T16:00:00+00:00"
+      ],
+      "submitted": [],
+      "comments": [],
+      "leaderboards": [
+        {
+          "leaderboard": 1004,
+          "score_type": "spot_peer_tournament",
+          "ranked_entries": 286,
+          "coverage_max": 43,
+          "self_entry_key": null,
+          "matched_entries_by_own_user_id": 0,
+          "officially_finalized": false,
+          "own_entry": null
+        }
+      ]
+    }
+  }
+}
