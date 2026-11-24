@@ -1,0 +1,19 @@
+name: Paired Treasury volatility backtest on historical vintages
+on:
+  push:
+    branches: [verify/openai-access-audit]
+    paths: ['.github/workflows/treasury_vintage_backtest.yaml']
+permissions: {contents: read}
+jobs:
+  paired:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {ref: 813662ef7d9e70a5cf04065b944e5958796bbd48, persist-credentials: false}
+      - name: Score monthly as-of forecasts with the frozen method
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: python research/treasury_paired.py treasury-paired.json
+      - uses: actions/upload-artifact@v4
+        with: {name: paired-treasury-vintages, path: treasury-paired.json, retention-days: 60, if-no-files-found: error}
