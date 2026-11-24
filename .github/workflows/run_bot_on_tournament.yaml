@@ -2,6 +2,10 @@ name: Forecast on new AI tournament questions
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Test Bot"]
+    branches: [verify/futureeval]
+    types: [completed]
   schedule:
     - cron: "11,31,51 * * * *"
 
@@ -14,10 +18,15 @@ concurrency:
 
 jobs:
   forecast_job:
-    if: github.ref == 'refs/heads/main'
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name != 'workflow_run' ||
+       (github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.head_repository.full_name == github.repository &&
+        github.event.workflow_run.head_sha == github.sha))
     env:
       # Set true only after the required participation form has been submitted.
-      FUTUREEVAL_REGISTERED: 'false'
+      FUTUREEVAL_REGISTERED: 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 55
     steps:
