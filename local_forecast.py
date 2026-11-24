@@ -55,13 +55,13 @@ class CpuForecaster:
         )
         result = subprocess.run(
             [self.executable, "-m", self.weights, "-f", prompt_file, "--no-conversation",
-             "--no-display-prompt", "--no-warmup", "--log-disable", "--simple-io",
+             "--no-display-prompt", "--no-warmup", "--log-verbosity", "1", "--offline", "--simple-io",
              "-ngl", "0", "-t", str(min(4, os.cpu_count() or 1)), "-c", "8192",
-             "-n", "768", "--temp", "0.2", "-r", "<|im_end|>"],
+             "-n", "768", "--temp", "0.2"],
             stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, text=True, check=True,
             timeout=240, env={"PATH": os.defpath, "HOME": str(self.root)},
         )
-        answer = result.stdout.strip()
+        answer = result.stdout.strip().removesuffix("[end of text]").strip()
         if not answer:
             raise ValueError("The CPU model returned an empty response")
         logger.info("Model responded: %s (local CPU)", MODEL_NAME)
