@@ -1,4 +1,5 @@
 name: Champion research and competition control
+run-name: ${{ github.event_name == 'workflow_dispatch' && format('Champion {0}', inputs.mode || 'control') || github.event_name == 'schedule' && format('Champion schedule {0}', github.event.schedule) || github.workflow }}
 on:
   schedule:
     - cron: "17 7,19 * * *"
@@ -7,18 +8,34 @@ on:
     workflows: ["Market Pulse 26Q4 spot updates"]
     types: [completed]
   workflow_dispatch:
+    inputs:
+      mode:
+        description: Control, inspect the recovery environment, or start its bounded clock
+        type: choice
+        options: [control, recovery_check, recovery]
+        default: control
+      recovery_cycle:
+        type: string
+        default: '0'
+      recovery_errors:
+        type: string
+        default: '0'
   push:
     branches: [verify/champion-v2-control]
 permissions:
   contents: read
 concurrency:
-  group: champion-v2-observations
+  group: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'recovery' && 'champion-recovery-clock' || github.event_name == 'workflow_dispatch' && inputs.mode == 'recovery_check' && 'champion-recovery-inspection' || 'champion-v2-observations' }}
   cancel-in-progress: false
 env:
+  RECOVERY_SHA: "514444e4d9524922ee177a896fa700cbc06f6875"
+  RECOVERY_MODE: ${{ inputs.mode }}
+  RECOVERY_CYCLE: ${{ inputs.recovery_cycle || '0' }}
+  RECOVERY_ERRORS: ${{ inputs.recovery_errors || '0' }}
   RESEARCH_SHA: "37bfed3d0e3e16a33292babfc59870e9cbc80f5c"
 jobs:
   evaluate:
-    if: (github.ref_name == 'main' || (github.event_name == 'push' && github.ref_name == 'verify/champion-v2-control')) && github.event_name != 'workflow_run' && (github.event_name != 'schedule' || github.event.schedule == '17 7,19 * * *')
+    if: (github.event_name != 'workflow_dispatch' || !startsWith(inputs.mode, 'recovery')) && (github.ref_name == 'main' || (github.event_name == 'push' && github.ref_name == 'verify/champion-v2-control')) && github.event_name != 'workflow_run' && (github.event_name != 'schedule' || github.event.schedule == '17 7,19 * * *')
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
@@ -163,7 +180,7 @@ jobs:
           if incomplete: raise SystemExit('Incomplete checks: '+', '.join(incomplete))
           PY
   coverage:
-    if: github.ref_name == 'main' || (github.event_name == 'push' && github.ref_name == 'verify/champion-v2-control')
+    if: (github.event_name != 'workflow_dispatch' || !startsWith(inputs.mode, 'recovery')) && (github.ref_name == 'main' || (github.event_name == 'push' && github.ref_name == 'verify/champion-v2-control'))
     runs-on: ubuntu-latest
     timeout-minutes: 8
     permissions:
@@ -185,3 +202,70 @@ jobs:
           else
             python research/watchdog.py
           fi
+  recovery-preflight:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch' && startsWith(inputs.mode, 'recovery')
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    permissions: {contents: read, actions: read}
+    outputs:
+      ready: ${{ steps.check.outputs.ready }}
+      checked_epoch: ${{ steps.check.outputs.checked_epoch }}
+      environment_id: ${{ steps.check.outputs.environment_id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RECOVERY_SHA }}
+          persist-credentials: false
+      - id: check
+        name: Check existing protected environment before referencing it
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$RECOVERY_SHA"
+          python research/recovery_clock.py preflight
+  recovery-backoff:
+    if: needs.recovery-preflight.outputs.ready == 'true' && inputs.recovery_errors != '0'
+    needs: recovery-preflight
+    environment: forecast-recovery
+    runs-on: ubuntu-latest
+    permissions: {contents: read, actions: read}
+    timeout-minutes: 60
+    outputs:
+      checked_epoch: ${{ steps.verify.outputs.checked_epoch }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RECOVERY_SHA }}
+          persist-credentials: false
+      - id: verify
+        timeout-minutes: 3
+        name: Verify the first server-side wait before starting the second
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CHECKED_ENV_ID: ${{ needs.recovery-preflight.outputs.environment_id }}
+          CHECKED_EPOCH: ${{ needs.recovery-preflight.outputs.checked_epoch }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$RECOVERY_SHA"
+          python research/recovery_clock.py backoff
+  recovery-wake:
+    needs: [recovery-preflight, recovery-backoff]
+    if: ${{ !cancelled() && needs.recovery-preflight.outputs.ready == 'true' && (needs.recovery-backoff.result == 'success' || (needs.recovery-backoff.result == 'skipped' && inputs.recovery_errors == '0')) }}
+    environment: forecast-recovery
+    runs-on: ubuntu-latest
+    permissions: {contents: read, actions: write}
+    timeout-minutes: 65
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RECOVERY_SHA }}
+          persist-credentials: false
+      - name: Verify elapsed wait and recover missing tournament polls
+        timeout-minutes: 8
+        env:
+          GH_TOKEN: ${{ github.token }}
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
+          CHECKED_ENV_ID: ${{ needs.recovery-preflight.outputs.environment_id }}
+          CHECKED_EPOCH: ${{ needs.recovery-backoff.outputs.checked_epoch || needs.recovery-preflight.outputs.checked_epoch }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$RECOVERY_SHA"
+          python research/recovery_clock.py wake
