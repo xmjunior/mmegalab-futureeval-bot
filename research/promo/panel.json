@@ -1,0 +1,58 @@
+{
+  "baseline_rule": "For each leg, empirical probability of a historical change strictly greater than threshold minus current value, using disjoint 7/12-observation intervals ending 23 Nov, Beta(2,2).",
+  "cases": {
+    "ust-promo-v1-20261202-2y": {
+      "analogs": 31,
+      "baseline_C": 0.5142857142857142,
+      "lag": 7,
+      "leg": "2y",
+      "over_threshold": 16,
+      "question": "Will the 2-year Treasury par yield, in percent be strictly greater than 4.65 on the first official observation dated on or after 2026-12-02?",
+      "target": "2026-12-02",
+      "threshold": "4.65"
+    },
+    "ust-promo-v1-20261202-spread": {
+      "analogs": 31,
+      "baseline_C": 0.3142857142857143,
+      "lag": 7,
+      "leg": "spread",
+      "over_threshold": 9,
+      "question": "Will the 10-year minus 2-year Treasury par yield spread, in percentage points be strictly greater than 0.30 on the first official observation dated on or after 2026-12-02?",
+      "target": "2026-12-02",
+      "threshold": "0.30"
+    },
+    "ust-promo-v1-20261209-2y": {
+      "analogs": 18,
+      "baseline_C": 0.5,
+      "lag": 12,
+      "leg": "2y",
+      "over_threshold": 9,
+      "question": "Will the 2-year Treasury par yield, in percent be strictly greater than 4.65 on the first official observation dated on or after 2026-12-09?",
+      "target": "2026-12-09",
+      "threshold": "4.65"
+    },
+    "ust-promo-v1-20261209-spread": {
+      "analogs": 18,
+      "baseline_C": 0.36363636363636365,
+      "lag": 12,
+      "leg": "spread",
+      "over_threshold": 6,
+      "question": "Will the 10-year minus 2-year Treasury par yield spread, in percentage points be strictly greater than 0.30 on the first official observation dated on or after 2026-12-09?",
+      "target": "2026-12-09",
+      "threshold": "0.30"
+    }
+  },
+  "issue_date": "2026-11-24",
+  "issue_deadline_utc": "2026-11-24T23:59:59+00:00",
+  "latest": {
+    "10y_percent": "4.92",
+    "2y_percent": "4.63",
+    "spread_pp": "0.29"
+  },
+  "protocol": "openai-promo-v1",
+  "resolution_rule": "First official observation dated between the stated start and its sixth following calendar day inclusive. Strict >, ties NO. Wait two calendar days after that observation and lock the first recorded resolution. Both horizons are correlated. No tournament questions, no trading.",
+  "source_observed_until": "2026-11-23",
+  "source_sha256": "f35efb4345af62c6115c0b5b8c4c45083de6a57e4093ea9f4a27f5f8dc1625ab",
+  "source_snapshot_reference": "339e42af609e66d6f3840f57bcaf91935f8f5653:records/treasury.json",
+  "source_url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_yield_curve&field_tdr_date_value=2026"
+}
