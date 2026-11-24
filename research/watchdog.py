@@ -52,11 +52,24 @@ def main():
         if active or recent:
             print(ident, "original workflow active or recent; no dispatch", "last_native", (native or {}).get('id'))
             continue
-        feed = call(MC,"/posts/",mc_token,tournaments=ident,statuses="open",with_cp="false",
-                    include_descriptions="false",limit=100)
-        if feed.get("next"): raise RuntimeError("Unexpected >100 open posts; refusing dispatch")
+        posts = {}
+        offset = 0
+        for page_no in range(10):
+            feed = call(MC,"/posts/",mc_token,tournaments=ident,statuses="open",with_cp="false",
+                        include_descriptions="false",limit=100,offset=offset)
+            page = feed["results"]
+            if not page:
+                break  # Countless pagination can report a next link on the final empty page.
+            ids = {p["id"] for p in page}
+            if len(ids)!=len(page) or ids & posts.keys():
+                raise RuntimeError("Repeated page in open post feed; refusing dispatch")
+            posts.update((p["id"],p) for p in page)
+            offset += len(page)
+            if not feed.get("next"): break
+        else:
+            raise RuntimeError("Open posts exceeded pagination budget; refusing dispatch")
         candidates = set()
-        for post in feed["results"]:
+        for post in posts.values():
             if post.get("group_of_questions"):
                 post = call(MC, f"/posts/{post['id']}/", mc_token, with_cp="false")
             q = post.get("question")
