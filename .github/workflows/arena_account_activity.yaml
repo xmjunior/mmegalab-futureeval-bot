@@ -1,0 +1,24 @@
+name: ARENA organization activity (read only)
+on:
+  push:
+    branches: [verify/arena-account-activity]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: arena-organization-activity
+  cancel-in-progress: false
+jobs:
+  inspect:
+    if: github.repository == 'xmjunior/mmegalab-futureeval-bot'
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Read billing activity, without model requests
+        env:
+          OPENAI_ADMIN_KEY: ${{ secrets.OPENAI_ADMIN_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || secrets.MEGALAB_OPENAI_API_KEY || secrets.OPENAI_PROJECT_API_KEY || secrets.OPENAI_API_KEY_MEGALAB }}
+        run: python research/promo/account_activity.py
