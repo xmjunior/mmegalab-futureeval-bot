@@ -26,21 +26,4 @@ jobs:
           version: "0.13.1"
       - run: uv sync --locked --no-dev
       - name: Score the existing artifact without network or inference
-        run: |
-          .venv/bin/python - <<'PY'
-          import json, os, sys, socket
-          from pathlib import Path
-          def block_network(event, args):
-              if event == "socket.connect" and args[0].family in (socket.AF_INET, socket.AF_INET6):
-                  raise PermissionError("Offline replay")
-          sys.addaudithook(block_network)
-          folder=Path("research/market_evidence_v2")
-          sys.path.insert(0,str(folder.resolve()))
-          from trial import load_inputs,score
-          folder=folder/"results"
-          def read(name):
-              return json.loads((folder/name).read_bytes())
-          computed=score(load_inputs(),read("receipts.json"),read("labels.json"))
-          assert computed==read("comparison.json")
-          print(json.dumps(computed,sort_keys=True))
-          PY
+        run: .venv/bin/python research/market_evidence_v2/verify_score.py
