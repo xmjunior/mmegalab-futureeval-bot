@@ -1,0 +1,19 @@
+{
+  "project": 33121,
+  "cutoff_utc": "2026-11-25T11:57:26.3031088Z",
+  "account_created_at": "2026-11-24T12:35:27.315240Z",
+  "audit": {"run": 45608919102, "artifact": 15019816040, "sha256": "d87f4948a89b8a6d76bed0ad810ae673c45d29c386fd433a2b27f3b74629d7ba", "account_overlap": 8, "accepted": 6, "opportunities_after_registration_activation": 7},
+  "registration_activated": {"sha": "787347b22f281c28df1457c56f0221ffeec247c5", "at": "2026-11-24T17:26:11Z"},
+  "misses": [
+    {"post": 46632, "question": 46892, "source": "https://www.metaculus.com/questions/46632/", "opened": "2026-11-24T12:00:00Z", "closed": "2026-11-24T15:00:00Z", "reason": "Window closed before the registered workflow was enabled. No seasonal workflow ran before its close."},
+    {"post": 46634, "question": 46894, "source": "https://www.metaculus.com/questions/46634/", "opened": "2026-11-24T18:00:00Z", "closed": "2026-11-24T21:00:00Z", "reason": "Four seasonal attempts returned no accepted submission. Hosted routes reported Gemini timeouts/unavailability and OpenRouter rate limits. The free Groq fallback was enabled after this window in cc13bf9f9979a745e4e28ec1376c40df26187202."}
+  ],
+  "previous_run": {"run": 45451596139, "started": "2026-11-24T17:42:53Z", "ended": "2026-11-24T17:46:09Z", "conclusion": "success"},
+  "attempts_in_second_window": [
+    {"run": 45462840132, "job": 138689819112, "started": "2026-11-24T18:44:54Z", "ended": "2026-11-24T18:48:04Z", "conclusion":"failure"},
+    {"run": 45471420080, "job": 138720078900, "started": "2026-11-24T19:33:12Z", "ended": "2026-11-24T19:34:48Z", "conclusion":"failure"},
+    {"run": 45475772762, "job": 138735492655, "started": "2026-11-24T19:58:06Z", "ended": "2026-11-24T20:00:26Z", "conclusion":"failure"},
+    {"run": 45484066307, "job": 138764617492, "started": "2026-11-24T20:45:17Z", "ended": "2026-11-24T20:47:46Z", "conclusion":"failure"}
+  ],
+  "comparison": {"base_sha": "8b6e3f028991fe112e2aae1998afb0f1656dcc7c", "base_dispatched": [1,1,0,1], "candidate_dispatched": [1,1,1,1], "estimand": "Dispatch eligibility one second before each of the four actual launches in ONE closed opportunity, with empty own history. The original attempts used other recovery paths. These are not additional forecasts or independent scored questions.", "provider_calls": 0, "live_submissions": 0}
+}

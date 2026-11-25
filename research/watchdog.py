@@ -53,16 +53,38 @@ def recent_coverage(route, file, token, now):
     # Missing completion time cannot prove that a new question opened after this run.
     through = max((datetime.fromisoformat(r["updated_at"]) if r.get("updated_at") else now
                    for r in recent), default=None)
-    return active or fresh, through
+    retry_failed = False
+    if file == TARGETS["33121"]:
+        # A failed seasonal run can still have posted part of its batch. Allow
+        # the authoritative *per-question* history to decide on the next poll.
+        # Completion time also covers a long job that started over 42 min ago.
+        recent_ends = [(datetime.fromisoformat(r["updated_at"]), r) for r in relevant
+                       if r["status"] == "completed" and r.get("updated_at")]
+        if recent_ends:
+            ended = max(t for t, _ in recent_ends)
+            last = [r for t, r in recent_ends if t == ended]
+            if now - timedelta(minutes=42) <= ended <= now and all(
+                    r.get("conclusion") in ("failure", "timed_out") for r in last):
+                unknown_end = any(not r.get("updated_at") for r in recent)
+                if not unknown_end:
+                    through = max(through or ended, ended)
+                    retry_failed = now - ended >= timedelta(minutes=20)
+    return active or fresh, through, retry_failed
 
 
-def needs_poll(open_time, through):
+def needs_poll(window, through, retry_failed, now):
+    # The API can briefly report "open" after a deadline. Use the earliest
+    # documented boundary and check again immediately before dispatch.
+    opened, deadlines = window
+    ends = [datetime.fromisoformat(t) for t in deadlines if t]
+    if any(end.tzinfo is None or end <= now for end in ends):
+        return False
+    start = datetime.fromisoformat(opened) if opened else None
+    if start is not None and (start.tzinfo is None or start > now):
+        return False
     if through is None:
         return True
-    if not open_time:
-        return False
-    opened = datetime.fromisoformat(open_time)
-    return opened.tzinfo is not None and opened > through
+    return start is not None and (start > through or (retry_failed and bool(ends)))
 
 
 def main():
@@ -75,7 +97,7 @@ def main():
     now = datetime.now(timezone.utc)
     for ident, file in TARGETS.items():
         route = "/actions/workflows/" + file
-        busy, through = recent_coverage(route, file, git_token, now)
+        busy, through, retry_failed = recent_coverage(route, file, git_token, now)
         if busy:
             print(ident, "original workflow active or just created; no dispatch")
             continue
@@ -95,13 +117,15 @@ def main():
         for post in feed["results"]:
             if post.get("group_of_questions"):
                 post = call(MC, f"/posts/{post['id']}/", mc_token, with_cp="false")
-            q = post.get("question")
-            if q and q["status"]=="open": candidates[q["id"]] = q.get("open_time")
-            for q in (post.get("group_of_questions") or {}).get("questions",[]):
-                if q["status"]=="open": candidates[q["id"]] = q.get("open_time")
-            for q in (post.get("conditional") or {}).values():
-                if isinstance(q,dict) and q.get("status")=="open" and q.get("id"): candidates[q["id"]] = q.get("open_time")
-        candidates = {qid: opened for qid, opened in candidates.items() if needs_poll(opened, through)}
+            children = [post.get("question")]
+            children.extend((post.get("group_of_questions") or {}).get("questions", []))
+            children.extend((post.get("conditional") or {}).values())
+            for row in children:
+                if isinstance(row, dict) and row.get("id") and row.get("status") == "open":
+                    candidates[row["id"]] = (row.get("open_time"),
+                        (row.get("actual_close_time"), row.get("scheduled_close_time")))
+        candidates = {qid: window for qid, window in candidates.items()
+                      if needs_poll(window, through, retry_failed, now)}
         if not candidates:
             print(ident, "no uncovered open window; no dispatch")
             continue
@@ -113,8 +137,11 @@ def main():
         missed = sorted(qid for qid in candidates if not own[qid])
         print(ident,"unanswered",missed,"dispatch",bool(opts.dispatch and missed))
         if missed and opts.dispatch:
-            busy, through = recent_coverage(route, file, git_token, datetime.now(timezone.utc))
-            if busy or not any(needs_poll(candidates[qid], through) for qid in missed):
+            checked = datetime.now(timezone.utc)
+            busy, through, retry_failed = recent_coverage(route, file, git_token, checked)
+            # Include time spent waiting for the GitHub metadata response.
+            checked = datetime.now(timezone.utc)
+            if busy or not any(needs_poll(candidates[qid], through, retry_failed, checked) for qid in missed):
                 print(ident, "another original run now covers this window")
                 continue
             call(GH,route+"/dispatches",git_token,method="POST",payload={"ref":"main"})

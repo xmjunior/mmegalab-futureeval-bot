@@ -1,0 +1,21 @@
+name: Verify seasonal recovery on a closed incident
+on:
+  push:
+    branches: [verify/omega-watchdog-ops-v2]
+permissions:
+  contents: read
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - name: Test submission guards and compare the two versions on the same four attempts
+        working-directory: research
+        run: |
+          python -m unittest -v test_failed_window test_watchdog
+          git show 8b6e3f028991fe112e2aae1998afb0f1656dcc7c:research/watchdog.py > "$RUNNER_TEMP/frozen_watchdog.py"
+          python test_failed_window.py "$RUNNER_TEMP/frozen_watchdog.py"
