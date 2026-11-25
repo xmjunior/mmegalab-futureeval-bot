@@ -1,0 +1,164 @@
+{
+  "status": "completed",
+  "git_sha": "6deb78f9cffbf668ba98c28329c8d190557786c1",
+  "run_id": "45626443369",
+  "protocol_sha256": "a69bf5a177e1f5f0857585c38ea5de562a5c012618e4127929aa02deda08905c",
+  "source_input_sha256": "14978f8dd8614b98aa8ac0af0d41f38ba89632443d3c4bf4f81a2817898e98ad",
+  "model": "groq/openai/gpt-oss-120b",
+  "max_calls": 15,
+  "attempted": 15,
+  "new_paid_cost_usd": 0,
+  "published": 0,
+  "rows": [
+    {
+      "key": "46212",
+      "arm": "candidate",
+      "prompt_sha256": "315ee5972198d68ef4c31326b29df486d921db56ecfc25cb15bcfe1e4bab0ccc",
+      "width": 1.25,
+      "usage": {
+        "prompt_tokens": 433,
+        "completion_tokens": 173
+      }
+    },
+    {
+      "key": "46213",
+      "arm": "candidate",
+      "prompt_sha256": "a91a95481e052ca51e74040e4f7eb4bb239c02503fa7f879055bfd32dd47a827",
+      "width": null,
+      "usage": {
+        "prompt_tokens": 432,
+        "completion_tokens": 92
+      }
+    },
+    {
+      "key": "46709",
+      "arm": "candidate",
+      "prompt_sha256": "1eaf4218c377e14d81715a58ef0cdadb1171f6b5375c2adc764b6077036160fb",
+      "width": 1.25,
+      "usage": {
+        "prompt_tokens": 433,
+        "completion_tokens": 204
+      }
+    },
+    {
+      "key": "2026-01-12",
+      "arm": "control",
+      "prompt_sha256": "ccd6b1233b13976b389fdb55e549191af41fd0e7d1e92134032c58a2d8ff948f",
+      "width": 1.25,
+      "usage": {
+        "prompt_tokens": 286,
+        "completion_tokens": 114
+      }
+    },
+    {
+      "key": "2026-01-12",
+      "arm": "candidate",
+      "prompt_sha256": "78d8c36f8388aa72545294ca81eadf19a7b9e97018fd72d96d5febf5369ac695",
+      "width": 1.25,
+      "usage": {
+        "prompt_tokens": 431,
+        "completion_tokens": 170
+      }
+    },
+    {
+      "key": "2026-02-09",
+      "arm": "candidate",
+      "prompt_sha256": "f6fdf16dcee5e61daba857f2955910b4b46726cfe5d7e0e5e3ea40e2963dc715",
+      "width": 1.25,
+      "usage": {
+        "prompt_tokens": 434,
+        "completion_tokens": 151
+      }
+    },
+    {
+      "key": "2026-02-09",
+      "arm": "control",
+      "prompt_sha256": "8a830090bda0e1ff9eb3a084226d4cc2485475dc58aa8242ee7bb1058575d93e",
+      "width": 1.25,
+      "usage": {
+        "prompt_tokens": 289,
+        "completion_tokens": 125
+      }
+    },
+    {
+      "key": "2026-03-09",
+      "arm": "control",
+      "prompt_sha256": "6dfa587b2ebaa49be89acc7772515a612b097f532af651553b962359f378987f",
+      "width": 1.25,
+      "usage": {
+        "prompt_tokens": 289,
+        "completion_tokens": 127
+      }
+    },
+    {
+      "key": "2026-03-09",
+      "arm": "candidate",
+      "prompt_sha256": "dd176994ff654a073da9120959bfa02c0f191a94c0fb9e96429e21ed143755a0",
+      "width": 1.25,
+      "usage": {
+        "prompt_tokens": 434,
+        "completion_tokens": 203
+      }
+    },
+    {
+      "key": "2026-04-13",
+      "arm": "candidate",
+      "prompt_sha256": "14987ef3026e3a345748f0a4fb1a3679e1fab4a059b933ebb82d3efd9f69bea4",
+      "width": 1.25,
+      "usage": {
+        "prompt_tokens": 434,
+        "completion_tokens": 193
+      }
+    },
+    {
+      "key": "2026-04-13",
+      "arm": "control",
+      "prompt_sha256": "ab415fef0837c1911fa48584cf0676a02613dd7c2cc729d33f0b77ff0cc24704",
+      "width": 1.25,
+      "usage": {
+        "prompt_tokens": 289,
+        "completion_tokens": 166
+      }
+    },
+    {
+      "key": "2026-05-11",
+      "arm": "control",
+      "prompt_sha256": "e3231422a10df299aeca36aa6e1a552da25f4a2fc1b5745e6a07975d7df53e48",
+      "width": 1.25,
+      "usage": {
+        "prompt_tokens": 287,
+        "completion_tokens": 192
+      }
+    },
+    {
+      "key": "2026-05-11",
+      "arm": "candidate",
+      "prompt_sha256": "3e12b23316cacddf09c4242324fc601926925bc422b89d0a3bbb802ccf57e0a5",
+      "width": 1.25,
+      "usage": {
+        "prompt_tokens": 432,
+        "completion_tokens": 182
+      }
+    },
+    {
+      "key": "2026-06-08",
+      "arm": "candidate",
+      "prompt_sha256": "f8839ba5761565c9cdf669e94cb2bbf6125923cffa518bcc07f79177c73c13e2",
+      "width": 1.25,
+      "usage": {
+        "prompt_tokens": 433,
+        "completion_tokens": 210
+      }
+    },
+    {
+      "key": "2026-06-08",
+      "arm": "control",
+      "prompt_sha256": "bdc9264470ca8b648ded526d48098e6b464955f23f63b949cf324fc734ecc260",
+      "width": null,
+      "usage": {
+        "prompt_tokens": 288,
+        "completion_tokens": 111
+      }
+    }
+  ]
+}

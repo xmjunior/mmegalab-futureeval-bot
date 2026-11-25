@@ -1,0 +1,19 @@
+{
+  "protocol_commit": "3ed3bb2bd961f37f17d6ab68bd3732020a9f968b",
+  "experiment_commit": "6deb78f9cffbf668ba98c28329c8d190557786c1",
+  "closed_review_run": 45626443369,
+  "blind_receipt_artifact_id": 15028028697,
+  "archive_sha256": "573453e0b50e0f2fb40a5c6d094f3b35362d8d6201ee38a4cb1887df9ac52e4a",
+  "source_gate": "The named verified-free model completed all 15 blind decisions, and GitHub stored their artifact before revealing any reserve outcome. The settlement download in that run timed out. The six releases defined in the original protocol were fetched separately and fed into its unchanged settlement parser and scoring code. No model decision was retried.",
+  "source_checksums": {
+    "receipts.json": "e944409dbbcca891186197c644f2432f0f3bcf4d427314d17048c10cca6b14e9",
+    "labels.json": "268f11adc4d03caf1d0b2530b5614924f2e0fa404b36559164f6c83580ebce0c",
+    "comparison.json": "3cda367c3be5ec379f49edc787113b5c43dd81386f7711cde68f5ef2d957e7ec"
+  },
+  "usage_tokens": {
+    "prompt_tokens": 5624,
+    "completion_tokens": 2413
+  },
+  "paid_cost_usd": 0,
+  "tournament_writes": 0
+}

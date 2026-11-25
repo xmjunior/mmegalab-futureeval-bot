@@ -1,0 +1,38 @@
+{
+  "2026-01-12": {
+    "value": 2.68,
+    "observed": "2026-01-23",
+    "release": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2023-11-12&vintage_date=2026-01-30",
+    "sha256": "9a5798036db27a3286a958a2faf76909d8c17e94b001c12e7ac3c7745e20e1f4"
+  },
+  "2026-02-09": {
+    "value": 2.86,
+    "observed": "2026-02-20",
+    "release": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2023-12-10&vintage_date=2026-02-27",
+    "sha256": "df190e01741d94500034e3d6f3a41bc8a14d53b3e0be842fa0b5ea09f459cce4"
+  },
+  "2026-03-09": {
+    "value": 3.24,
+    "observed": "2026-03-20",
+    "release": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-01-07&vintage_date=2026-03-27",
+    "sha256": "efc94ee3eabfc90f10d8b0159b134fcc7b40385127a110a69b37ac523c7e160d"
+  },
+  "2026-04-13": {
+    "value": 2.86,
+    "observed": "2026-04-24",
+    "release": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-02-11&vintage_date=2026-05-01",
+    "sha256": "3986754ca7aad21fbcd794bf424bd029b0b0cd205b880ffc5c8fdc9123179370"
+  },
+  "2026-05-11": {
+    "value": 2.74,
+    "observed": "2026-05-22",
+    "release": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-03-10&vintage_date=2026-05-29",
+    "sha256": "1da1e51dc417f2b253cbc6a618770b90835593055c5ce2915a75124e789823f8"
+  },
+  "2026-06-08": {
+    "value": 2.66,
+    "observed": "2026-06-19",
+    "release": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-04-07&vintage_date=2026-06-26",
+    "sha256": "9537102c665de8321725a03f69684f1b27e8b175caafd6f898d7613d15a1a8e9"
+  }
+}

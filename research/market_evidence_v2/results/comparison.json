@@ -1,0 +1,104 @@
+{
+  "status": "completed",
+  "advance": false,
+  "q4_archived_control": {
+    "covered": 0,
+    "n": 3,
+    "run_id": 45612967315
+  },
+  "q4_candidate": {
+    "covered": 2,
+    "n": 3,
+    "log_gain": [
+      1.9799511765756757,
+      null,
+      2.0911999415303506
+    ],
+    "passes_historical_gate": false
+  },
+  "reserve": {
+    "n": 6,
+    "coverage": {
+      "control": 5,
+      "candidate": 6
+    },
+    "mean_loss": {
+      "control": 0.03110571775260484,
+      "candidate": 0.03106060015835127
+    },
+    "paired_mean_loss_reduction": 4.511759425356957e-05,
+    "paired_one_sided_sign_p": 0.5,
+    "jointly_covered": 5,
+    "jointly_covered_mean_reduction": 0.0,
+    "cases": [
+      {
+        "key": "2026-01-12",
+        "control": {
+          "covered": true,
+          "loss": 0.024462500000000043
+        },
+        "candidate": {
+          "covered": true,
+          "loss": 0.024462500000000043
+        }
+      },
+      {
+        "key": "2026-02-09",
+        "control": {
+          "covered": true,
+          "loss": 0.02057735718598897
+        },
+        "candidate": {
+          "covered": true,
+          "loss": 0.02057735718598897
+        }
+      },
+      {
+        "key": "2026-03-09",
+        "control": {
+          "covered": true,
+          "loss": 0.03413146857576853
+        },
+        "candidate": {
+          "covered": true,
+          "loss": 0.03413146857576853
+        }
+      },
+      {
+        "key": "2026-04-13",
+        "control": {
+          "covered": true,
+          "loss": 0.039357641563299336
+        },
+        "candidate": {
+          "covered": true,
+          "loss": 0.039357641563299336
+        }
+      },
+      {
+        "key": "2026-05-11",
+        "control": {
+          "covered": true,
+          "loss": 0.035605339190572204
+        },
+        "candidate": {
+          "covered": true,
+          "loss": 0.035605339190572204
+        }
+      },
+      {
+        "key": "2026-06-08",
+        "control": {
+          "covered": false,
+          "loss": 0.03249999999999996
+        },
+        "candidate": {
+          "covered": true,
+          "loss": 0.03222929443447854
+        }
+      }
+    ]
+  },
+  "prospective_proof": false,
+  "publishable": false
+}
