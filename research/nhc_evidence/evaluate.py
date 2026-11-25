@@ -116,27 +116,56 @@ def applicability():
     headers = {"Accept-Language": "en", "User-Agent": "MEGALAB-closed-evidence-audit"}
     if token := os.getenv("METACULUS_TOKEN"):
         headers["Authorization"] = "Token " + token
-    with build_opener(NoRedirect()).open(Request(url, headers=headers), timeout=30) as response:
-        payload = json.load(response)
+    def get_json(endpoint):
+        with build_opener(NoRedirect()).open(Request(endpoint, headers=headers), timeout=30) as response:
+            return json.load(response)
+
+    payload = get_json(url)
     if not isinstance(payload.get("results"), list):
         raise Unsupported("unsupported closed question list")
-    items = {}
-    for post in payload["results"]:
-        tournaments = (post.get("projects") or {}).get("tournament", [])
-        if pid not in {p["id"] for p in tournaments}:
+
+    def resolved_rows(post):
+        membership = (post.get("projects") or {}).get("tournament", [])
+        if pid not in {p["id"] for p in membership}:
             raise Unsupported("tournament identity missing or incorrect")
-        for row in [post.get("question")] + (post.get("group_of_questions") or {}).get("questions", []):
-            if not row or row.get("status") != "resolved":
+        rows = [post.get("question")] + (post.get("group_of_questions") or {}).get("questions", [])
+        return {r["id"]:r for r in rows if r and r.get("status") == "resolved"}
+
+    all_ids, incomplete, matches = set(), set(), set()
+    for post in payload["results"]:
+        rows = resolved_rows(post)
+        if any(not isinstance(r.get("resolution_criteria"), str) for r in rows.values()):
+            # Summary API responses can omit the contract. Read only the supplied
+            # publisher post ID, and only evaluate the originally resolved IDs.
+            post_id = post["id"]
+            if type(post_id) is not int:
+                raise Unsupported("invalid post identity")
+            time.sleep(3.7)
+            detail = get_json(f"https://www.metaculus.com/api/posts/{post_id}/")
+            if detail["id"] != post_id:
+                raise Unsupported("unexpected detail response")
+            details = resolved_rows(detail)
+            rows = {key: details.get(key, row) for key, row in rows.items()}
+        for qid, row in rows.items():
+            if qid in all_ids:
                 continue
-            if not isinstance(row.get("resolution_criteria"), str):
-                raise Unsupported("resolved question criteria absent")
-            contract = " ".join(str(row.get(k) or "") for k in ("title", "resolution_criteria", "fine_print"))
-            items[row["id"]] = bool(len(explicit_urls(contract)) == 1)
-    return {"url": url, "first_page_posts": len(payload["results"]), "resolved_distinct_question_ids": sorted(items),
-            "evaluated_resolved": len(items), "explicit_eligible_contracts": sum(items.values()),
+            all_ids.add(qid)
+            # An explicitly empty criterion can accompany descriptive contract text.
+            # An absent field is unknown rather than evidence of a non-match.
+            if "resolution_criteria" not in row or not any(isinstance(row.get(k), str) and row[k].strip()
+                    for k in ("resolution_criteria", "description", "fine_print")):
+                incomplete.add(qid)
+                continue
+            contract = " ".join(str(row.get(k) or "") for k in ("title", "resolution_criteria", "description", "fine_print"))
+            if len(explicit_urls(contract)) == 1:
+                matches.add(qid)
+    examined = len(all_ids) - len(incomplete)
+    return {"url": url, "first_page_posts": len(payload["results"]),
+            "resolved_distinct_question_ids": sorted(all_ids), "missing_contract_ids": sorted(incomplete),
+            "evaluated_resolved": examined, "explicit_eligible_contracts": len(matches), "matched_ids": sorted(matches),
             "sample": "First page of up to 100 returned resolved posts, unique resolved direct and grouped questions only; conditionals excluded.",
             "next_page": bool(payload.get("next")), "checked_utc": datetime.now(timezone.utc).isoformat(),
-            "status": "measured" if items else "unknown"}
+            "status": "measured" if examined else "unknown"}
 
 
 if __name__ == "__main__":

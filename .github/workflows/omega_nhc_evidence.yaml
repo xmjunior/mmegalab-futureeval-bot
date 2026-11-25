@@ -22,7 +22,18 @@ jobs:
         run: python -m unittest -v test_evidence
       - name: Read closed official 2025 Atlantic sources only
         working-directory: research/nhc_evidence
-        run: python evaluate.py season season-result.json
+        run: |
+          if test -f season-result.json; then
+            python - <<'PYTHON'
+          import json
+          from pathlib import Path
+          from evaluate import stats
+          saved = json.loads(Path("season-result.json").read_bytes())
+          assert stats(saved["rows"], saved["technical_retrieval_complete"]) == saved["statistics"]
+          PYTHON
+          else
+            python evaluate.py season season-result.json
+          fi
       - name: Count qualifying contracts in already resolved FutureEval questions
         if: always()
         working-directory: research/nhc_evidence
