@@ -1,0 +1,623 @@
+[
+  {
+    "key": "46212",
+    "group": "diagnostic",
+    "cutoff": "2026-10-12T02:59:59+00:00",
+    "source": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-07-22&vintage_date=2026-10-10",
+    "source_sha256": "9b62266bdf5a990e57c0cf9a4cbce4edb4548398cd25d630ada2bbd0f861ee3e",
+    "target": "2026-10-23T20:00:00+00:00",
+    "control": {
+      "observations": 495,
+      "quote_age_days": 3,
+      "days_until_measurement": 11,
+      "choices": [
+        {
+          "width": 1.25,
+          "quantiles": [
+            2.851656338955741,
+            2.991372808704167,
+            3.11,
+            3.2681695883944446,
+            3.4263391767888893
+          ]
+        }
+      ]
+    },
+    "candidate": {
+      "observations": 495,
+      "quote_age_days": 3,
+      "days_until_measurement": 11,
+      "choices": [
+        {
+          "width": 1.25,
+          "quantiles": [
+            2.851656338955741,
+            2.991372808704167,
+            3.11,
+            3.2681695883944446,
+            3.4263391767888893
+          ]
+        }
+      ],
+      "evidence": {
+        "measurement": "end-of-period level of a credit spread, in percentage points; cent grid",
+        "data": "daily observations in one historical release available at forecast origin",
+        "weekdays_since_latest_in_eligible_vintage": 0,
+        "model_horizon_weekday_steps": 10,
+        "sampling": "the original observations count is overlapping historical horizon changes",
+        "coverage_method": "same estimator on earlier prefixes of this vintage; prior targets do not overlap; past coverage can differ from future coverage",
+        "prior_interval_checks": [
+          {
+            "width": 1.25,
+            "interval_level": 0.8,
+            "prior_disjoint_targets": 34,
+            "inside_interval": 30
+          }
+        ]
+      }
+    },
+    "prompt_sha256": {
+      "control": "4d702a46f2615ade2b77c316feaf553c8064ae1bbe99aaebaa70a02f36fbbd8c",
+      "candidate": "315ee5972198d68ef4c31326b29df486d921db56ecfc25cb15bcfe1e4bab0ccc"
+    },
+    "naive_quantiles": [
+      2.914,
+      3.02,
+      3.11,
+      3.23,
+      3.35
+    ]
+  },
+  {
+    "key": "46213",
+    "group": "diagnostic",
+    "cutoff": "2026-10-26T02:59:59+00:00",
+    "source": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-08-05&vintage_date=2026-10-24",
+    "source_sha256": "45bb8f556b0938617b6e7c1212b01f7dcdf74a92c54a11198b22030f864f1ebc",
+    "target": "2026-11-06T21:00:00+00:00",
+    "control": {
+      "observations": 495,
+      "quote_age_days": 3,
+      "days_until_measurement": 11,
+      "choices": [
+        {
+          "width": 1.25,
+          "quantiles": [
+            3.1050235448591796,
+            3.253735301210847,
+            3.38,
+            3.562382342695442,
+            3.730735274414312
+          ]
+        }
+      ]
+    },
+    "candidate": {
+      "observations": 495,
+      "quote_age_days": 3,
+      "days_until_measurement": 11,
+      "choices": [
+        {
+          "width": 1.25,
+          "quantiles": [
+            3.1050235448591796,
+            3.253735301210847,
+            3.38,
+            3.562382342695442,
+            3.730735274414312
+          ]
+        }
+      ],
+      "evidence": {
+        "measurement": "end-of-period level of a credit spread, in percentage points; cent grid",
+        "data": "daily observations in one historical release available at forecast origin",
+        "weekdays_since_latest_in_eligible_vintage": 0,
+        "model_horizon_weekday_steps": 10,
+        "sampling": "the original observations count is overlapping historical horizon changes",
+        "coverage_method": "same estimator on earlier prefixes of this vintage; prior targets do not overlap; past coverage can differ from future coverage",
+        "prior_interval_checks": [
+          {
+            "width": 1.25,
+            "interval_level": 0.8,
+            "prior_disjoint_targets": 34,
+            "inside_interval": 30
+          }
+        ]
+      }
+    },
+    "prompt_sha256": {
+      "control": "f31a0dc3e0a526ffca3aaec5e80d879a6531e3a5c3cc35a73d19626708f5fd0c",
+      "candidate": "a91a95481e052ca51e74040e4f7eb4bb239c02503fa7f879055bfd32dd47a827"
+    },
+    "naive_quantiles": [
+      3.184,
+      3.29,
+      3.38,
+      3.51,
+      3.63
+    ]
+  },
+  {
+    "key": "46709",
+    "group": "diagnostic",
+    "cutoff": "2026-11-06T12:59:59+00:00",
+    "source": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-08-17&vintage_date=2026-11-05",
+    "source_sha256": "5235fcf36a760250b080d8904ba04a24857158ceb6114ec27902b2bac3ae079b",
+    "target": "2026-11-20T21:00:00+00:00",
+    "control": {
+      "observations": 494,
+      "quote_age_days": 1,
+      "days_until_measurement": 14,
+      "choices": [
+        {
+          "width": 1.25,
+          "quantiles": [
+            3.1516801174141422,
+            3.3392914788917745,
+            3.48,
+            3.683245641600769,
+            3.870857003078402
+          ]
+        }
+      ]
+    },
+    "candidate": {
+      "observations": 494,
+      "quote_age_days": 1,
+      "days_until_measurement": 14,
+      "choices": [
+        {
+          "width": 1.25,
+          "quantiles": [
+            3.1516801174141422,
+            3.3392914788917745,
+            3.48,
+            3.683245641600769,
+            3.870857003078402
+          ]
+        }
+      ],
+      "evidence": {
+        "measurement": "end-of-period level of a credit spread, in percentage points; cent grid",
+        "data": "daily observations in one historical release available at forecast origin",
+        "weekdays_since_latest_in_eligible_vintage": 0,
+        "model_horizon_weekday_steps": 11,
+        "sampling": "the original observations count is overlapping historical horizon changes",
+        "coverage_method": "same estimator on earlier prefixes of this vintage; prior targets do not overlap; past coverage can differ from future coverage",
+        "prior_interval_checks": [
+          {
+            "width": 1.25,
+            "interval_level": 0.8,
+            "prior_disjoint_targets": 31,
+            "inside_interval": 30
+          }
+        ]
+      }
+    },
+    "prompt_sha256": {
+      "control": "f51037ad3daec5a20f4ca66ca1106af7d86d3cec8f661f61191a6f66f2b7c648",
+      "candidate": "1eaf4218c377e14d81715a58ef0cdadb1171f6b5375c2adc764b6077036160fb"
+    },
+    "naive_quantiles": [
+      3.27,
+      3.3899999999999997,
+      3.48,
+      3.61,
+      3.73
+    ]
+  },
+  {
+    "key": "2026-01-12",
+    "group": "reserve",
+    "cutoff": "2026-01-12T02:59:59+00:00",
+    "source": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2023-10-23&vintage_date=2026-01-10",
+    "source_sha256": "d4ee7d6bd2a559ad4884f9d662ab42c7347eba9a78df2efe9f1a40aa7aed1e57",
+    "target": "2026-01-23T21:00:00+00:00",
+    "control": {
+      "observations": 495,
+      "quote_age_days": 3,
+      "days_until_measurement": 11,
+      "choices": [
+        {
+          "width": 1.25,
+          "quantiles": [
+            2.5562500000000004,
+            2.6525,
+            2.74,
+            2.8537500000000007,
+            2.9762500000000003
+          ]
+        }
+      ]
+    },
+    "candidate": {
+      "observations": 495,
+      "quote_age_days": 3,
+      "days_until_measurement": 11,
+      "choices": [
+        {
+          "width": 1.25,
+          "quantiles": [
+            2.5562500000000004,
+            2.6525,
+            2.74,
+            2.8537500000000007,
+            2.9762500000000003
+          ]
+        }
+      ],
+      "evidence": {
+        "measurement": "end-of-period level of a credit spread, in percentage points; cent grid",
+        "data": "daily observations in one historical release available at forecast origin",
+        "weekdays_since_latest_in_eligible_vintage": 0,
+        "model_horizon_weekday_steps": 10,
+        "sampling": "the original observations count is overlapping historical horizon changes",
+        "coverage_method": "same estimator on earlier prefixes of this vintage; prior targets do not overlap; past coverage can differ from future coverage",
+        "prior_interval_checks": [
+          {
+            "width": 1.25,
+            "interval_level": 0.8,
+            "prior_disjoint_targets": 34,
+            "inside_interval": 28
+          }
+        ]
+      }
+    },
+    "prompt_sha256": {
+      "control": "ccd6b1233b13976b389fdb55e549191af41fd0e7d1e92134032c58a2d8ff948f",
+      "candidate": "78d8c36f8388aa72545294ca81eadf19a7b9e97018fd72d96d5febf5369ac695"
+    },
+    "naive_quantiles": [
+      2.5300000000000002,
+      2.64,
+      2.74,
+      2.87,
+      3.0100000000000002
+    ]
+  },
+  {
+    "key": "2026-02-09",
+    "group": "reserve",
+    "cutoff": "2026-02-09T02:59:59+00:00",
+    "source": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2023-11-20&vintage_date=2026-02-07",
+    "source_sha256": "3941fa993b6e705809281251a36ec0e3f63c1a2a8f0da04c9dd4360de768ecd6",
+    "target": "2026-02-20T21:00:00+00:00",
+    "control": {
+      "observations": 495,
+      "quote_age_days": 3,
+      "days_until_measurement": 11,
+      "choices": [
+        {
+          "width": 1.25,
+          "quantiles": [
+            2.6706009916241866,
+            2.7703004958120934,
+            2.87,
+            2.987826686767526,
+            3.1056533735350524
+          ]
+        }
+      ]
+    },
+    "candidate": {
+      "observations": 495,
+      "quote_age_days": 3,
+      "days_until_measurement": 11,
+      "choices": [
+        {
+          "width": 1.25,
+          "quantiles": [
+            2.6706009916241866,
+            2.7703004958120934,
+            2.87,
+            2.987826686767526,
+            3.1056533735350524
+          ]
+        }
+      ],
+      "evidence": {
+        "measurement": "end-of-period level of a credit spread, in percentage points; cent grid",
+        "data": "daily observations in one historical release available at forecast origin",
+        "weekdays_since_latest_in_eligible_vintage": 0,
+        "model_horizon_weekday_steps": 10,
+        "sampling": "the original observations count is overlapping historical horizon changes",
+        "coverage_method": "same estimator on earlier prefixes of this vintage; prior targets do not overlap; past coverage can differ from future coverage",
+        "prior_interval_checks": [
+          {
+            "width": 1.25,
+            "interval_level": 0.8,
+            "prior_disjoint_targets": 34,
+            "inside_interval": 29
+          }
+        ]
+      }
+    },
+    "prompt_sha256": {
+      "control": "8a830090bda0e1ff9eb3a084226d4cc2485475dc58aa8242ee7bb1058575d93e",
+      "candidate": "f6fdf16dcee5e61daba857f2955910b4b46726cfe5d7e0e5e3ea40e2963dc715"
+    },
+    "naive_quantiles": [
+      2.65,
+      2.76,
+      2.87,
+      3.0,
+      3.1300000000000003
+    ]
+  },
+  {
+    "key": "2026-03-09",
+    "group": "reserve",
+    "cutoff": "2026-03-09T02:59:59+00:00",
+    "source": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2023-12-18&vintage_date=2026-03-07",
+    "source_sha256": "76bd41a687f23e7368cbef407faed08aaaf82c63cabf337e8e65fecddf963624",
+    "target": "2026-03-20T20:00:00+00:00",
+    "control": {
+      "observations": 495,
+      "quote_age_days": 3,
+      "days_until_measurement": 11,
+      "choices": [
+        {
+          "width": 1.25,
+          "quantiles": [
+            2.883692695720984,
+            3.0014918412457305,
+            3.13,
+            3.2585081587542692,
+            3.3977253307380617
+          ]
+        }
+      ]
+    },
+    "candidate": {
+      "observations": 495,
+      "quote_age_days": 3,
+      "days_until_measurement": 11,
+      "choices": [
+        {
+          "width": 1.25,
+          "quantiles": [
+            2.883692695720984,
+            3.0014918412457305,
+            3.13,
+            3.2585081587542692,
+            3.3977253307380617
+          ]
+        }
+      ],
+      "evidence": {
+        "measurement": "end-of-period level of a credit spread, in percentage points; cent grid",
+        "data": "daily observations in one historical release available at forecast origin",
+        "weekdays_since_latest_in_eligible_vintage": 0,
+        "model_horizon_weekday_steps": 10,
+        "sampling": "the original observations count is overlapping historical horizon changes",
+        "coverage_method": "same estimator on earlier prefixes of this vintage; prior targets do not overlap; past coverage can differ from future coverage",
+        "prior_interval_checks": [
+          {
+            "width": 1.25,
+            "interval_level": 0.8,
+            "prior_disjoint_targets": 34,
+            "inside_interval": 30
+          }
+        ]
+      }
+    },
+    "prompt_sha256": {
+      "control": "6dfa587b2ebaa49be89acc7772515a612b097f532af651553b962359f378987f",
+      "candidate": "dd176994ff654a073da9120959bfa02c0f191a94c0fb9e96429e21ed143755a0"
+    },
+    "naive_quantiles": [
+      2.9,
+      3.0100000000000002,
+      3.13,
+      3.25,
+      3.3800000000000003
+    ]
+  },
+  {
+    "key": "2026-04-13",
+    "group": "reserve",
+    "cutoff": "2026-04-13T02:59:59+00:00",
+    "source": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-01-22&vintage_date=2026-04-11",
+    "source_sha256": "0febcc143c91ed44a642c5285ba7351969b2ab5e83aba48d61d2aec028efc392",
+    "target": "2026-04-24T20:00:00+00:00",
+    "control": {
+      "observations": 495,
+      "quote_age_days": 3,
+      "days_until_measurement": 11,
+      "choices": [
+        {
+          "width": 1.25,
+          "quantiles": [
+            2.609162497267943,
+            2.7817733682585812,
+            2.94,
+            3.1269951102398585,
+            3.3139902204797163
+          ]
+        }
+      ]
+    },
+    "candidate": {
+      "observations": 495,
+      "quote_age_days": 3,
+      "days_until_measurement": 11,
+      "choices": [
+        {
+          "width": 1.25,
+          "quantiles": [
+            2.609162497267943,
+            2.7817733682585812,
+            2.94,
+            3.1269951102398585,
+            3.3139902204797163
+          ]
+        }
+      ],
+      "evidence": {
+        "measurement": "end-of-period level of a credit spread, in percentage points; cent grid",
+        "data": "daily observations in one historical release available at forecast origin",
+        "weekdays_since_latest_in_eligible_vintage": 0,
+        "model_horizon_weekday_steps": 10,
+        "sampling": "the original observations count is overlapping historical horizon changes",
+        "coverage_method": "same estimator on earlier prefixes of this vintage; prior targets do not overlap; past coverage can differ from future coverage",
+        "prior_interval_checks": [
+          {
+            "width": 1.25,
+            "interval_level": 0.8,
+            "prior_disjoint_targets": 34,
+            "inside_interval": 26
+          }
+        ]
+      }
+    },
+    "prompt_sha256": {
+      "control": "ab415fef0837c1911fa48584cf0676a02613dd7c2cc729d33f0b77ff0cc24704",
+      "candidate": "14987ef3026e3a345748f0a4fb1a3679e1fab4a059b933ebb82d3efd9f69bea4"
+    },
+    "naive_quantiles": [
+      2.71,
+      2.8299999999999996,
+      2.94,
+      3.0700000000000003,
+      3.1999999999999997
+    ]
+  },
+  {
+    "key": "2026-05-11",
+    "group": "reserve",
+    "cutoff": "2026-05-11T02:59:59+00:00",
+    "source": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-02-19&vintage_date=2026-05-09",
+    "source_sha256": "aea20ae6ced57dc43aeec3e06f82864f365b0ce5ebb386faeddbec7895074e4c",
+    "target": "2026-05-22T20:00:00+00:00",
+    "control": {
+      "observations": 495,
+      "quote_age_days": 3,
+      "days_until_measurement": 11,
+      "choices": [
+        {
+          "width": 1.25,
+          "quantiles": [
+            2.5175898660519285,
+            2.670151675068314,
+            2.81,
+            2.987988777185783,
+            3.153264070286867
+          ]
+        }
+      ]
+    },
+    "candidate": {
+      "observations": 495,
+      "quote_age_days": 3,
+      "days_until_measurement": 11,
+      "choices": [
+        {
+          "width": 1.25,
+          "quantiles": [
+            2.5175898660519285,
+            2.670151675068314,
+            2.81,
+            2.987988777185783,
+            3.153264070286867
+          ]
+        }
+      ],
+      "evidence": {
+        "measurement": "end-of-period level of a credit spread, in percentage points; cent grid",
+        "data": "daily observations in one historical release available at forecast origin",
+        "weekdays_since_latest_in_eligible_vintage": 0,
+        "model_horizon_weekday_steps": 10,
+        "sampling": "the original observations count is overlapping historical horizon changes",
+        "coverage_method": "same estimator on earlier prefixes of this vintage; prior targets do not overlap; past coverage can differ from future coverage",
+        "prior_interval_checks": [
+          {
+            "width": 1.25,
+            "interval_level": 0.8,
+            "prior_disjoint_targets": 34,
+            "inside_interval": 27
+          }
+        ]
+      }
+    },
+    "prompt_sha256": {
+      "control": "e3231422a10df299aeca36aa6e1a552da25f4a2fc1b5745e6a07975d7df53e48",
+      "candidate": "3e12b23316cacddf09c4242324fc601926925bc422b89d0a3bbb802ccf57e0a5"
+    },
+    "naive_quantiles": [
+      2.58,
+      2.7,
+      2.81,
+      2.95,
+      3.08
+    ]
+  },
+  {
+    "key": "2026-06-08",
+    "group": "reserve",
+    "cutoff": "2026-06-08T02:59:59+00:00",
+    "source": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-03-18&vintage_date=2026-06-06",
+    "source_sha256": "3a6dbbf97104b354363fc52b0ff925bf453762aa16553fbb7ddc50599e08549e",
+    "target": "2026-06-19T20:00:00+00:00",
+    "control": {
+      "observations": 495,
+      "quote_age_days": 3,
+      "days_until_measurement": 11,
+      "choices": [
+        {
+          "width": 1.25,
+          "quantiles": [
+            2.5638220897658774,
+            2.670828222620853,
+            2.76,
+            2.89375766606872,
+            3.0096809766616097
+          ]
+        }
+      ]
+    },
+    "candidate": {
+      "observations": 495,
+      "quote_age_days": 3,
+      "days_until_measurement": 11,
+      "choices": [
+        {
+          "width": 1.25,
+          "quantiles": [
+            2.5638220897658774,
+            2.670828222620853,
+            2.76,
+            2.89375766606872,
+            3.0096809766616097
+          ]
+        }
+      ],
+      "evidence": {
+        "measurement": "end-of-period level of a credit spread, in percentage points; cent grid",
+        "data": "daily observations in one historical release available at forecast origin",
+        "weekdays_since_latest_in_eligible_vintage": 0,
+        "model_horizon_weekday_steps": 10,
+        "sampling": "the original observations count is overlapping historical horizon changes",
+        "coverage_method": "same estimator on earlier prefixes of this vintage; prior targets do not overlap; past coverage can differ from future coverage",
+        "prior_interval_checks": [
+          {
+            "width": 1.25,
+            "interval_level": 0.8,
+            "prior_disjoint_targets": 34,
+            "inside_interval": 28
+          }
+        ]
+      }
+    },
+    "prompt_sha256": {
+      "control": "bdc9264470ca8b648ded526d48098e6b464955f23f63b949cf324fc734ecc260",
+      "candidate": "f8839ba5761565c9cdf669e94cb2bbf6125923cffa518bcc07f79177c73c13e2"
+    },
+    "naive_quantiles": [
+      2.5399999999999996,
+      2.66,
+      2.76,
+      2.91,
+      3.0399999999999996
+    ]
+  }
+]

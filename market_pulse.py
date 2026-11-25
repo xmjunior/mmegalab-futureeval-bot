@@ -160,16 +160,20 @@ class ReviewerUnavailable(RuntimeError):
     """All attempted named routes failed before returning any reviewer answer."""
 
 
-async def review(routes, rows):
-    llm = None
-    all_unavailable = True
-    prompt = (
+def reviewer_prompt(rows):
+    return (
         "You calibrate interval forecasts. Each row is anonymous. Its options are validated "
         "alternative interval widths for the same statistical forecast. You can and should abstain if the evidence is insufficient for a trustworthy numeric distribution. Quantiles are ordered "
         "at 10%, 25%, 50%, 75%, 90%. Review the quantile spacing, data age, sample size and forecast horizon. Choose null for stale data, incoherent quantiles, or inadequate uncertainty coverage. Otherwise choose a listed width. Use 1.0 where "
         "available unless uncertainty warrants a wider choice. Output only a JSON array of "
         "numbers or null values, one per row in order. No prose.\n" + json.dumps(rows)
     )
+
+
+async def review(routes, rows):
+    llm = None
+    all_unavailable = True
+    prompt = reviewer_prompt(rows)
     skip_openrouter = False
     for name in sorted(routes, key=lambda route: route == groq_free.ROUTE):
         if skip_openrouter and name.startswith("openrouter/"):

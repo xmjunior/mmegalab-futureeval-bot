@@ -1,0 +1,58 @@
+name: Closed Market Pulse evidence comparison
+on:
+  push:
+    branches: [verify/omega-market-candidate]
+    paths:
+      - .github/workflows/market_evidence_v2.yaml
+      - research/market_evidence_v2/inputs.sha256
+permissions:
+  contents: read
+concurrency:
+  group: closed-market-evidence-v2
+  cancel-in-progress: false
+jobs:
+  paired-review:
+    if: github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+      LITELLM_LOCAL_MODEL_COST_MAP: "True"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          version: "0.13.1"
+      - run: uv sync --locked --no-dev
+      - name: Verify frozen prompts, abstention, disjoint samples and scorer
+        run: .venv/bin/python -m unittest discover -s research/market_evidence_v2 -p test_trial.py -v
+      - name: Read blind precommitted inputs with one verified free transport
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GROQ_FREE_ACCOUNT_CONFIRMED: "true"
+        run: |
+          mkdir evidence-result
+          .venv/bin/python research/market_evidence_v2/trial.py review --receipts evidence-result/receipts.json
+      - name: Preserve blinded decisions before fetching reserve outcomes
+        if: always() && hashFiles('evidence-result/receipts.json') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: closed-market-blind-receipts
+          path: evidence-result/receipts.json
+          if-no-files-found: error
+          retention-days: 45
+      - name: Retrieve the predeclared settlement release and compare frozen decisions
+        run: |
+          .venv/bin/python research/market_evidence_v2/capture.py reserve-labels --output evidence-result/labels.json
+          .venv/bin/python research/market_evidence_v2/trial.py score --receipts evidence-result/receipts.json --labels evidence-result/labels.json --result evidence-result/comparison.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: closed-market-evidence-comparison
+          path: evidence-result/
+          if-no-files-found: error
+          retention-days: 45
