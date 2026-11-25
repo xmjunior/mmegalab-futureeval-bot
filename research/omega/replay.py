@@ -57,7 +57,7 @@ def replay(block):
             actual = json.loads((work / "results.json").read_bytes())
         elif block == "binary":
             expected = json.loads((work / "results.json").read_bytes())
-            python("evaluate.py", "--out", "replayed.json")
+            python("evaluate.py", "--archived-20261124", "--out", "replayed.json")
             actual = json.loads((work / "replayed.json").read_bytes())
         elif block == "evidence":
             expected = json.loads((work / "result.json").read_bytes())

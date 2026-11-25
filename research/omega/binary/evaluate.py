@@ -62,8 +62,12 @@ def venn(score,y):
     return predict
 
 
+def horizon_days(row):
+    return (date.fromisoformat(row[4])-date.fromisoformat(row[1])).days
+
+
 def bucket(row):
-    return (row[2],(date.fromisoformat(row[4])-date.fromisoformat(row[1])).days<=30)
+    return (row[2],horizon_days(row)<=30)
 
 
 def train_hedge(rows):
@@ -109,14 +113,27 @@ def primitive(rows, best, alpha, hedge):
             "disagreement":np.where(np.ptp(p,axis=1)>=0.30,0.5*m+0.25,m)}
 
 
-def predict(train,valid,test):
+def predict(train,valid,test, *, archived_20261124=False):
     best,alpha,hedge,fit=components(train)
-    validation=primitive(valid,best,alpha,hedge)
     result=primitive(test,best,alpha,hedge)
+    # Preserve the registered pooled calibrator on its observed horizons.
+    # An empty calibration set leaves both base forecasts intact.
     y=np.array([r[9] for r in valid])
+    seen=Counter(horizon_days(row) for row in valid)
+    supported=np.array([horizon_days(row) in seen for row in test],dtype=bool)
+    if not archived_20261124:
+        fit["signed_forecast_error_correlation"]=fit.pop("residual_correlation")
+        fit["correlation_estimand"]="Corr(P_i - Y, P_j - Y); includes shared Bernoulli outcome noise"
+        fit["venn_support"]={"calibration_cases_by_horizon_days":dict(sorted(seen.items())),
+                             "applied":int(supported.sum()),"base_forecast_used":int((~supported).sum())}
+    else:
+        supported[:]=True
+    validation=primitive(valid,best,alpha,hedge) if supported.any() else None
     for key, arm in (("mean","venn_mean"),("correlation_pool","venn_corr")):
-        calibrator=venn(validation[key],y)
-        result[arm]=np.array([calibrator(p) for p in result[key]])
+        result[arm]=result[key].copy()
+        if supported.any():
+            calibrator=venn(validation[key],y)
+            result[arm][supported]=[calibrator(p) for p in result[key][supported]]
     return result,fit
 
 
@@ -178,9 +195,9 @@ def block_sign_p(gains,dates):
                for s in itertools.product([-1,1],repeat=len(blocks)))/(2**len(blocks))
 
 
-def evaluate(rows,manifest):
+def evaluate(rows,manifest, *, archived_20261124=False):
     train,valid,test=([r for r in rows if r[0]==part] for part in ("train","valid","test"))
-    p,fit=predict(train,valid,test)
+    p,fit=predict(train,valid,test,archived_20261124=archived_20261124)
     y=np.array([r[9] for r in test])
     dates=[r[1] for r in test]
     sources=[r[2] for r in test]
@@ -229,7 +246,7 @@ def evaluate(rows,manifest):
     train_f=[r for r in train if family_bucket(r[10])<5]
     valid_f=[r for r in valid if 5<=family_bucket(r[10])<7]
     test_f=[r for r in test if family_bucket(r[10])>=7]
-    pf,fit_f=predict(train_f,valid_f,test_f)
+    pf,fit_f=predict(train_f,valid_f,test_f,archived_20261124=archived_20261124)
     yf=np.array([r[9] for r in test_f])
     families={part:sorted(set(r[10] for r in data)) for part,data in
               (("train",train_f),("valid",valid_f),("test",test_f))}
@@ -259,14 +276,18 @@ def evaluate(rows,manifest):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("--inputs",type=Path,default=HERE)
-    p.add_argument("--out",type=Path,default=HERE/"results.json")
+    p.add_argument("--archived-20261124",action="store_true",help="Replay the original registered calibration outside horizon support")
+    p.add_argument("--out",type=Path,required=True,help="Write to a separate result file")
     args=p.parse_args()
+    archive = (args.inputs/"results.json").resolve()
+    if args.out.resolve() == HERE/"results.json" or (archive.exists() and args.out.resolve() == archive):
+        p.error("choose an output path distinct from the archived results")
     manifest=json.loads((args.inputs/"inputs.json").read_bytes())
     raw=gzip.decompress((args.inputs/"rows.jsonl.gz").read_bytes())
     if hashlib.sha256(raw).hexdigest()!=manifest["rows_jsonl_sha256"]:
         raise ValueError("derived rows changed")
     rows=[json.loads(line) for line in raw.splitlines()]
-    results=evaluate(rows,manifest)
+    results=evaluate(rows,manifest,archived_20261124=args.archived_20261124)
     args.out.write_text(json.dumps(results,indent=2,sort_keys=True,allow_nan=False)+"\n")
     print({s:v["native_common"] for s,v in results["splits"].items()})
 

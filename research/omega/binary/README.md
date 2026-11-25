@@ -1,6 +1,6 @@
 # OMEGA binary archive experiment
 
-**Decision: zero of four challengers met the registered screen.** Across 5,723 matched final events, log-odds pooling with an estimated error correlation improved mean Brier by 0.002517 over arithmetic averaging (1.60%). The preselected GPT-5 mini already had a slightly lower Brier, with one archived output per case compared with three for the pool. This result supports no change to the live bot or paid inference.
+**Decision: zero of four challengers met the registered screen.** Across 5,723 matched final events, log-odds pooling with an training correlation of signed forecast errors improved mean Brier by 0.002517 over arithmetic averaging (1.60%). The preselected GPT-5 mini already had a slightly lower Brier, with one archived output per case compared with three for the pool. This result supports no change to the live bot or paid inference.
 
 | Final method | Brier | Log loss | ECE, 10 bins |
 |---|---:|---:|---:|
@@ -12,7 +12,7 @@
 | Disagreement shrinkage | 0.163391 | 0.477677 | 0.051815 |
 | Constant 0.5 | 0.250000 | 0.693147 | 0.086580 |
 
-Residual correlations on training were 0.935–0.958, resulting in a log-odds multiplier of 1.092. For the pool vs the mean, the 95% envelope from date-block and family-block bootstraps was [0.000202, 0.004268] in paired Brier gains. Six test rounds gave a one-sided exact round sign p of 0.109375 and a Holm p of 0.4375. The inferential tests and the comparison with the preselected individual both matter. Actual model API fees in the archive were unavailable. New API charges were zero.
+Each error subtracts the same realized binary outcome. The correlations therefore include shared outcome noise and cannot identify correlations of errors relative to the latent event probability. Signed forecast-error correlations on training were 0.935–0.958, resulting in a log-odds multiplier of 1.092. For the pool vs the mean, the 95% envelope from date-block and family-block bootstraps was [0.000202, 0.004268] in paired Brier gains. Six test rounds gave a one-sided exact round sign p of 0.109375 and a Holm p of 0.4375. The inferential tests and the comparison with the preselected individual both matter. Actual model API fees in the archive were unavailable. New API charges were zero.
 
 ## Samples and limits
 
@@ -28,14 +28,16 @@ The full 15-round protocol was published before calculation of held-out scores a
 
 ```sh
 python -m unittest discover -s research/omega/binary -p test_binary.py -v
-python research/omega/binary/evaluate.py --out /tmp/omega-replay.json
+python research/omega/binary/evaluate.py --archived-20261124 --out /tmp/omega-replay.json
 ```
 
 For independent regeneration download the processed archive at the URL in `inputs.json`. The derivation verifies its exact digest, retrieves historical resolution versions and question text for grouping from immutable official commits, and recreates the compressed archive, in a separate directory if desired.
 
 ```sh
 python research/omega/binary/derive.py processed_forecast_sets.tar.gz label-cache --output /tmp/omega-rebuilt
-python research/omega/binary/evaluate.py --inputs /tmp/omega-rebuilt --out /tmp/omega-rebuilt/results.json
+python research/omega/binary/evaluate.py --archived-20261124 --inputs /tmp/omega-rebuilt --out /tmp/omega-rebuilt/results.json
 ```
 
 Original datasets and forecasts © Forecasting Research Institute, CC BY-SA 4.0. These curated rows, comparisons and source-derived displays are shared under the same license. Sources: https://www.forecastbench.org/datasets/ and https://github.com/forecastingresearch/forecastbench-datasets and https://creativecommons.org/licenses/by-sa/4.0/.
+
+New evaluations require an explicit output file. Without the archived replay switch, Venn-Abers applies its registered pooled mapping only to horizons present in calibration. Other horizons retain the base forecast. The fit reports calibration counts by exact horizon in days and the number of fallback cases. This support guard has no new holdout performance estimate.

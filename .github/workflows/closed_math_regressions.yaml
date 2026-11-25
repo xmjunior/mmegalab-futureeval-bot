@@ -1,0 +1,37 @@
+name: Closed mathematical regressions
+on:
+  push:
+    branches: [research/closed-math-audit]
+    paths:
+      - '.github/workflows/closed_math_regressions.yaml'
+      - 'research/economic/metaculus_grid.py'
+      - 'research/economic/paired_economic.py'
+      - 'research/economic/test_metaculus_grid.py'
+      - 'research/omega/binary/evaluate.py'
+      - 'research/omega/binary/test_calibration_support.py'
+      - 'research/omega/continuous/volatility_window.py'
+      - 'research/omega/continuous/test_volatility_window.py'
+permissions:
+  contents: read
+concurrency:
+  group: closed-math-regressions-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  focused:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check numpy==2.3.5
+      - run: python -m py_compile research/economic/metaculus_grid.py research/omega/binary/evaluate.py research/omega/continuous/volatility_window.py research/omega/replay.py
+      - working-directory: research/economic
+        run: python -m unittest -v test_metaculus_grid
+      - working-directory: research/omega/binary
+        run: python -m unittest -v test_calibration_support test_binary.BinaryTests.test_venn_matches_independent_minmax_for_both_labels_and_ties test_binary.BinaryTests.test_final_predictions_ignore_every_holdout_label
+      - working-directory: research/omega/continuous
+        run: python -m unittest -v test_volatility_window
