@@ -1,0 +1,32 @@
+{
+  "observed_at": "2026-11-25T03:04:19.088431+00:00",
+  "google_models": {
+    "status": "verified",
+    "gemma_models_visible": [
+      "models/gemma-4-26b-a4b-it",
+      "models/gemma-4-31b-it"
+    ],
+    "billing_tier": "not_reported_by_models_api"
+  },
+  "openrouter_key": {
+    "status": "verified",
+    "free_tier": true,
+    "daily_free_requests_remaining": "not_reported_by_key_api"
+  },
+  "tavily": {
+    "status": "verified",
+    "key_limit": 700,
+    "key_used": 1,
+    "plan": "Researcher",
+    "included": 1000,
+    "account_used": 6,
+    "paygo_used": 0
+  },
+  "openai_project_credential_configured": true,
+  "asknews_credential_configured": true,
+  "asknews_rate_limits": {
+    "status": "verified",
+    "request_rate_capacity": 2.5
+  },
+  "asknews_entitlement": "not_verified"
+}
