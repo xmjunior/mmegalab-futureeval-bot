@@ -11,7 +11,7 @@ import subprocess
 import sys
 
 HERE = Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE.parent / "binary"))
+sys.path.append(str(HERE.parent / "binary"))
 import derive
 
 REVISION = "86b92ba06ed34d606d633bff3e99af54dd447d3a"

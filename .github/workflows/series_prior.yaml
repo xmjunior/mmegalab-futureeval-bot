@@ -3,6 +3,7 @@ on:
   push:
     branches: [research/omega-predictive-challenge]
     paths:
+      - 'research/omega/series_prior/data.py'
       - 'research/omega/series_prior/evaluate.py'
       - 'research/omega/series_prior/external.py'
       - 'research/omega/series_prior/test_series_prior.py'
