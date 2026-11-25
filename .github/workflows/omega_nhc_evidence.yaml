@@ -1,0 +1,39 @@
+name: Closed NHC evidence and tournament applicability
+on:
+  push:
+    branches: [verify/omega-evidence-candidate]
+    paths:
+      - 'research/nhc_evidence/*.py'
+      - '.github/workflows/omega_nhc_evidence.yaml'
+permissions:
+  contents: read
+concurrency:
+  group: closed-nhc-evidence
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - working-directory: research/nhc_evidence
+        run: python -m unittest -v test_evidence
+      - name: Read closed official 2025 Atlantic sources only
+        working-directory: research/nhc_evidence
+        run: python evaluate.py season season-result.json
+      - name: Count qualifying contracts in already resolved FutureEval questions
+        if: always()
+        working-directory: research/nhc_evidence
+        env:
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
+        run: python evaluate.py applicability tournament-sample.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: closed-nhc-evidence
+          path: |
+            research/nhc_evidence/season-result.json
+            research/nhc_evidence/tournament-sample.json
+          if-no-files-found: error
