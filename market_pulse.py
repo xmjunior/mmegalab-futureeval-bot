@@ -14,6 +14,7 @@ from pathlib import Path
 import requests
 from forecasting_tools import DiscreteQuestion, GeneralLlm, NumericDistribution, NumericQuestion, Percentile
 
+import groq_free
 import market_prices as prices
 from main import FreeForecastLlm
 
@@ -28,6 +29,7 @@ MODEL_NAMES = {
     "GEMINI_API_KEY": ["gemini/gemma-4-31b-it", "gemini/gemma-4-26b-a4b-it"],
     "OPENROUTER_API_KEY": ["openrouter/google/gemma-4-31b-it:free", "openrouter/google/gemma-4-26b-a4b-it:free"],
 }
+PRIMARY_ROUTES = frozenset(route for names in MODEL_NAMES.values() for route in names)
 log = logging.getLogger("market_pulse")
 
 
@@ -154,11 +156,13 @@ def options_for(estimate, widths, as_of, resolve):
         {"width": w, "quantiles": list(estimate.quantiles(w).values())} for w in widths]}
 
 
+class ReviewerUnavailable(RuntimeError):
+    """All attempted named routes failed before returning any reviewer answer."""
+
+
 async def review(routes, rows):
-    # Fixed model identities and explicit free OpenRouter endpoints. The inherited router supplies
-    # transient-error cooldowns. Never invoke an unspecified model or its local CPU fallback.
-    llm = FreeForecastLlm()
-    llm.allow_cpu_fallback = False
+    llm = None
+    all_unavailable = True
     prompt = (
         "You calibrate interval forecasts. Each row is anonymous. Its options are validated "
         "alternative interval widths for the same statistical forecast. You can and should abstain if the evidence is insufficient for a trustworthy numeric distribution. Quantiles are ordered "
@@ -166,26 +170,82 @@ async def review(routes, rows):
         "available unless uncertainty warrants a wider choice. Output only a JSON array of "
         "numbers or null values, one per row in order. No prose.\n" + json.dumps(rows)
     )
-    for name in routes:
+    skip_openrouter = False
+    for name in sorted(routes, key=lambda route: route == groq_free.ROUTE):
+        if skip_openrouter and name.startswith("openrouter/"):
+            continue
+        if name == groq_free.ROUTE and not all_unavailable:
+            continue
         try:
-            llm.routes = [GeneralLlm(name, temperature=0, timeout=90, allowed_tries=1, num_retries=0)]
-            llm.available_at = {name: 0.0}
-            result = await llm.invoke(prompt)
+            if name == groq_free.ROUTE:
+                result, _ = await asyncio.to_thread(groq_free.GroqFreeRoute().complete, prompt, max_tokens=512)
+            else:
+                if name not in PRIMARY_ROUTES:
+                    raise ValueError("Unapproved Market Pulse reviewer")
+                if llm is None:
+                    llm = FreeForecastLlm()
+                    llm.allow_cpu_fallback = False
+                llm.routes = [GeneralLlm(name, temperature=0, timeout=90, allowed_tries=1, num_retries=0)]
+                llm.available_at = {name: 0.0}
+                result = await llm.invoke(prompt)
+        except Exception as exc:
+            # The inherited router marks recognized HTTP, quota and connection errors by
+            # installing a cooldown. Programming, configuration and output errors must
+            # never be mistaken for a reason to try a different forecaster.
+            cooldown = llm.available_at.get(name, 0) if llm else 0
+            if isinstance(exc, ValueError) or not (cooldown > 0 or isinstance(
+                    exc, (groq_free.Unavailable, TimeoutError, ConnectionError))):
+                all_unavailable = False
+            log.warning("Free reviewer %s unavailable (%s)", name, type(exc).__name__)
+            if name.startswith("openrouter/") and cooldown - time.monotonic() > 300:
+                skip_openrouter = True
+            continue
+        try:
             choices = json.loads(result.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip())
             if (not isinstance(choices, list) or len(choices) != len(rows)
                     or any(w is not None and (type(w) not in (int, float) or w not in [x["width"] for x in row["choices"]])
                            for w, row in zip(choices, rows))):
                 raise ValueError("Model selected invalid intervals")
             return name, choices
-        except Exception as exc:
-            log.warning("No validated decision from %s (%s)", name, type(exc).__name__)
-            if name.startswith("openrouter/") and llm.available_at.get(name, 0) - time.monotonic() > 300:
-                break
-    raise RuntimeError("All qualified free models unavailable or invalid; no publication")
+        except (ValueError, TypeError, AttributeError) as exc:
+            all_unavailable = False
+            log.warning("Invalid interval response from %s (%s)", name, type(exc).__name__)
+    if all_unavailable:
+        raise ReviewerUnavailable("Qualified free reviewers unavailable")
+    raise RuntimeError("No valid free reviewer decision")
 
 
 def configured_routes():
-    return [name for key, names in MODEL_NAMES.items() if os.getenv(key) for name in names]
+    names = [name for key, names in MODEL_NAMES.items() if os.getenv(key) for name in names]
+    if groq_free.configured():
+        names.append(groq_free.ROUTE)
+    return names
+
+
+async def qualify_reviewers(rows):
+    async def qualify(names):
+        decisions = []
+        selected = names
+        for row in rows:
+            # Every decision in a qualification belongs to the same named model.
+            try:
+                name, [choice] = await review(selected, [row])
+            except ReviewerUnavailable:
+                if None in decisions:
+                    raise RuntimeError("Unavailable after a recorded abstention") from None
+                raise
+            selected = [name]
+            decisions.append(choice)
+        return selected[0], decisions
+
+    primaries = [names for key, names in MODEL_NAMES.items() if os.getenv(key)]
+    trials = await asyncio.gather(*(qualify(names) for names in primaries), return_exceptions=True)
+    if groq_free.configured() and all(isinstance(t, ReviewerUnavailable) for t in trials):
+        # Restart the full sealed cohort. Results from an interrupted provider
+        # cannot be combined with the fallback model's results.
+        fallback = await asyncio.gather(qualify([groq_free.ROUTE]), return_exceptions=True)
+        trials.extend(fallback)
+    return trials
 
 
 def checked_proof(proof):
@@ -244,18 +304,7 @@ async def validate(account, history=None):
         rows.append(options_for(estimate, widths[str(h["post_id"])], h["spot"], h["resolve"]))
         scored.append((h, estimate))
     cases = {row["question_id"]: row for row in stats["cases"]}
-    async def qualify(names):
-        decisions = []
-        selected = names
-        for row in rows:
-            # Independent prompts prevent even anonymous observations from a later
-            # spot date from influencing an earlier historical decision.
-            name, [choice] = await review(selected, [row])
-            selected = [name]
-            decisions.append(choice)
-        return selected[0], decisions
-    providers = [names for key, names in MODEL_NAMES.items() if os.getenv(key)]
-    trials = await asyncio.gather(*(qualify(names) for names in providers), return_exceptions=True)
+    trials = await qualify_reviewers(rows)
     by_group = {}
     routes_by_group = {}
     for trial in trials:
