@@ -12,7 +12,7 @@ concurrency:
   group: market-pulse-33131
   cancel-in-progress: false
 env:
-  MARKET_CODE_SHA: "2bde30970b38075cfa1ca288d30796124fc6348f"
+  MARKET_CODE_SHA: "87e6262742f23dcb84b79f3bd6fe7707c2755a01"
   ALLOW_CPU_FALLBACK: 'false'
 jobs:
   qualify:
@@ -102,6 +102,8 @@ jobs:
           METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GROQ_FREE_ACCOUNT_CONFIRMED: "true"
       - name: Verify the historical and dry-run proof
         id: proof
         if: steps.cache.outputs.cache-hit == 'true' || steps.search.outputs.run != '' || steps.window.outputs.available == 'true'
@@ -153,3 +155,5 @@ jobs:
           METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GROQ_FREE_ACCOUNT_CONFIRMED: "true"
