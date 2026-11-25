@@ -1,0 +1,47 @@
+name: Check availability of the historical free Market Pulse reviewer
+on:
+  push:
+    branches: [verify/omega-market-availability]
+    paths: [.github/workflows/market_availability.yaml]
+permissions:
+  contents: read
+jobs:
+  health:
+    if: github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          version: '0.13.1'
+      - run: uv sync --locked --no-dev
+      - name: One synthetic request to the same named model that passed the closed cases
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          LITELLM_LOCAL_MODEL_COST_MAP: "True"
+        run: |
+          .venv/bin/python - <<'PY'
+          import asyncio
+          import sys
+          from forecasting_tools import GeneralLlm
+
+          reviewer = "gemini/gemma-4-31b-it"
+          async def probe():
+              model = GeneralLlm(reviewer, temperature=0, timeout=40, allowed_tries=1, num_retries=0)
+              try:
+                  reply = await model.invoke("Return only the sum of 2 and 3 as a single digit.")
+              except Exception as error:
+                  print("Market reviewer unavailable:", reviewer, type(error).__name__, getattr(error, "status_code", None))
+                  return False
+              return reply.strip() == "5"
+
+          correct = asyncio.run(probe())
+          print(f"Named free reviewer answered synthetic availability check: {correct}")
+          sys.exit(0 if correct else 1)
+          PY
