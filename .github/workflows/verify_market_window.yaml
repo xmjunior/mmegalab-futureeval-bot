@@ -1,0 +1,57 @@
+name: Verify Market Pulse window without forecasting
+on:
+  push:
+    branches: [verify/market-window-closure]
+permissions:
+  contents: read
+jobs:
+  check-window:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check window boundaries, upcoming status and incomplete metadata
+        run: python -m unittest discover -s tests -p test_market_window.py -v
+      - name: Read the scheduled Market Pulse revision
+        id: deployed
+        run: |
+          python - <<'PY'
+          import os, re
+          from pathlib import Path
+          workflow = Path(".github/workflows/market_pulse.yaml").read_text()
+          matches = re.findall(r'^  MARKET_CODE_SHA: "([a-f0-9]{40})"$', workflow, re.M)
+          assert len(matches) == 1
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              print(f"sha={matches[0]}", file=output)
+          PY
+      - uses: actions/checkout@v4
+        with:
+          path: deployed
+          ref: ${{ steps.deployed.outputs.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          version: "0.13.1"
+      - working-directory: deployed
+        run: uv sync --locked --no-dev
+      - name: Read availability for the groups allowed by the pinned code
+        id: availability
+        working-directory: deployed
+        env:
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
+          LITELLM_LOCAL_MODEL_COST_MAP: "True"
+        run: PYTHONPATH="$PWD" .venv/bin/python ../research/market_window.py
+      - name: Record the observed window status
+        env:
+          AVAILABLE: ${{ steps.availability.outputs.available }}
+        run: |
+          case "$AVAILABLE" in
+            true) echo "A window is available for the protected rehearsal." >> "$GITHUB_STEP_SUMMARY" ;;
+            false) echo "Waiting for an eligible rehearsal window." >> "$GITHUB_STEP_SUMMARY" ;;
+            *) exit 1 ;;
+          esac

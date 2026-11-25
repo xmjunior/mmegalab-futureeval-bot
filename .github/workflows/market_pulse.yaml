@@ -64,22 +64,6 @@ jobs:
               echo "Recent validation failed. Leave publication locked and retry at the next scheduled window."
             fi
           fi
-      - name: Read tournament availability while waiting for hosted validation
-        if: steps.search.outputs.defer == 'true'
-        env:
-          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
-        run: |
-          python - <<'PYTHON'
-          import json, os, urllib.request
-          req = urllib.request.Request("https://www.metaculus.com/api/posts/46010/",
-                                       headers={"Authorization": "Token " + os.environ["METACULUS_TOKEN"]})
-          with urllib.request.urlopen(req, timeout=30) as response:
-              post = json.load(response)
-          assert post["projects"]["default_project"]["id"] == 33131
-          rows = post["group_of_questions"]["questions"]
-          print("Deferred; publication locked; open eligible subquestions:", sum(q["status"] == "open" for q in rows))
-          print("Next opening:", min((q["open_time"] for q in rows if q["status"] == "upcoming"), default="none"))
-          PYTHON
       - uses: actions/download-artifact@v4
         if: steps.search.outputs.run != ''
         with:
@@ -94,18 +78,33 @@ jobs:
         if: steps.season.outputs.active == 'true' && steps.cache.outputs.cache-hit != 'true' && steps.search.outputs.run == '' && steps.search.outputs.defer != 'true'
         with:
           version: "0.13.1"
-      - name: Qualify against sealed history and run a no-write prospective test
+      - name: Check out the scheduling check at this workflow's revision
+        uses: actions/checkout@v4
         if: steps.season.outputs.active == 'true' && steps.cache.outputs.cache-hit != 'true' && steps.search.outputs.run == '' && steps.search.outputs.defer != 'true'
+        with:
+          ref: ${{ github.sha }}
+          path: .market-window-control
+          sparse-checkout: research/market_window.py
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+      - name: Check authenticated rehearsal windows before requesting hosted reviews
+        id: window
+        if: steps.season.outputs.active == 'true' && steps.cache.outputs.cache-hit != 'true' && steps.search.outputs.run == '' && steps.search.outputs.defer != 'true'
+        env:
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
         run: |
           uv sync --locked --no-dev
-          uv run --locked --no-dev python market_pulse.py validate
+          PYTHONPATH="$GITHUB_WORKSPACE" uv run --locked --no-dev python .market-window-control/research/market_window.py
+      - name: Qualify against sealed history and run a no-write prospective test
+        if: steps.window.outputs.available == 'true'
+        run: uv run --locked --no-dev python market_pulse.py validate
         env:
           METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       - name: Verify the historical and dry-run proof
         id: proof
-        if: steps.season.outputs.active == 'true' && steps.search.outputs.defer != 'true'
+        if: steps.cache.outputs.cache-hit == 'true' || steps.search.outputs.run != '' || steps.window.outputs.available == 'true'
         run: |
           python - <<'PY'
           import hashlib, json, os, pathlib
