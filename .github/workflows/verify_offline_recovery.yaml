@@ -1,0 +1,49 @@
+name: Verify hosted recovery without live providers
+on:
+  push:
+    branches: [research/hosted-retry-recovery]
+    paths:
+      - main.py
+      - groq_free.py
+      - tests/**
+      - .github/workflows/verify_offline_recovery.yaml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: offline-hosted-recovery
+  cancel-in-progress: false
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          version: "0.13.1"
+      - run: uv sync --locked --no-dev
+      - name: Run regression tests with external connections blocked
+        env:
+          METACULUS_TOKEN: test
+          LITELLM_LOCAL_MODEL_COST_MAP: "True"
+        run: |
+          .venv/bin/python - <<'PY'
+          import socket
+          import sys
+          import unittest
+
+          def block_network(event, args):
+              if event == "socket.connect" and args[0].family in (socket.AF_INET, socket.AF_INET6):
+                  raise PermissionError("External connections disabled in this test run")
+
+          sys.addaudithook(block_network)
+          suite = unittest.defaultTestLoader.discover("tests")
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          sys.exit(0 if result.wasSuccessful() and result.testsRun else 1)
+          PY

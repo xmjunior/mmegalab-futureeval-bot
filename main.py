@@ -146,6 +146,33 @@ async def _invoke_hosted(state, prompt, system_prompt, probe_only=False):
     raise _HostedRoutesExhausted("hosted free routes exhausted")
 
 
+async def _hosted_answer(state, prompt, system_prompt=None):
+    """Called under the route lock. None selects CPU for this request only."""
+    retry_at = getattr(state, "cpu_retry_at", 0.0)
+    if retry_at and time.monotonic() < retry_at and state.allow_cpu_fallback:
+        return None
+    try:
+        answer = await _invoke_hosted(state, prompt, system_prompt, probe_only=bool(retry_at))
+    except _HostedRoutesExhausted:
+        if not state.allow_cpu_fallback:
+            raise RuntimeError("All hosted free routes unavailable; refusing degraded CPU forecast") from None
+        state.cpu_retry_at = _next_probe_at(state, time.monotonic())
+        return None
+    if retry_at:
+        logger.info("Hosted free route recovered; resuming hosted inference")
+        state.cpu_retry_at = 0.0
+    return answer
+
+
+async def _cpu_for(state):
+    if not (platform.system() == "Linux" and platform.machine() == "x86_64"):
+        raise RuntimeError("Free routes unavailable; CPU fallback requires Linux x86_64")
+    if state.cpu is None:
+        logger.info("Starting CPU fallback")
+        state.cpu = await asyncio.to_thread(CpuForecaster)
+    return state.cpu
+
+
 class FreeForecastLlm(GeneralLlm):
     """Use only free endpoints. Share backoff across research, forecasts and parsing."""
 
@@ -169,7 +196,7 @@ class FreeForecastLlm(GeneralLlm):
         self.available_at = dict.fromkeys(names, 0.0)
         self.lock = asyncio.Lock()
         self.cpu = None
-        # Earliest moment a CPU-degraded run may probe the hosted routes again.
+        # Zero during normal hosted operation, even when a CPU model is cached.
         self.cpu_retry_at = 0.0
         # CPU fallback is useful for dry-run diagnostics, but it is intentionally
         # disabled by default for prize-bearing runs because a tiny local model can
@@ -184,13 +211,9 @@ class FreeForecastLlm(GeneralLlm):
     async def choose_integers(self, prompt: str, count: int, low: int, high: int) -> list[int]:
         prompt += (f"\nReturn only a JSON array of {count} integers between {low} and {high}, "
                    "inclusive. Each number must be your own selection.")
-        retry_at = getattr(self, "cpu_retry_at", 0.0)
-        degraded = self.cpu is not None and time.monotonic() < retry_at
-        if not degraded:
-            probe_at = retry_at
-            answer = await self.invoke(prompt)
-            # If invoke had to engage CPU, its free text is not a structured answer.
-            if self.cpu is None or getattr(self, "cpu_retry_at", 0.0) <= probe_at:
+        async with self.lock:
+            answer = await _hosted_answer(self, prompt)
+            if answer is not None:
                 try:
                     values = json.loads(answer.strip().removeprefix("```json").removesuffix("```").strip())
                 except ValueError:
@@ -198,40 +221,18 @@ class FreeForecastLlm(GeneralLlm):
                 if (isinstance(values, list) and len(values) == count
                         and all(type(n) is int and low <= n <= high for n in values)):
                     return values
-        if not self.allow_cpu_fallback:
-            raise RuntimeError("Hosted model returned an invalid structured answer; CPU fallback is disabled")
-        async with self.lock:
-            if self.cpu is None:
-                self.cpu = await asyncio.to_thread(CpuForecaster)
-                self.cpu_retry_at = _next_probe_at(self, time.monotonic())
-            return await asyncio.to_thread(self.cpu.choose_integers, prompt, count, low, high)
+            if not self.allow_cpu_fallback:
+                raise RuntimeError("Hosted model returned an invalid structured answer; CPU fallback is disabled")
+            cpu = await _cpu_for(self)
+            return await asyncio.to_thread(cpu.choose_integers, prompt, count, low, high)
 
     async def invoke(self, prompt, system_prompt=None):
         async with self.lock:
-            if self.cpu is not None:
-                if not self.allow_cpu_fallback:
-                    raise RuntimeError("CPU fallback is disabled for this run")
-                if time.monotonic() < getattr(self, "cpu_retry_at", 0.0):
-                    return await asyncio.to_thread(self.cpu.invoke, prompt, system_prompt)
-            try:
-                answer = await _invoke_hosted(self, prompt, system_prompt, probe_only=self.cpu is not None)
-            except _HostedRoutesExhausted:
-                if not self.allow_cpu_fallback:
-                    raise RuntimeError(
-                        "All hosted free routes unavailable; refusing degraded CPU forecast") from None
-                if not (platform.system() == "Linux" and platform.machine() == "x86_64"):
-                    raise RuntimeError("Free routes unavailable; CPU fallback requires Linux x86_64") from None
-                if self.cpu is None:
-                    logger.info("Hosted routes unavailable; starting CPU inference for this run")
-                    self.cpu = await asyncio.to_thread(CpuForecaster)
-                else:
-                    logger.info("Hosted routes still unavailable; keeping CPU fallback")
-                self.cpu_retry_at = _next_probe_at(self, time.monotonic())
-                return await asyncio.to_thread(self.cpu.invoke, prompt, system_prompt)
-            if self.cpu is not None:
-                logger.info("Hosted free route recovered; resuming hosted inference")
-                self.cpu_retry_at = 0.0
-            return answer
+            answer = await _hosted_answer(self, prompt, system_prompt)
+            if answer is not None:
+                return answer
+            cpu = await _cpu_for(self)
+            return await asyncio.to_thread(cpu.invoke, prompt, system_prompt)
 
 
 class FallTemplateBot2026(ForecastBot):

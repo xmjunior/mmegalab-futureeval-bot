@@ -49,8 +49,6 @@ class TotalOutage(unittest.IsolatedAsyncioTestCase):
             allow_cpu_fallback=cpu_fallback,
             available_at={name: 0.0 for name in ROUTES},
         )
-        # choose_integers dispatches through self.invoke, so bind it on the stub.
-        state.invoke = main.FreeForecastLlm.invoke.__get__(state, type(state))
         return state
 
     async def run_invoke(self, state, clock):
@@ -164,6 +162,45 @@ class TotalOutage(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(values, [7, 9])
         self.assertEqual(FakeCpu.calls, [])
         self.assertEqual(state.routes[0].invoke.await_count, 3)
+
+    async def test_recovered_provider_keeps_second_attempt_with_cached_cpu(self):
+        state = self.state(cpu_fallback=True)
+        state.cpu = FakeCpu()
+        state.cpu_retry_at = 99.0
+        clock = [100.0]
+        state.routes[0].invoke.side_effect = [
+            "hosted recovery", ProviderError(503, "45"), "hosted retry",
+        ]
+        for route in state.routes[1:]:
+            route.invoke.side_effect = ProviderError(429, "3600", "daily limit")
+
+        self.assertEqual(await self.run_invoke(state, clock), ("hosted recovery", []))
+        self.assertEqual(await self.run_invoke(state, clock), ("hosted retry", [45]))
+        self.assertEqual(state.routes[0].invoke.await_count, 3)
+
+    async def test_failed_probe_uses_constrained_cpu_once_for_integers(self):
+        state = self.state(cpu_fallback=True)
+        state.cpu = FakeCpu()
+        state.cpu.invoke = lambda *args: self.fail("Unexpected free-text CPU inference")
+        state.cpu_retry_at = 100.0
+        for route in state.routes:
+            route.invoke.side_effect = ProviderError(429, "3600", "daily quota")
+
+        with patch.object(main, "time", SimpleNamespace(monotonic=lambda: 100.0)):
+            values = await main.FreeForecastLlm.choose_integers(state, "synthetic", 2, 1, 9)
+
+        self.assertEqual(values, [1, 1])
+        self.assertEqual(FakeCpu.calls, [2])
+        self.assertEqual([route.invoke.await_count for route in state.routes], [1, 1, 1])
+
+    async def test_invalid_hosted_json_cannot_start_cpu_on_unsupported_platform(self):
+        state = self.state(cpu_fallback=True)
+        state.routes[0].invoke.return_value = "not JSON"
+        with patch.object(main, "platform", SimpleNamespace(system=lambda: "Darwin", machine=lambda: "arm64")), \
+                patch.object(main, "CpuForecaster") as cpu:
+            with self.assertRaisesRegex(RuntimeError, "requires Linux x86_64"):
+                await main.FreeForecastLlm.choose_integers(state, "synthetic", 2, 1, 9)
+        cpu.assert_not_called()
 
     async def test_groq_daily_cap_is_a_boolean_signal_without_provider_text(self):
         def reply(status, body):
