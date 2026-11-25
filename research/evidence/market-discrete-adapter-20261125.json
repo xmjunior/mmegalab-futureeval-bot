@@ -1,0 +1,106 @@
+{
+  "base_commit": "199e336d333f74b47b71a1df607cc430107dab39",
+  "sdk": "forecasting-tools==0.3.5",
+  "sources": [
+    "https://www.metaculus.com/questions/44530/",
+    "https://www.metaculus.com/questions/46010/",
+    "https://www.metaculus.com/api/",
+    "https://github.com/Metaculus/metaculus/blob/main/utils/the_math/formulas.py"
+  ],
+  "source_fixture_sha256": "981566b4048accc0328b999c3255f1eebdd37c97f5f389f46c5fd9d69b4f2c7d",
+  "method": "Exact equality of original numeric and typed discrete SDK CDFs and realized masses from original ALFRED data. All closed outcomes lie on centers, 0.005 from bin edges; no edge discrepancy. No live predictions, reviewer or posting.",
+  "rows": [
+    {
+      "question_id": 44666,
+      "group_id": 44530,
+      "closed": true,
+      "cdf_length": 177,
+      "paired_vectors_identical": 3,
+      "official_center_bin_masses_equal": 3,
+      "archived_q3_masses_matched": 3
+    },
+    {
+      "question_id": 44667,
+      "group_id": 44530,
+      "closed": true,
+      "cdf_length": 177,
+      "paired_vectors_identical": 3,
+      "official_center_bin_masses_equal": 3,
+      "archived_q3_masses_matched": 3
+    },
+    {
+      "question_id": 44668,
+      "group_id": 44530,
+      "closed": true,
+      "cdf_length": 177,
+      "paired_vectors_identical": 3,
+      "official_center_bin_masses_equal": 3,
+      "archived_q3_masses_matched": 3
+    },
+    {
+      "question_id": 44669,
+      "group_id": 44530,
+      "closed": true,
+      "cdf_length": 177,
+      "paired_vectors_identical": 3,
+      "official_center_bin_masses_equal": 3,
+      "archived_q3_masses_matched": 3
+    },
+    {
+      "question_id": 44670,
+      "group_id": 44530,
+      "closed": true,
+      "cdf_length": 177,
+      "paired_vectors_identical": 3,
+      "official_center_bin_masses_equal": 3,
+      "archived_q3_masses_matched": 3
+    },
+    {
+      "question_id": 44671,
+      "group_id": 44530,
+      "closed": true,
+      "cdf_length": 177,
+      "paired_vectors_identical": 3,
+      "official_center_bin_masses_equal": 3,
+      "archived_q3_masses_matched": 3
+    },
+    {
+      "question_id": 46212,
+      "group_id": 46010,
+      "closed": true,
+      "cdf_length": 201,
+      "paired_vectors_identical": 4,
+      "official_center_bin_masses_equal": 4,
+      "archived_q3_masses_matched": null
+    },
+    {
+      "question_id": 46213,
+      "group_id": 46010,
+      "closed": true,
+      "cdf_length": 201,
+      "paired_vectors_identical": 4,
+      "official_center_bin_masses_equal": 4,
+      "archived_q3_masses_matched": null
+    },
+    {
+      "question_id": 46709,
+      "group_id": 46010,
+      "closed": true,
+      "cdf_length": 252,
+      "paired_vectors_identical": 4,
+      "official_center_bin_masses_equal": 4,
+      "archived_q3_masses_matched": null
+    }
+  ],
+  "distinct_q3_closed": 6,
+  "distinct_q4_closed": 3,
+  "matched_cdf_pairs": 30,
+  "q3_approved_46010": [
+    1.25
+  ],
+  "q4_development_mean_log_gain_width_1_25": 0.8212186944022237,
+  "q4_heldout_log_gain_width_1_25": 2.0911999415303506,
+  "live_readback": "not performed; HTTP acceptance and matching/mismatching readbacks were exercised only with mock transport. Authenticated dry-run evidence must match the adapter commit.",
+  "outbound_predictions": 0,
+  "paid_calls": 0
+}

@@ -12,11 +12,14 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import requests
-from forecasting_tools import GeneralLlm, NumericDistribution, NumericQuestion, Percentile
+from forecasting_tools import DiscreteQuestion, GeneralLlm, NumericDistribution, NumericQuestion, Percentile
 
 import market_prices as prices
 from main import FreeForecastLlm
 
+MARKET_QUESTION_TYPES = {"numeric": NumericQuestion, "discrete": DiscreteQuestion}
+MARKET_DISCRETE_GROUPS = {46010}
+HY_STEP = 0.01
 PROJECT = 33131
 BASE = "https://www.metaculus.com/api"
 BOT = "megalab-mario-bot"
@@ -38,6 +41,39 @@ def digest(value):
     return hashlib.sha256(json.dumps(value, separators=(",", ":"), sort_keys=True).encode()).hexdigest()
 
 
+def discrete_geometry(row):
+    """HY observations use decimal cent values at the centers of equally spaced bins."""
+    scale = row["scaling"]
+    edges = scale["continuous_range"]
+    count = scale["inbound_outcome_count"]
+    low, high = scale["range_min"], scale["range_max"]
+    def near(left, right):
+        return math.isclose(left, right, rel_tol=0, abs_tol=1e-10)
+
+    if (type(count) is not int or count < 2 or row.get("inbound_outcome_count", count) != count
+            or scale["zero_point"] is not None or len(edges) != count + 1
+            or not near(high - low, count * HY_STEP)
+            or not near(scale["nominal_min"], low + HY_STEP/2)
+            or not near(scale["nominal_max"], high - HY_STEP/2)
+            or not near(scale["nominal_min"] / HY_STEP, round(scale["nominal_min"] / HY_STEP))
+            or not all(near(edge, low + i*HY_STEP) for i, edge in enumerate(edges))
+            or any(row.get(name) is not True or scale.get(name) is not True
+                   for name in ("open_lower_bound", "open_upper_bound"))):
+        raise ValueError("Unqualified discrete Market Pulse scale")
+    return count + 1
+
+
+def parse_market_question(post, row):
+    kind = row["type"]
+    if kind not in MARKET_QUESTION_TYPES or (kind == "discrete" and post["id"] not in MARKET_DISCRETE_GROUPS):
+        return None
+    size = discrete_geometry(row) if kind == "discrete" else None
+    question = MARKET_QUESTION_TYPES[kind].from_metaculus_api_json({**post, "question": row})
+    if size is not None and (question.cdf_size != size or question.question_type != kind):
+        raise ValueError("SDK dimension or kind differs from the verified discrete geometry")
+    return question
+
+
 class Account:
     def __init__(self):
         self.session = requests.Session()
@@ -52,7 +88,7 @@ class Account:
         response.raise_for_status()
         return response.json()
 
-    def group(self, post_id):
+    def group(self, post_id, *, question_ids=None):
         if post_id not in prices.SPECS:
             raise ValueError(f"Unvalidated group {post_id}")
         post = self.get(f"/posts/{post_id}/")
@@ -60,12 +96,22 @@ class Account:
                 or PROJECT not in {p["id"] for p in post["projects"]["tournament"]}):
             raise ValueError("Unexpected group tournament")
         group = post["group_of_questions"]
-        return {
-            row["id"]: NumericQuestion.from_metaculus_api_json({**post, "question": row})
-            for row in group["questions"] if row["type"] == "numeric"
-        }
+        questions = {}
+        for row in group["questions"]:
+            if question_ids is not None and row["id"] not in question_ids:
+                continue
+            question = parse_market_question(post, row)
+            if question is not None:
+                if question.id_of_question in questions:
+                    raise ValueError("Duplicate Market Pulse subquestion")
+                questions[question.id_of_question] = question
+        return questions
 
     def submit_once(self, q, values):
+        if len(values) != q.cdf_size or not all(math.isfinite(v) and 0 <= v <= 1 for v in values):
+            raise ValueError("Invalid Market Pulse CDF size or probability")
+        if any(a > b for a, b in zip(values, values[1:])):
+            raise ValueError("Unordered Market Pulse CDF")
         # Never retry an ambiguous POST. The next scheduled run will reconcile account history.
         response = self.session.post(BASE + "/questions/forecast/", timeout=40, json=[
             {"question": q.id_of_question, "source": "api", "continuous_cdf": values}])
@@ -318,6 +364,9 @@ async def forecast_one(account, proof, routes, q, spot, deadline, now, dry):
         return 1
     # Recheck the individual authenticated history and deadline immediately before submission.
     fresh = account.group(q.id_of_post)[q.id_of_question]
+    if (fresh.question_type != q.question_type
+            or fresh.api_json["question"]["scaling"] != q.api_json["question"]["scaling"]):
+        raise ValueError("Market Pulse geometry changed before submission")
     latest = latest_forecast(fresh)
     if fresh.api_json["question"]["status"] != "open" or datetime.now(UTC) >= deadline:
         log.info("Closed before submission, skipped question=%s", q.id_of_question)

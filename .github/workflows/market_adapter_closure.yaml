@@ -1,0 +1,46 @@
+name: Market Pulse discrete adapter checks
+on:
+  push:
+    branches: [research/market-adapter-closure]
+permissions:
+  contents: read
+jobs:
+  market-adapter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          version: '0.13.1'
+      - run: uv sync --locked --no-dev
+      - name: Run only Market Pulse discrete adapter regressions
+        env:
+          LITELLM_LOCAL_MODEL_COST_MAP: 'True'
+        run: .venv/bin/python -m unittest discover -s tests -p test_market_adapter.py -v
+      - name: Verify authenticated contract on three resolved HY questions
+        env:
+          LITELLM_LOCAL_MODEL_COST_MAP: 'True'
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
+        run: |
+          .venv/bin/python - <<'PY'
+          from market_pulse import Account, DiscreteQuestion, latest_forecast
+
+          expected = {46212: 201, 46213: 201, 46709: 252}
+          account = Account()
+          questions = account.group(46010, question_ids=set(expected))
+          if set(questions) != set(expected):
+              raise RuntimeError("Authenticated response is missing resolved control questions")
+          for qid, q in questions.items():
+              if not isinstance(q, DiscreteQuestion) or q.api_json["question"]["status"] != "resolved":
+                  raise RuntimeError("Unexpected kind or state in a closed control")
+              if q.cdf_size != expected[qid]:
+                  raise RuntimeError("Unexpected discrete grid length")
+              latest_forecast(q)
+              print(f"qc question={qid} status=resolved points={q.cdf_size} authenticated_history=ok")
+          PY
