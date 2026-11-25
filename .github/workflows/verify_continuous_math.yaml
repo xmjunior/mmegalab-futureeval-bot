@@ -1,0 +1,57 @@
+name: Verify forecast math offline
+on:
+  push:
+    branches: [verify/math-closure]
+permissions:
+  contents: read
+concurrency:
+  group: verify-forecast-math
+  cancel-in-progress: false
+jobs:
+  forecast-math:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          version: "0.13.1"
+      - run: uv sync --locked --no-dev
+      - name: Check the continuous grid and forecast reporting with network disabled
+        env:
+          METACULUS_TOKEN: test
+          LITELLM_LOCAL_MODEL_COST_MAP: "True"
+        run: |
+          .venv/bin/python - <<'PY'
+          import socket
+          import sys
+          import unittest
+
+          def offline(event, args):
+              if event == "socket.connect" and args[0].family in (socket.AF_INET, socket.AF_INET6):
+                  raise PermissionError("External connections are disabled in this test")
+
+          sys.addaudithook(offline)
+          names = ["test_continuous_math.py", "test_forecast_math.py"]
+          suite = unittest.TestSuite()
+          for name in names:
+              group = unittest.defaultTestLoader.discover("tests", pattern=name)
+              if not group.countTestCases():
+                  raise RuntimeError(f"No tests found for {name}")
+              suite.addTests(group)
+          receipt_tests = (
+              "test_actual_sdk_binary_report_and_private_round_trip",
+              "test_open_group_cdf_and_categorical_sdk_payload_methods",
+              "test_conditional_result_requires_both_published_branch_ids",
+          )
+          for name in receipt_tests:
+              suite.addTests(unittest.defaultTestLoader.loadTestsFromName(
+                  f"test_prize_publication.PublicationTests.{name}"))
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          sys.exit(0 if result.wasSuccessful() else 1)
+          PY

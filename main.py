@@ -8,7 +8,8 @@ import re
 import time
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
-from typing import Literal
+from statistics import median
+from typing import Annotated, Literal
 
 import dotenv
 
@@ -25,11 +26,19 @@ from bot_helpers import (
 
 silence_noisy_dependencies()
 
+from forecasting_tools.data_models.conditional_report import ConditionalReport
+from forecasting_tools.data_models.data_organizer import DataOrganizer
+from forecasting_tools.data_models.numeric_report import DateReport, DiscreteReport, NumericReport
+from forecasting_tools.data_models.questions import DiscreteQuestion
+from pydantic import ConfigDict, Discriminator, Tag, computed_field
+
+from continuous_math import GridDistribution, grid_distribution, outcome_grid, student_t_distribution
 from forecasting_tools import (
     AskNewsSearcher,
     BinaryQuestion,
     BinaryReport,
     ForecastBot,
+    ForecastReport,
     GeneralLlm,
     MetaculusClient,
     MetaculusQuestion,
@@ -51,6 +60,124 @@ from forecasting_tools import (
 
 dotenv.load_dotenv()
 logger = logging.getLogger(__name__)
+
+
+def _distribution_format(value):
+    if isinstance(value, dict):
+        return "grid" if "grid_format" in value else "sdk"
+    return "grid" if isinstance(value, GridDistribution) else "sdk"
+
+
+# Persist submitted grids exactly while leaving pre-existing SDK reports readable.
+_StoredDistribution = Annotated[
+    Annotated[GridDistribution, Tag("grid")] | Annotated[NumericDistribution, Tag("sdk")],
+    Discriminator(_distribution_format),
+]
+
+
+class _GridReportMixin:
+    @classmethod
+    async def aggregate_predictions(cls, predictions, question):
+        if not predictions:
+            raise ValueError("No distributions to aggregate")
+        cdfs = [prediction.get_cdf() for prediction in predictions]
+        # The question determines the axis; also reject equally sized but unrelated votes.
+        axis = [point.value for point in cdfs[0]]
+        if any([point.value for point in cdf] != axis for cdf in cdfs[1:]):
+            raise ValueError("Cannot aggregate different question grids")
+        heights = [median(point.percentile for point in column) for column in zip(*cdfs, strict=True)]
+        result = grid_distribution(question, heights)
+        if axis != [point.value for point in result.get_cdf()]:
+            raise ValueError("Forecast grid does not match the question")
+        return result
+
+
+class _GridNumericReport(_GridReportMixin, NumericReport):
+    prediction: _StoredDistribution
+
+
+class _GridDiscreteReport(_GridReportMixin, DiscreteReport):
+    prediction: _StoredDistribution
+
+
+class _GridDateReport(_GridReportMixin, DateReport):
+    prediction: _StoredDistribution
+
+
+_ConditionalValue = _StoredDistribution | PredictedOptionList | float
+
+
+class _GridConditionalPrediction(ConditionalPrediction):
+    parent: _ConditionalValue | PredictionAffirmed
+    child: _ConditionalValue | PredictionAffirmed
+    prediction_yes: _ConditionalValue
+    prediction_no: _ConditionalValue
+
+
+# The SDK declares the four children as the base question type and drops their
+# bounds/option lists on serialization. Preserve the concrete question types.
+_Subquestion = BinaryQuestion | MultipleChoiceQuestion | DiscreteQuestion | NumericQuestion | DateQuestion
+
+
+class _StoredConditionalQuestion(ConditionalQuestion):
+    model_config = ConfigDict(from_attributes=True)
+    parent: _Subquestion
+    child: _Subquestion
+    question_yes: _Subquestion
+    question_no: _Subquestion
+
+
+class _GridConditionalReport(ConditionalReport):
+    question: _StoredConditionalQuestion
+    prediction: _GridConditionalPrediction
+
+    # Affirmations have no scalar or grid payload from which to build an SDK
+    # subreport. The inherited computed fields also run during serialization.
+    @computed_field
+    @property
+    def parent_report(self) -> ForecastReport | PredictionAffirmed:
+        if isinstance(self.prediction.parent, PredictionAffirmed):
+            return self.prediction.parent
+        return super().parent_report
+
+    @computed_field
+    @property
+    def child_report(self) -> ForecastReport | PredictionAffirmed:
+        if isinstance(self.prediction.child, PredictionAffirmed):
+            return self.prediction.child
+        return super().child_report
+
+    @classmethod
+    async def aggregate_predictions(cls, predictions, question):
+        async def aggregate(part, attr):
+            forecasts = [getattr(vote, attr) for vote in predictions]
+            if attr in ("parent", "child"):
+                return await cls._get_aggregate_for_affirmable_forecast(part, forecasts)
+            return await cls._get_question_report_type(part).aggregate_predictions(forecasts, part)
+
+        return _GridConditionalPrediction(
+            parent=await aggregate(question.parent, "parent"),
+            child=await aggregate(question.child, "child"),
+            prediction_yes=await aggregate(question.question_yes, "prediction_yes"),
+            prediction_no=await aggregate(question.question_no, "prediction_no"),
+        )
+
+
+# forecasting-tools 0.3.5 uses this registry for aggregation, publishing, and
+# loading archived reports, including nested conditional reports. It exposes no
+# registration method. Keep its question mapping and all other report types.
+_report_types = {NumericQuestion: _GridNumericReport, DiscreteQuestion: _GridDiscreteReport,
+                 DateQuestion: _GridDateReport, ConditionalQuestion: _GridConditionalReport}
+for _mapping in DataOrganizer._DataOrganizer__TYPE_MAPPING:
+    if _mapping.question_type in _report_types:
+        _mapping.report_type = _report_types[_mapping.question_type]
+
+
+def _format_date_bound(bound):
+    utc = bound.astimezone(timezone.utc)
+    if utc.hour == utc.minute == utc.second == utc.microsecond == 0:
+        return utc.date().isoformat()
+    return utc.isoformat().replace("+00:00", "Z")
 
 
 class _HostedRoutesExhausted(RuntimeError):
@@ -435,19 +562,19 @@ class FallTemplateBot2026(ForecastBot):
         # The forecast prompt already specifies a machine-readable final line.
         last_line = reasoning.strip().splitlines()[-1].strip().replace("**", "")
         match = re.fullmatch(
-            r"(?:Final answer:\s*)?Probability:\s*(\d+(?:\.\d+)?)%(?:,\s*0-100)?[.]?",
+            r"(?:Final answer:\s*)?Probability:\s*((?:\d+(?:\.\d+)?|\.\d+))%(?:,\s*0-100)?[.]?",
             last_line, re.I,
         )
         if match:
             parsed = BinaryPrediction(prediction_in_decimal=float(match[1]) / 100)
             return ReasonedPrediction(
-                prediction_value=max(0.01, min(0.99, parsed.prediction_in_decimal)),
+                prediction_value=parsed.prediction_in_decimal,
                 reasoning=reasoning,
             )
         request = (f"Question: {question.question_text}\n{question.resolution_criteria}\n"
                    f"Analysis: {reasoning}\nSelect your final probability of YES as a whole percent.")
         (percent,) = await self.get_llm("default", "llm").choose_integers(request, 1, 0, 100)
-        decimal_pred = max(0.01, min(0.99, percent / 100))
+        decimal_pred = BinaryPrediction(prediction_in_decimal=percent / 100).prediction_in_decimal
         reasoning += f"\nFinal model probability: {percent}%"
         logger.info(
             f"Forecasted URL {question.page_url} with prediction: {decimal_pred}."
@@ -613,7 +740,7 @@ class FallTemplateBot2026(ForecastBot):
                 return None
             raw = match[1].strip()
             if isinstance(question, DateQuestion):
-                if not re.fullmatch(r"\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}Z)?", raw):
+                if not re.fullmatch(r"\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?Z)?", raw):
                     return None
                 try:
                     value = datetime.fromisoformat(raw).replace(tzinfo=timezone.utc).timestamp()
@@ -632,7 +759,7 @@ class FallTemplateBot2026(ForecastBot):
         direct = self._parse_percentile_lines(reasoning, question)
         if direct is not None:
             try:
-                prediction = NumericDistribution.from_question(direct, question)
+                prediction = student_t_distribution(question, direct)
                 return ReasonedPrediction(prediction_value=prediction, reasoning=reasoning)
             except ValueError as exc:
                 logger.info("Model distribution needs revision for %s: %s", question.page_url, exc)
@@ -640,18 +767,9 @@ class FallTemplateBot2026(ForecastBot):
         # Re-elicit actual outcomes anchored to the question's scale when units,
         # syntax or bounds are ambiguous. Never silently clamp or invent outcomes.
         is_date = isinstance(question, DateQuestion)
-        lower = question.lower_bound.timestamp() if is_date else question.lower_bound
-        upper = question.upper_bound.timestamp() if is_date else question.upper_bound
-        zero = question.zero_point
-        grid = []
+        grid = outcome_grid(question, size=101)
         labels = []
-        for index in range(101):
-            fraction = index / 100
-            if zero is None:
-                value = lower + (upper - lower) * fraction
-            else:
-                value = zero + (lower - zero) * ((upper - zero) / (lower - zero)) ** fraction
-            grid.append(value)
+        for index, value in enumerate(grid):
             label = (datetime.fromtimestamp(value, timezone.utc).isoformat() if is_date
                      else format(value, ".10g"))
             labels.append(f"{index}={label}")
@@ -667,7 +785,7 @@ class FallTemplateBot2026(ForecastBot):
         indices = await self.get_llm("default", "llm").choose_integers(request, 6, 0, 100)
         points = [Percentile(percentile=level / 100, value=grid[index])
                   for level, index in zip(levels, sorted(indices))]
-        prediction = NumericDistribution.from_question(points, question)
+        prediction = student_t_distribution(question, points)
         outcomes = [labels[i].split("=", 1)[1] for i in sorted(indices)]
         reasoning += f"\nFinal model-selected outcomes for percentiles {levels}: {outcomes}"
         logger.info("Validated model-selected percentiles for %s: %s", question.page_url, outcomes)
@@ -747,8 +865,8 @@ class FallTemplateBot2026(ForecastBot):
                 lower_bound_number = question.lower_bound
             unit_of_measure = question.unit_of_measure
         elif isinstance(question, DateQuestion):
-            upper_bound_number = question.upper_bound.date().isoformat()
-            lower_bound_number = question.lower_bound.date().isoformat()
+            upper_bound_number = _format_date_bound(question.upper_bound)
+            lower_bound_number = _format_date_bound(question.lower_bound)
             unit_of_measure = ""
         else:
             raise ValueError()
@@ -793,7 +911,7 @@ class FallTemplateBot2026(ForecastBot):
             {no_info.reasoning}
         """
         )
-        full_prediction = ConditionalPrediction(
+        full_prediction = _GridConditionalPrediction(
             parent=parent_info.prediction_value,  # type: ignore
             child=child_info.prediction_value,  # type: ignore
             prediction_yes=yes_info.prediction_value,  # type: ignore

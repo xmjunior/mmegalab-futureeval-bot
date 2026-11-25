@@ -7,12 +7,14 @@ import json
 import os
 import re
 import sys
+from types import SimpleNamespace
 
 import dotenv
 
 dotenv.load_dotenv()
 
 import forecasting_tools
+from continuous_math import student_t_distribution
 import numpy as np
 import requests
 from asknews_sdk import AskNewsSDK
@@ -448,14 +450,13 @@ The last thing you write is your final answer as: "Probability: ZZ%", 0-100
 def extract_probability_from_response_as_percentage_not_decimal(
     forecast_text: str,
 ) -> float:
-    matches = re.findall(r"(\d+)%", forecast_text)
-    if matches:
-        # Return the last number found before a '%'
-        number = int(matches[-1])
-        number = min(99, max(1, number))  # clamp the number between 1 and 99
-        return number
-    else:
+    matches = re.findall(r"(?<![\d.])([+-]?(?:\d+(?:\.\d+)?|\.\d+))\s*%", forecast_text)
+    if not matches:
         raise ValueError(f"Could not extract prediction from response: {forecast_text}")
+    percent = float(matches[-1])
+    if not 0 <= percent <= 100:
+        raise ValueError("Binary probability must be between 0% and 100%")
+    return min(99.9, max(0.1, percent))
 
 
 async def get_binary_gpt_prediction(
@@ -500,7 +501,9 @@ async def get_binary_gpt_prediction(
         f"## Rationale {i+1}\n{comment}" for i, comment in enumerate(comments)
     ]
     probabilities = [pair[0] for pair in probability_and_comment_pairs]
-    median_probability = float(np.median(probabilities)) / 100
+    median_probability = forecasting_tools.BinaryPrediction(
+        prediction_in_decimal=float(np.median(probabilities)) / 100
+    ).prediction_in_decimal
 
     final_comment = f"Median Probability: {median_probability}\n\n" + "\n\n".join(
         final_comment_sections
@@ -616,26 +619,14 @@ def generate_continuous_cdf(
     zero_point: float | None,
     cdf_size: int,
 ) -> list[float]:
-    """
-    Returns: list[float]: A list of 201 float values representing the CDF.
-    """
-
-    percentiles = []
-    for percentile, value in percentile_values.items():
-        percentiles.append(Percentile(percentile=percentile/100, value=value))
-    numeric_distribution = NumericDistribution(
-        declared_percentiles=percentiles,
-        open_upper_bound=open_upper_bound,
-        open_lower_bound=open_lower_bound,
-        upper_bound=upper_bound,
-        lower_bound=lower_bound,
-        zero_point=zero_point,
-        cdf_size=cdf_size,
+    """Construct the submitted grid from elicited percentage levels and outcomes."""
+    question = SimpleNamespace(
+        open_upper_bound=open_upper_bound, open_lower_bound=open_lower_bound,
+        upper_bound=upper_bound, lower_bound=lower_bound, zero_point=zero_point, cdf_size=cdf_size,
     )
-    cdf_as_objects = numeric_distribution.get_cdf()
-    cdf_as_floats = [percentile.percentile for percentile in cdf_as_objects]
-
-    return cdf_as_floats
+    points = [(level / 100, value) for level, value in sorted(percentile_values.items())]
+    distribution = student_t_distribution(question, points)
+    return [point.percentile for point in distribution.get_cdf()]
 
 
 class NumericDefaults:
