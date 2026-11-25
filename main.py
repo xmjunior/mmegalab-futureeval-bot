@@ -53,6 +53,99 @@ dotenv.load_dotenv()
 logger = logging.getLogger(__name__)
 
 
+class _HostedRoutesExhausted(RuntimeError):
+    """Internal marker: no hosted route can answer inside the retry window."""
+
+
+# A 429 is a daily cap only when the provider says so. Transient per-minute
+# limits must keep their short Retry-After instead of being frozen for an hour.
+_DAILY_QUOTA = re.compile(r"\b(?:daily|per[ -]?day|day(?:ly)?\s+limit|requests?\s+per\s+day|rpd)\b",
+                          re.IGNORECASE)
+
+
+def _daily_quota_exhausted(exc):
+    if getattr(exc, "status_code", None) != 429:
+        return False
+    return bool(getattr(exc, "daily", False) or _DAILY_QUOTA.search(str(exc)))
+
+
+def _next_probe_at(state, now):
+    """Earliest cooldown expiry at which a degraded run should retry hosted routes."""
+    upcoming = [t for t in state.available_at.values() if t > now]
+    return min(upcoming) if upcoming else now
+
+
+async def _invoke_hosted(state, prompt, system_prompt, probe_only=False):
+    # A 503 on one route can have a later retry time than a 503 on another.
+    # Keep each route eligible for its second attempt even after its peer retries.
+    # A degraded run only probes routes that are ready now, once each.
+    deadline = time.monotonic() + 180
+    limit = 1 if probe_only else 2
+    attempts = dict.fromkeys(state.available_at, 0)
+    while time.monotonic() < deadline:
+        pending = [r for r in state.routes if attempts[r.model] < limit
+                   and state.available_at[r.model] < deadline]
+        if not pending:
+            break
+        now = time.monotonic()
+        ready = [r for r in pending if state.available_at[r.model] <= now]
+        if not ready:
+            if probe_only:
+                break
+            await asyncio.sleep(min(state.available_at[r.model] for r in pending) - now)
+            continue
+        route = min(ready, key=lambda r: attempts[r.model])
+        attempts[route.model] += 1
+        try:
+            answer = await route.invoke(prompt, system_prompt)
+        except Exception as exc:
+            status = getattr(exc, "status_code", None)
+            if isinstance(exc, groq_free.Unavailable) and status in (400, 413, 422):
+                # The current prompt exceeded a Groq request constraint.
+                # Try the remaining routes; keep Groq eligible for other prompts.
+                attempts[route.model] = limit
+                logger.warning("Free route %s unavailable (%s), cooldown %ss", route.model, status, 0)
+                continue
+            retryable = status in (408, 429, 500, 502, 503, 504) or isinstance(
+                exc, (TimeoutError, ConnectionError)
+            ) or type(exc).__name__ in ("APIConnectionError", "Timeout")
+            if not retryable and status not in (401, 402, 403, 404):
+                raise
+            headers = getattr(getattr(exc, "response", None), "headers", {}) or {}
+            hint = str(headers.get("retry-after", "")).strip()
+            delay = 45 if status == 503 else 12 * attempts[route.model]
+            hinted = False
+            if hint.isdigit():
+                delay = max(delay, int(hint))
+                hinted = True
+            elif hint:
+                try:
+                    until = parsedate_to_datetime(hint)
+                    delay = max(delay, int((until - datetime.now(timezone.utc)).total_seconds()) + 1)
+                    hinted = True
+                except (ValueError, TypeError, OverflowError):
+                    pass
+            if _daily_quota_exhausted(exc):
+                # A daily cap will not reopen inside this run's window: stop
+                # spending attempts now. An explicit Retry-After is the
+                # provider's own reset time; otherwise assume a full window.
+                attempts[route.model] = limit
+                if not hinted:
+                    delay = max(delay, 3600)
+            elif not retryable:
+                delay = max(delay, 3600)
+            state.available_at[route.model] = time.monotonic() + delay
+            logger.warning("Free route %s unavailable (%s), cooldown %ss",
+                           route.model, status or type(exc).__name__, delay)
+            continue
+        if not isinstance(answer, str) or not answer.strip():
+            state.available_at[route.model] = time.monotonic() + 12
+            continue
+        logger.info("Model responded: %s", route.model)
+        return answer
+    raise _HostedRoutesExhausted("hosted free routes exhausted")
+
+
 class FreeForecastLlm(GeneralLlm):
     """Use only free endpoints. Share backoff across research, forecasts and parsing."""
 
@@ -76,6 +169,8 @@ class FreeForecastLlm(GeneralLlm):
         self.available_at = dict.fromkeys(names, 0.0)
         self.lock = asyncio.Lock()
         self.cpu = None
+        # Earliest moment a CPU-degraded run may probe the hosted routes again.
+        self.cpu_retry_at = 0.0
         # CPU fallback is useful for dry-run diagnostics, but it is intentionally
         # disabled by default for prize-bearing runs because a tiny local model can
         # produce badly calibrated forecasts. Enable only with an explicit env flag.
@@ -89,20 +184,26 @@ class FreeForecastLlm(GeneralLlm):
     async def choose_integers(self, prompt: str, count: int, low: int, high: int) -> list[int]:
         prompt += (f"\nReturn only a JSON array of {count} integers between {low} and {high}, "
                    "inclusive. Each number must be your own selection.")
-        if self.cpu is None:
+        retry_at = getattr(self, "cpu_retry_at", 0.0)
+        degraded = self.cpu is not None and time.monotonic() < retry_at
+        if not degraded:
+            probe_at = retry_at
             answer = await self.invoke(prompt)
-            try:
-                values = json.loads(answer.strip().removeprefix("```json").removesuffix("```").strip())
-            except ValueError:
-                values = None
-            if (isinstance(values, list) and len(values) == count
-                    and all(type(n) is int and low <= n <= high for n in values)):
-                return values
+            # If invoke had to engage CPU, its free text is not a structured answer.
+            if self.cpu is None or getattr(self, "cpu_retry_at", 0.0) <= probe_at:
+                try:
+                    values = json.loads(answer.strip().removeprefix("```json").removesuffix("```").strip())
+                except ValueError:
+                    values = None
+                if (isinstance(values, list) and len(values) == count
+                        and all(type(n) is int and low <= n <= high for n in values)):
+                    return values
         if not self.allow_cpu_fallback:
             raise RuntimeError("Hosted model returned an invalid structured answer; CPU fallback is disabled")
         async with self.lock:
             if self.cpu is None:
                 self.cpu = await asyncio.to_thread(CpuForecaster)
+                self.cpu_retry_at = _next_probe_at(self, time.monotonic())
             return await asyncio.to_thread(self.cpu.choose_integers, prompt, count, low, high)
 
     async def invoke(self, prompt, system_prompt=None):
@@ -110,68 +211,27 @@ class FreeForecastLlm(GeneralLlm):
             if self.cpu is not None:
                 if not self.allow_cpu_fallback:
                     raise RuntimeError("CPU fallback is disabled for this run")
+                if time.monotonic() < getattr(self, "cpu_retry_at", 0.0):
+                    return await asyncio.to_thread(self.cpu.invoke, prompt, system_prompt)
+            try:
+                answer = await _invoke_hosted(self, prompt, system_prompt, probe_only=self.cpu is not None)
+            except _HostedRoutesExhausted:
+                if not self.allow_cpu_fallback:
+                    raise RuntimeError(
+                        "All hosted free routes unavailable; refusing degraded CPU forecast") from None
+                if not (platform.system() == "Linux" and platform.machine() == "x86_64"):
+                    raise RuntimeError("Free routes unavailable; CPU fallback requires Linux x86_64") from None
+                if self.cpu is None:
+                    logger.info("Hosted routes unavailable; starting CPU inference for this run")
+                    self.cpu = await asyncio.to_thread(CpuForecaster)
+                else:
+                    logger.info("Hosted routes still unavailable; keeping CPU fallback")
+                self.cpu_retry_at = _next_probe_at(self, time.monotonic())
                 return await asyncio.to_thread(self.cpu.invoke, prompt, system_prompt)
-            # A 503 on one route can have a later retry time than a 503 on another.
-            # Keep each route eligible for its second attempt even after its peer retries.
-            deadline = time.monotonic() + 180
-            attempts = dict.fromkeys(self.available_at, 0)
-            while time.monotonic() < deadline:
-                pending = [r for r in self.routes if attempts[r.model] < 2
-                           and self.available_at[r.model] < deadline]
-                if not pending:
-                    break
-                now = time.monotonic()
-                ready = [r for r in pending if self.available_at[r.model] <= now]
-                if not ready:
-                    await asyncio.sleep(min(self.available_at[r.model] for r in pending) - now)
-                    continue
-                route = min(ready, key=lambda r: attempts[r.model])
-                attempts[route.model] += 1
-                try:
-                    answer = await route.invoke(prompt, system_prompt)
-                except Exception as exc:
-                    status = getattr(exc, "status_code", None)
-                    if isinstance(exc, groq_free.Unavailable) and status in (400, 413, 422):
-                        # The current prompt exceeded a Groq request constraint.
-                        # Try the remaining routes; keep Groq eligible for other prompts.
-                        attempts[route.model] = 2
-                        logger.warning("Free route %s unavailable (%s), cooldown %ss", route.model, status, 0)
-                        continue
-                    retryable = status in (408, 429, 500, 502, 503, 504) or isinstance(
-                        exc, (TimeoutError, ConnectionError)
-                    ) or type(exc).__name__ in ("APIConnectionError", "Timeout")
-                    if not retryable and status not in (401, 402, 403, 404):
-                        raise
-                    headers = getattr(getattr(exc, "response", None), "headers", {}) or {}
-                    hint = str(headers.get("retry-after", "")).strip()
-                    delay = 45 if status == 503 else 12 * attempts[route.model]
-                    if hint.isdigit():
-                        delay = max(delay, int(hint))
-                    elif hint:
-                        try:
-                            until = parsedate_to_datetime(hint)
-                            delay = max(delay, int((until - datetime.now(timezone.utc)).total_seconds()) + 1)
-                        except (ValueError, TypeError, OverflowError):
-                            pass
-                    if not retryable or (route.model.startswith("openrouter/")
-                                         and status == 429 and re.search(r"day|daily", str(exc), re.I)):
-                        delay = max(delay, 3600)
-                    self.available_at[route.model] = time.monotonic() + delay
-                    logger.warning("Free route %s unavailable (%s), cooldown %ss",
-                                   route.model, status or type(exc).__name__, delay)
-                    continue
-                if not isinstance(answer, str) or not answer.strip():
-                    self.available_at[route.model] = time.monotonic() + 12
-                    continue
-                logger.info("Model responded: %s", route.model)
-                return answer
-            if self.allow_cpu_fallback and platform.system() == "Linux" and platform.machine() == "x86_64":
-                logger.info("Hosted routes unavailable; starting CPU inference for this run")
-                self.cpu = await asyncio.to_thread(CpuForecaster)
-                return await asyncio.to_thread(self.cpu.invoke, prompt, system_prompt)
-            if not self.allow_cpu_fallback:
-                raise RuntimeError("All hosted free routes unavailable; refusing degraded CPU forecast")
-            raise RuntimeError("Free routes unavailable; CPU fallback requires Linux x86_64")
+            if self.cpu is not None:
+                logger.info("Hosted free route recovered; resuming hosted inference")
+                self.cpu_retry_at = 0.0
+            return answer
 
 
 class FallTemplateBot2026(ForecastBot):

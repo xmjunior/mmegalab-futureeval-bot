@@ -56,14 +56,36 @@ test_timeout_with_verified_commit_never_resends
 (test_prize_publication.PublicationTests.test_timeout_with_verified_commit_never_resends) ... ok
 test_wrong_categorical_labels_rejected_despite_identical_set_of_masses 
 (test_prize_publication.PublicationTests.test_wrong_categorical_labels_rejected_despite_identical_set_of_masses) ... ok
+test_choose_integers_returns_to_hosted_after_cpu_fallback 
+(test_resilience_recovery.TotalOutage.test_choose_integers_returns_to_hosted_after_cpu_fallback) ... Free route 
+gemini/gemma-4-31b-it unavailable (ConnectionError), cooldown 12s
+Free route gemini/gemma-4-26b-a4b-it unavailable (ConnectionError), cooldown 12s
+Free route openrouter/openrouter/free unavailable (ConnectionError), cooldown 12s
+Free route gemini/gemma-4-31b-it unavailable (ConnectionError), cooldown 24s
+Free route gemini/gemma-4-26b-a4b-it unavailable (ConnectionError), cooldown 24s
+Free route openrouter/openrouter/free unavailable (ConnectionError), cooldown 24s
+ok
 test_daily_quota_on_every_route_is_not_retried_as_transient 
 (test_resilience_recovery.TotalOutage.test_daily_quota_on_every_route_is_not_retried_as_transient) ... Free route 
-gemini/gemma-4-31b-it unavailable (429), cooldown 12s
-Free route gemini/gemma-4-26b-a4b-it unavailable (429), cooldown 12s
+gemini/gemma-4-31b-it unavailable (429), cooldown 3600s
+Free route gemini/gemma-4-26b-a4b-it unavailable (429), cooldown 3600s
 Free route openrouter/openrouter/free unavailable (429), cooldown 3600s
-Free route gemini/gemma-4-31b-it unavailable (429), cooldown 24s
-Free route gemini/gemma-4-26b-a4b-it unavailable (429), cooldown 24s
-expected failure
+ok
+test_daily_quota_respects_longer_retry_after 
+(test_resilience_recovery.TotalOutage.test_daily_quota_respects_longer_retry_after) ... Free route 
+gemini/gemma-4-31b-it unavailable (429), cooldown 7200s
+Free route gemini/gemma-4-26b-a4b-it unavailable (429), cooldown 7200s
+Free route openrouter/openrouter/free unavailable (429), cooldown 7200s
+Free route gemini/gemma-4-31b-it unavailable (429), cooldown 300s
+Free route gemini/gemma-4-26b-a4b-it unavailable (429), cooldown 300s
+Free route openrouter/openrouter/free unavailable (429), cooldown 300s
+ok
+test_groq_daily_cap_is_a_boolean_signal_without_provider_text 
+(test_resilience_recovery.TotalOutage.test_groq_daily_cap_is_a_boolean_signal_without_provider_text) ... Free route 
+gemini/gemma-4-31b-it unavailable (429), cooldown 3600s
+Free route gemini/gemma-4-26b-a4b-it unavailable (429), cooldown 3600s
+Free route openrouter/openrouter/free unavailable (429), cooldown 3600s
+ok
 test_hosted_routes_are_probed_again_after_cpu_fallback 
 (test_resilience_recovery.TotalOutage.test_hosted_routes_are_probed_again_after_cpu_fallback) ... Free route 
 gemini/gemma-4-31b-it unavailable (ConnectionError), cooldown 12s
@@ -72,7 +94,7 @@ Free route openrouter/openrouter/free unavailable (ConnectionError), cooldown 12
 Free route gemini/gemma-4-31b-it unavailable (ConnectionError), cooldown 24s
 Free route gemini/gemma-4-26b-a4b-it unavailable (ConnectionError), cooldown 24s
 Free route openrouter/openrouter/free unavailable (ConnectionError), cooldown 24s
-expected failure
+ok
 test_simultaneous_outage_recovers_once_cooldowns_expire 
 (test_resilience_recovery.TotalOutage.test_simultaneous_outage_recovers_once_cooldowns_expire) ... Free route 
 gemini/gemma-4-31b-it unavailable (503), cooldown 45s
@@ -81,6 +103,15 @@ Free route openrouter/openrouter/free unavailable (503), cooldown 45s
 Free route gemini/gemma-4-31b-it unavailable (503), cooldown 45s
 Free route gemini/gemma-4-26b-a4b-it unavailable (503), cooldown 45s
 Free route openrouter/openrouter/free unavailable (503), cooldown 45s
+ok
+test_transient_429_keeps_short_retry_after_and_second_turn 
+(test_resilience_recovery.TotalOutage.test_transient_429_keeps_short_retry_after_and_second_turn) ... Free route 
+gemini/gemma-4-31b-it unavailable (429), cooldown 20s
+Free route gemini/gemma-4-26b-a4b-it unavailable (429), cooldown 20s
+Free route openrouter/openrouter/free unavailable (429), cooldown 20s
+Free route gemini/gemma-4-31b-it unavailable (429), cooldown 24s
+Free route gemini/gemma-4-26b-a4b-it unavailable (429), cooldown 24s
+Free route openrouter/openrouter/free unavailable (429), cooldown 24s
 ok
 test_daily_quota_or_long_retry_does_not_sleep_past_deadline 
 (test_route_cooldowns.RetryWindows.test_daily_quota_or_long_retry_does_not_sleep_past_deadline) ... Free route 
@@ -98,6 +129,6 @@ Free route gemini/a unavailable (503), cooldown 45s
 ok
 
 ----------------------------------------------------------------------
-Ran 33 tests in 6.955s
+Ran 37 tests in 7.610s
 
-OK (expected failures=2)
+OK

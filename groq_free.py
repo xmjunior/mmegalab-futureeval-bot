@@ -14,12 +14,30 @@ ROUTE = "groq/" + MODEL
 class Unavailable(RuntimeError):
     """Carry a status and retry hint, without credentials, prompts or provider text."""
 
-    def __init__(self, status, retry_after=None):
+    def __init__(self, status, retry_after=None, daily=False):
         super().__init__(f"Groq unavailable ({status})")
         self.status_code = status
+        self.daily = daily
         self.response = requests.Response()
         if retry_after:
             self.response.headers["retry-after"] = retry_after
+
+
+DAILY_QUOTA = re.compile(r"\b(?:daily|per[ -]?day|day(?:ly)?\s+limit|requests?\s+per\s+day|rpd)\b",
+                         re.IGNORECASE)
+
+
+def daily_quota(response):
+    """Boolean daily-cap signal; the provider body itself is never propagated."""
+    if response.status_code != 429:
+        return False
+    try:
+        error = response.json().get("error", {})
+    except (ValueError, TypeError, AttributeError):
+        return False
+    if isinstance(error, dict):
+        error = error.get("message", "")
+    return bool(DAILY_QUOTA.search(str(error)))
 
 
 def configured():
@@ -69,7 +87,7 @@ class GroqFreeRoute:
         plan = _request("GET", "/batches?limit=1", key)
         if not plan_denial(plan):
             status = plan.status_code if plan.status_code in (408, 429, 500, 502, 503, 504) else 403
-            raise Unavailable(status, plan.headers.get("retry-after"))
+            raise Unavailable(status, plan.headers.get("retry-after"), daily_quota(plan))
         messages = []
         if system_prompt:
             messages.append({"role": "system", "content": system_prompt})
@@ -85,7 +103,7 @@ class GroqFreeRoute:
             status = response.status_code
             if status not in (400, 401, 402, 403, 404, 408, 413, 422, 429, 500, 502, 503, 504):
                 status = 502
-            raise Unavailable(status, response.headers.get("retry-after"))
+            raise Unavailable(status, response.headers.get("retry-after"), daily_quota(response))
         try:
             result = response.json()
             choice = result["choices"][0]
