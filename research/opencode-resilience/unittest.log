@@ -1,0 +1,103 @@
+﻿uv : test_ambiguous_denial_upgrade_auth_failure_and_redirect_make_no_inference_call 
+(test_groq_free.GroqFreeTests.test_ambiguous_denial_upgrade_auth_failure_and_redirect_make_no_inference_call) ... ok
+No linha:1 caractere:51
++ ... KEN="test"; uv run python -m unittest discover -s tests -v 2>&1 | Out ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (test_ambiguous_...ce_call) ... ok:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+test_groq_only_configuration_works_and_collapsible_audit_is_allowlisted 
+(test_groq_free.GroqFreeTests.test_groq_only_configuration_works_and_collapsible_audit_is_allowlisted) ... ok
+test_http_does_not_follow_redirects_or_expose_provider_body 
+(test_groq_free.GroqFreeTests.test_http_does_not_follow_redirects_or_expose_provider_body) ... ok
+test_missing_owner_confirmation_or_key_blocks_before_network 
+(test_groq_free.GroqFreeTests.test_missing_owner_confirmation_or_key_blocks_before_network) ... ok
+test_provider_switch_after_both_gemmas_and_openrouter_fail 
+(test_groq_free.GroqFreeTests.test_provider_switch_after_both_gemmas_and_openrouter_fail) ... ok
+test_rate_limit_preserves_retry_hint (test_groq_free.GroqFreeTests.test_rate_limit_preserves_retry_hint) ... ok
+test_single_key_gates_inference_and_only_model_output_is_returned 
+(test_groq_free.GroqFreeTests.test_single_key_gates_inference_and_only_model_output_is_returned) ... ok
+test_truncation_tool_calls_wrong_model_and_empty_responses_rejected 
+(test_groq_free.GroqFreeTests.test_truncation_tool_calls_wrong_model_and_empty_responses_rejected) ... ok
+test_201_but_missing_comment_never_reforecasts_or_guesses_rationale 
+(test_prize_publication.PublicationTests.test_201_but_missing_comment_never_reforecasts_or_guesses_rationale) ... ok
+test_201_but_wrong_forecast_never_marks_success 
+(test_prize_publication.PublicationTests.test_201_but_wrong_forecast_never_marks_success) ... ok
+test_actual_sdk_binary_report_and_private_round_trip 
+(test_prize_publication.PublicationTests.test_actual_sdk_binary_report_and_private_round_trip) ... ok
+test_closest_actual_or_scheduled_deadline_first_missing_last 
+(test_prize_publication.PublicationTests.test_closest_actual_or_scheduled_deadline_first_missing_last) ... ok
+test_conditional_result_requires_both_published_branch_ids 
+(test_prize_publication.PublicationTests.test_conditional_result_requires_both_published_branch_ids) ... ok
+test_diagnostics_and_sdk_logs_do_not_escape_to_public_output 
+(test_prize_publication.PublicationTests.test_diagnostics_and_sdk_logs_do_not_escape_to_public_output) ... ok
+test_empty_countless_paginated_comment_feed 
+(test_prize_publication.PublicationTests.test_empty_countless_paginated_comment_feed) ... ok
+test_empty_cycle_vs_exceptions (test_prize_publication.PublicationTests.test_empty_cycle_vs_exceptions) ... ok
+test_legacy_comment_shapes_and_timestamp_precision 
+(test_prize_publication.PublicationTests.test_legacy_comment_shapes_and_timestamp_precision) ... ok
+test_missing_private_comment_with_other_author_same_text 
+(test_prize_publication.PublicationTests.test_missing_private_comment_with_other_author_same_text) ... ok
+test_native_attachment_and_group_fallback 
+(test_prize_publication.PublicationTests.test_native_attachment_and_group_fallback) ... ok
+test_only_actual_routes_are_bound_to_private_question_note 
+(test_prize_publication.PublicationTests.test_only_actual_routes_are_bound_to_private_question_note) ... ok
+test_only_safe_provider_events_pass_public_handler 
+(test_prize_publication.PublicationTests.test_only_safe_provider_events_pass_public_handler) ... ok
+test_open_group_cdf_and_categorical_sdk_payload_methods 
+(test_prize_publication.PublicationTests.test_open_group_cdf_and_categorical_sdk_payload_methods) ... ok
+test_recheck_prior_forecast_without_another_post 
+(test_prize_publication.PublicationTests.test_recheck_prior_forecast_without_another_post) ... ok
+test_rejected_atomic_write_never_succeeds 
+(test_prize_publication.PublicationTests.test_rejected_atomic_write_never_succeeds) ... ok
+test_timeout_or_5xx_without_commit_never_marks_success 
+(test_prize_publication.PublicationTests.test_timeout_or_5xx_without_commit_never_marks_success) ... ok
+test_timeout_with_verified_commit_never_resends 
+(test_prize_publication.PublicationTests.test_timeout_with_verified_commit_never_resends) ... ok
+test_wrong_categorical_labels_rejected_despite_identical_set_of_masses 
+(test_prize_publication.PublicationTests.test_wrong_categorical_labels_rejected_despite_identical_set_of_masses) ... ok
+test_daily_quota_on_every_route_is_not_retried_as_transient 
+(test_resilience_recovery.TotalOutage.test_daily_quota_on_every_route_is_not_retried_as_transient) ... Free route 
+gemini/gemma-4-31b-it unavailable (429), cooldown 12s
+Free route gemini/gemma-4-26b-a4b-it unavailable (429), cooldown 12s
+Free route openrouter/openrouter/free unavailable (429), cooldown 3600s
+Free route gemini/gemma-4-31b-it unavailable (429), cooldown 24s
+Free route gemini/gemma-4-26b-a4b-it unavailable (429), cooldown 24s
+expected failure
+test_hosted_routes_are_probed_again_after_cpu_fallback 
+(test_resilience_recovery.TotalOutage.test_hosted_routes_are_probed_again_after_cpu_fallback) ... Free route 
+gemini/gemma-4-31b-it unavailable (ConnectionError), cooldown 12s
+Free route gemini/gemma-4-26b-a4b-it unavailable (ConnectionError), cooldown 12s
+Free route openrouter/openrouter/free unavailable (ConnectionError), cooldown 12s
+Free route gemini/gemma-4-31b-it unavailable (ConnectionError), cooldown 24s
+Free route gemini/gemma-4-26b-a4b-it unavailable (ConnectionError), cooldown 24s
+Free route openrouter/openrouter/free unavailable (ConnectionError), cooldown 24s
+expected failure
+test_simultaneous_outage_recovers_once_cooldowns_expire 
+(test_resilience_recovery.TotalOutage.test_simultaneous_outage_recovers_once_cooldowns_expire) ... Free route 
+gemini/gemma-4-31b-it unavailable (503), cooldown 45s
+Free route gemini/gemma-4-26b-a4b-it unavailable (503), cooldown 45s
+Free route openrouter/openrouter/free unavailable (503), cooldown 45s
+Free route gemini/gemma-4-31b-it unavailable (503), cooldown 45s
+Free route gemini/gemma-4-26b-a4b-it unavailable (503), cooldown 45s
+Free route openrouter/openrouter/free unavailable (503), cooldown 45s
+ok
+test_daily_quota_or_long_retry_does_not_sleep_past_deadline 
+(test_route_cooldowns.RetryWindows.test_daily_quota_or_long_retry_does_not_sleep_past_deadline) ... Free route 
+gemini/a unavailable (503), cooldown 240s
+Free route openrouter/free unavailable (429), cooldown 3600s
+ok
+test_empty_response_can_use_another_hosted_route 
+(test_route_cooldowns.RetryWindows.test_empty_response_can_use_another_hosted_route) ... ok
+test_later_route_still_gets_its_second_turn 
+(test_route_cooldowns.RetryWindows.test_later_route_still_gets_its_second_turn) ... Free route gemini/a unavailable 
+(503), cooldown 45s
+Free route gemini/b unavailable (503), cooldown 75s
+Free route openrouter/free unavailable (429), cooldown 3600s
+Free route gemini/a unavailable (503), cooldown 45s
+ok
+
+----------------------------------------------------------------------
+Ran 33 tests in 6.955s
+
+OK (expected failures=2)
