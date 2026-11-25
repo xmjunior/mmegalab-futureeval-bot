@@ -1,0 +1,392 @@
+[
+  {
+    "post_id": 46010,
+    "asof": "2026-07-13T02:59:59+00:00",
+    "spot": "2026-07-13T03:00:00+00:00",
+    "resolve": "2026-07-24T20:00:00+00:00",
+    "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-04-22&vintage_date=2026-07-11",
+    "sha256": "05211e0ddfe1bbe79f8eb987aaa2fe655520ea2164cd7d79853e64a1381f7714",
+    "source_date": "2026-07-10",
+    "sample_size": 495,
+    "center": 2.69,
+    "naive_quantiles": [
+      2.48,
+      2.5999999999999996,
+      2.69,
+      2.83,
+      2.95
+    ],
+    "short_vol": 0.03630173676222699,
+    "sample_vol": 0.07252149480975806
+  },
+  {
+    "post_id": 46010,
+    "asof": "2026-07-27T02:59:59+00:00",
+    "spot": "2026-07-27T03:00:00+00:00",
+    "resolve": "2026-08-07T20:00:00+00:00",
+    "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-05-06&vintage_date=2026-07-25",
+    "sha256": "716063df7bcfaaa98b8ccc7dbb93d863f9bcf50b4df98375d14cb9dd6b989cdd",
+    "source_date": "2026-07-24",
+    "sample_size": 495,
+    "center": 2.79,
+    "naive_quantiles": [
+      2.5700000000000003,
+      2.7,
+      2.79,
+      2.9200000000000004,
+      3.0400000000000005
+    ],
+    "short_vol": 0.03731814140818003,
+    "sample_vol": 0.07210620066922331
+  },
+  {
+    "post_id": 46010,
+    "asof": "2026-08-10T02:59:59+00:00",
+    "spot": "2026-08-10T03:00:00+00:00",
+    "resolve": "2026-08-21T20:00:00+00:00",
+    "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-05-20&vintage_date=2026-08-08",
+    "sha256": "950ae3c63bd077d56505d0ed76d5ada61555179d0ed7cf42ce3419d7759035d4",
+    "source_date": "2026-08-07",
+    "sample_size": 495,
+    "center": 2.7,
+    "naive_quantiles": [
+      2.4800000000000004,
+      2.6100000000000003,
+      2.7,
+      2.8200000000000007,
+      2.9420000000000006
+    ],
+    "short_vol": 0.03287209626177924,
+    "sample_vol": 0.07189374900381447
+  },
+  {
+    "post_id": 46010,
+    "asof": "2026-08-24T02:59:59+00:00",
+    "spot": "2026-08-24T03:00:00+00:00",
+    "resolve": "2026-09-04T20:00:00+00:00",
+    "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-06-03&vintage_date=2026-08-22",
+    "sha256": "bf68303969ec26c11aa8cdf82a60d2a832d8dbe28aeae678f1f6bfbfd715ddb2",
+    "source_date": "2026-08-21",
+    "sample_size": 495,
+    "center": 2.7,
+    "naive_quantiles": [
+      2.51,
+      2.6100000000000003,
+      2.7,
+      2.8200000000000003,
+      2.942
+    ],
+    "short_vol": 0.033782604514988074,
+    "sample_vol": 0.07151003945381892
+  },
+  {
+    "post_id": 46010,
+    "asof": "2026-09-07T02:59:59+00:00",
+    "spot": "2026-09-07T03:00:00+00:00",
+    "resolve": "2026-09-18T20:00:00+00:00",
+    "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-06-17&vintage_date=2026-09-05",
+    "sha256": "c4313789fc4f3c949e144eeda6684b31f91df369807b4455c0e79651bb61027d",
+    "source_date": "2026-09-04",
+    "sample_size": 495,
+    "center": 2.68,
+    "naive_quantiles": [
+      2.5,
+      2.6,
+      2.68,
+      2.8000000000000003,
+      2.922
+    ],
+    "short_vol": 0.030567430642629356,
+    "sample_vol": 0.0711103850569612
+  },
+  {
+    "post_id": 46010,
+    "asof": "2026-09-21T02:59:59+00:00",
+    "spot": "2026-09-21T03:00:00+00:00",
+    "resolve": "2026-10-02T20:00:00+00:00",
+    "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-07-01&vintage_date=2026-09-19",
+    "sha256": "84b2bbb5d979105acb0fe98cf5ae46c88326d0b3865dace192c427cf2e5e8ecb",
+    "source_date": "2026-09-18",
+    "sample_size": 495,
+    "center": 2.68,
+    "naive_quantiles": [
+      2.49,
+      2.5900000000000003,
+      2.68,
+      2.7950000000000004,
+      2.9120000000000004
+    ],
+    "short_vol": 0.031724387805112886,
+    "sample_vol": 0.07081328132234878
+  },
+  {
+    "post_id": 46015,
+    "asof": "2026-07-13T02:59:59+00:00",
+    "spot": "2026-07-13T03:00:00+00:00",
+    "resolve": "2026-07-24T20:00:00+00:00",
+    "url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv",
+    "prefix_sha256": "1402e628e7b96f72122cc5d48a673c6308d7524a828376e693fa8b9ff09c1df1",
+    "source_date": "2026-07-10",
+    "sample_size": 165,
+    "center": 19.760919463087248,
+    "naive_quantiles": [
+      15.54728022415592,
+      16.550094138414664,
+      18.10485163977095,
+      20.804820183808523,
+      23.21899768181248
+    ],
+    "conditional_quantiles": [
+      16.599256405487093,
+      17.497750929368028,
+      19.760919463087248,
+      21.626447118429386,
+      23.072615569536108
+    ]
+  },
+  {
+    "post_id": 46015,
+    "asof": "2026-07-27T02:59:59+00:00",
+    "spot": "2026-07-27T03:00:00+00:00",
+    "resolve": "2026-08-07T20:00:00+00:00",
+    "url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv",
+    "prefix_sha256": "6967c50995d88c7b5ed20c0a6a38792099b33dda3b440408129721094a81a2a0",
+    "source_date": "2026-07-24",
+    "sample_size": 165,
+    "center": 22.119047619047617,
+    "naive_quantiles": [
+      19.23161106877541,
+      20.495703375061225,
+      22.353597006948156,
+      25.484703093713115,
+      28.2491877012426
+    ],
+    "conditional_quantiles": [
+      19.36847159005256,
+      20.379968237162515,
+      22.119047619047617,
+      24.937758112094397,
+      28.29324933164824
+    ]
+  },
+  {
+    "post_id": 46015,
+    "asof": "2026-08-10T02:59:59+00:00",
+    "spot": "2026-08-10T03:00:00+00:00",
+    "resolve": "2026-08-21T20:00:00+00:00",
+    "url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv",
+    "prefix_sha256": "94dc475a4aac34afbeb96cc392b4d85c97097fa980781a663387d3e2aaf58d8d",
+    "source_date": "2026-08-07",
+    "sample_size": 165,
+    "center": 19.571401752190237,
+    "naive_quantiles": [
+      15.436754372447275,
+      16.475220500559413,
+      17.926189203634422,
+      20.405151359222728,
+      22.654084862675717
+    ],
+    "conditional_quantiles": [
+      16.492575332068313,
+      17.43896809232858,
+      19.571401752190237,
+      21.439392020265995,
+      22.873052028349168
+    ]
+  },
+  {
+    "post_id": 46015,
+    "asof": "2026-08-24T02:59:59+00:00",
+    "spot": "2026-08-24T03:00:00+00:00",
+    "resolve": "2026-09-04T20:00:00+00:00",
+    "url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv",
+    "prefix_sha256": "2cbdd7489a304eac0132205d4262083d4d6ae6208e16255db424ed5b5afee215",
+    "source_date": "2026-08-21",
+    "sample_size": 165,
+    "center": 19.351456790123457,
+    "naive_quantiles": [
+      15.660617624896233,
+      16.666169736560292,
+      18.129629629629633,
+      20.598505485232067,
+      22.93297546897547
+    ],
+    "conditional_quantiles": [
+      16.60701970727048,
+      17.40101400933956,
+      19.351456790123457,
+      21.404844961240308,
+      22.766831973545763
+    ]
+  },
+  {
+    "post_id": 46015,
+    "asof": "2026-09-07T02:59:59+00:00",
+    "spot": "2026-09-07T03:00:00+00:00",
+    "resolve": "2026-09-18T20:00:00+00:00",
+    "url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv",
+    "prefix_sha256": "9258a25814fb936e7df32a96bcf3914fdbf342afb33cdf8759cdfbc8064ddb72",
+    "source_date": "2026-09-04",
+    "sample_size": 165,
+    "center": 18.58404938271605,
+    "naive_quantiles": [
+      15.046762191368542,
+      15.994129179555163,
+      17.392641573414718,
+      19.781644725738396,
+      22.02353823953824
+    ],
+    "conditional_quantiles": [
+      15.74577911094337,
+      16.574144486692013,
+      18.58404938271605,
+      20.67692881355932,
+      22.031585785181992
+    ]
+  },
+  {
+    "post_id": 46015,
+    "asof": "2026-09-21T02:59:59+00:00",
+    "spot": "2026-09-21T03:00:00+00:00",
+    "resolve": "2026-10-02T20:00:00+00:00",
+    "url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv",
+    "prefix_sha256": "d385cf23df800eb39bba2f68a0f5ee7a1d6cbcb87234b7b3aab48a1b0b8455ad",
+    "source_date": "2026-09-18",
+    "sample_size": 165,
+    "center": 18.62649933065596,
+    "naive_quantiles": [
+      15.336720444196017,
+      16.2810727681224,
+      17.630952380952383,
+      19.991120167326088,
+      22.447942279942282
+    ],
+    "conditional_quantiles": [
+      15.980471088281611,
+      16.80895611702128,
+      18.62649933065596,
+      20.924220183486238,
+      22.447942279942282
+    ]
+  },
+  {
+    "post_id": 46010,
+    "asof": "2026-10-12T02:59:59+00:00",
+    "spot": "2026-10-12T03:00:00+00:00",
+    "resolve": "2026-10-23T20:00:00+00:00",
+    "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-07-22&vintage_date=2026-10-10",
+    "sha256": "9b62266bdf5a990e57c0cf9a4cbce4edb4548398cd25d630ada2bbd0f861ee3e",
+    "source_date": "2026-10-09",
+    "sample_size": 495,
+    "center": 3.11,
+    "naive_quantiles": [
+      2.914,
+      3.02,
+      3.11,
+      3.23,
+      3.35
+    ],
+    "short_vol": 0.05808139354270069,
+    "sample_vol": 0.07153289464250787
+  },
+  {
+    "post_id": 46010,
+    "asof": "2026-10-26T02:59:59+00:00",
+    "spot": "2026-10-26T03:00:00+00:00",
+    "resolve": "2026-11-06T21:00:00+00:00",
+    "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-08-05&vintage_date=2026-10-24",
+    "sha256": "45bb8f556b0938617b6e7c1212b01f7dcdf74a92c54a11198b22030f864f1ebc",
+    "source_date": "2026-10-23",
+    "sample_size": 495,
+    "center": 3.38,
+    "naive_quantiles": [
+      3.184,
+      3.29,
+      3.38,
+      3.51,
+      3.63
+    ],
+    "short_vol": 0.06495002499711944,
+    "sample_vol": 0.07168380705578173
+  },
+  {
+    "post_id": 46010,
+    "asof": "2026-11-06T12:59:59+00:00",
+    "spot": "2026-11-06T13:00:00+00:00",
+    "resolve": "2026-11-20T21:00:00+00:00",
+    "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-08-17&vintage_date=2026-11-05",
+    "sha256": "5235fcf36a760250b080d8904ba04a24857158ceb6114ec27902b2bac3ae079b",
+    "source_date": "2026-11-05",
+    "sample_size": 494,
+    "center": 3.48,
+    "naive_quantiles": [
+      3.27,
+      3.3899999999999997,
+      3.48,
+      3.61,
+      3.73
+    ],
+    "short_vol": 0.08480945512241501,
+    "sample_vol": 0.0729324718132573
+  },
+  {
+    "post_id": 46014,
+    "asof": "2026-10-12T02:59:59+00:00",
+    "spot": "2026-10-12T03:00:00+00:00",
+    "resolve": "2026-10-23T20:00:00+00:00",
+    "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&cosd=2024-07-22&vintage_date=2026-10-10",
+    "sha256": "a1c1396fc219fd3e7a102ba9960a361fc773c19ce13c70bc544644e6db5c35b1",
+    "source_date": "2026-10-08",
+    "sample_size": 494,
+    "center": 5.22,
+    "naive_quantiles": [
+      5.02,
+      5.129999999999999,
+      5.22,
+      5.31,
+      5.409999999999999
+    ],
+    "short_vol": 0.04875931976933042,
+    "sample_vol": 0.04832490206457365
+  },
+  {
+    "post_id": 46014,
+    "asof": "2026-10-26T02:59:59+00:00",
+    "spot": "2026-10-26T03:00:00+00:00",
+    "resolve": "2026-11-06T21:00:00+00:00",
+    "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&cosd=2024-08-05&vintage_date=2026-10-24",
+    "sha256": "fb1977ae50d920ed377b87172ce0c49f2fab952c33464f300930ca79e93b0269",
+    "source_date": "2026-10-22",
+    "sample_size": 494,
+    "center": 4.96,
+    "naive_quantiles": [
+      4.755000000000001,
+      4.865,
+      4.96,
+      5.045,
+      5.145
+    ],
+    "short_vol": 0.06290021289001492,
+    "sample_vol": 0.04866373294066677
+  },
+  {
+    "post_id": 46014,
+    "asof": "2026-11-09T03:59:59+00:00",
+    "spot": "2026-11-09T04:00:00+00:00",
+    "resolve": "2026-11-20T21:00:00+00:00",
+    "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&cosd=2024-08-19&vintage_date=2026-11-07",
+    "sha256": "6f26572115505d31cc6c57bce7252c0bc159228c99b9ca071d1b99935ea60608",
+    "source_date": "2026-11-05",
+    "sample_size": 494,
+    "center": 4.84,
+    "naive_quantiles": [
+      4.63,
+      4.73,
+      4.84,
+      4.930000000000001,
+      5.0200000000000005
+    ],
+    "short_vol": 0.053456395378818376,
+    "sample_vol": 0.04864726321434826
+  }
+]

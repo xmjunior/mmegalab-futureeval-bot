@@ -9,6 +9,8 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from datetime import date, datetime, time, timedelta, timezone
 from functools import lru_cache
+from pathlib import Path
+from types import SimpleNamespace
 from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
 from zoneinfo import ZoneInfo
@@ -85,54 +87,16 @@ for _post, _id, _label, _spot, _low, _high, _bins, _result in _CLOSED:
                         outcome=_result, bins=_bins, source=f"https://www.metaculus.com/questions/{_post}/"))
 
 
-# Exact training inputs for six resolved FRED questions. Each frozen row gives its
-# original as-of, spot, target, source URL, source-file SHA-256, last observation,
-# sample size, center, forecast quantiles and plain baseline quantiles. It has
-# no resolution labels. Never use an expired snapshot to predict an open question.
-_FRED_REPLAY = {
-    (46010, '2026-10-12T02:59:59+00:00', '2026-10-12T03:00:00+00:00', '2026-10-23T20:00:00+00:00'): (
-        'https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-07-22&vintage_date=2026-10-10',
-        '9b62266bdf5a990e57c0cf9a4cbce4edb4548398cd25d630ada2bbd0f861ee3e',
-        '2026-10-09', 495, 3.11,
-        (2.9033250711645926, 3.0150982469633334, 3.11, 3.2365356707155555, 3.3630713414311115),
-        (2.914, 3.02, 3.11, 3.23, 3.35),
-    ),
-    (46010, '2026-10-26T02:59:59+00:00', '2026-10-26T03:00:00+00:00', '2026-11-06T21:00:00+00:00'): (
-        'https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-08-05&vintage_date=2026-10-24',
-        '45bb8f556b0938617b6e7c1212b01f7dcdf74a92c54a11198b22030f864f1ebc',
-        '2026-10-23', 495, 3.38,
-        (3.160018835887344, 3.278988240968678, 3.38, 3.525905874156354, 3.6605882195314496),
-        (3.184, 3.29, 3.38, 3.51, 3.63),
-    ),
-    (46010, '2026-11-06T12:59:59+00:00', '2026-11-06T13:00:00+00:00', '2026-11-20T21:00:00+00:00'): (
-        'https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=BAMLH0A0HYM2&cosd=2024-08-17&vintage_date=2026-11-05',
-        '5235fcf36a760250b080d8904ba04a24857158ceb6114ec27902b2bac3ae079b',
-        '2026-11-05', 494, 3.48,
-        (3.2173440939313136, 3.3674331831134197, 3.48, 3.642596513280615, 3.7926856024627216),
-        (3.27, 3.3899999999999997, 3.48, 3.61, 3.73),
-    ),
-    (46014, '2026-10-12T02:59:59+00:00', '2026-10-12T03:00:00+00:00', '2026-10-23T20:00:00+00:00'): (
-        'https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&cosd=2024-07-22&vintage_date=2026-10-10',
-        'a1c1396fc219fd3e7a102ba9960a361fc773c19ce13c70bc544644e6db5c35b1',
-        '2026-10-08', 494, 5.22,
-        (5.005271563104419, 5.123372203396988, 5.22, 5.316627796603011, 5.423992015050801),
-        (5.02, 5.129999999999999, 5.22, 5.31, 5.409999999999999),
-    ),
-    (46014, '2026-10-26T02:59:59+00:00', '2026-10-26T03:00:00+00:00', '2026-11-06T21:00:00+00:00'): (
-        'https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&cosd=2024-08-05&vintage_date=2026-10-24',
-        'fb1977ae50d920ed377b87172ce0c49f2fab952c33464f300930ca79e93b0269',
-        '2026-10-22', 494, 4.96,
-        (4.713824255094553, 4.845918557238939, 4.96, 5.062072869838844, 5.1821585990610135),
-        (4.755000000000001, 4.865, 4.96, 5.045, 5.145),
-    ),
-    (46014, '2026-11-09T03:59:59+00:00', '2026-11-09T04:00:00+00:00', '2026-11-20T21:00:00+00:00'): (
-        'https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&cosd=2024-08-19&vintage_date=2026-11-07',
-        '6f26572115505d31cc6c57bce7252c0bc159228c99b9ca071d1b99935ea60608',
-        '2026-11-05', 494, 4.84,
-        (4.608716849967671, 4.7188516833164, 4.84, 4.939121350013856, 5.038242700027712),
-        (4.63, 4.73, 4.84, 4.930000000000001, 5.0200000000000005),
-    ),
-}
+# Only exact, already-resolved windows can match these derived ALFRED / Cboe inputs.
+# Level-series records store the unscaled empirical percentiles and both volatility
+# estimates. VIX records retain the historical unconditional and conditional quantiles.
+@lru_cache(maxsize=1)
+def _closed_replays():
+    rows = json.loads(Path(__file__).with_name("market_pulse_vintages.json").read_text())
+    records = {(r["post_id"], r["asof"], r["spot"], r["resolve"]): r for r in rows}
+    if len(records) != len(rows):
+        raise ValueError("Duplicate archived market window")
+    return records
 
 
 def _get(url: str) -> bytes:
@@ -217,6 +181,14 @@ class MarketEstimate:
         return dict(zip(LEVELS, map(float, values), strict=True))
 
 
+def _regime_estimate(source_date, sources, sample_size, center, naive, short_vol, sample_vol):
+    if not np.isfinite(sample_vol) or sample_vol <= 0 or not np.isfinite(short_vol) or short_vol < 0:
+        raise ValueError("Missing return variance")
+    multiplier = float(np.clip(np.sqrt(short_vol / sample_vol), 0.7, 2.0))
+    adjusted = center + multiplier * (naive - center)
+    return MarketEstimate(source_date, sources, sample_size, center, adjusted, naive)
+
+
 def _weekdays(first: date, last: date) -> int:
     return sum((first + timedelta(days=n)).weekday() < 5 for n in range((last-first).days + 1))
 
@@ -230,14 +202,20 @@ def model(post_id: int, as_of: datetime, spot: datetime, resolve: datetime) -> M
     # Excluding today's entire bar prevents using a session's eventual closing price
     # at an intraday cutoff. At a Sunday-night/Monday-UTC spot, Friday is available.
     cutoff = as_of.astimezone(NY).date() - timedelta(days=1)
+    now = datetime.now(timezone.utc)
+    key = (post_id, *(dt.astimezone(timezone.utc).isoformat() for dt in (as_of, spot, resolve)))
+    replay = _closed_replays().get(key) if resolve < now else None
+    if replay:
+        source_day = date.fromisoformat(replay["source_date"])
+        naive = np.asarray(replay["naive_quantiles"])
+        if kind == "maximum":
+            sources = (replay["url"], "prefix-sha256:" + replay["prefix_sha256"])
+            return MarketEstimate(source_day, sources, replay["sample_size"], replay["center"],
+                                  np.asarray(replay["conditional_quantiles"]), naive)
+        sources = (replay["url"], "sha256:" + replay["sha256"])
+        return _regime_estimate(source_day, sources, replay["sample_size"], replay["center"],
+                                naive, replay["short_vol"], replay["sample_vol"])
     if kind == "level":
-        now = datetime.now(timezone.utc)
-        key = (post_id, *(dt.astimezone(timezone.utc).isoformat() for dt in (as_of, spot, resolve)))
-        replay = _FRED_REPLAY.get(key)
-        if replay and resolve < now:
-            url, file_hash, observed, count, center, adjusted, naive = replay
-            return MarketEstimate(date.fromisoformat(observed), (url, "sha256:" + file_hash), count,
-                                  center, np.asarray(adjusted), np.asarray(naive))
         # The current public FRED chart is suitable only for an actual present-time
         # prediction. An arbitrary past as-of always needs its original ALFRED vintage.
         if timedelta(0) <= now-as_of <= timedelta(minutes=30) and now < spot:
@@ -297,36 +275,35 @@ def model(post_id: int, as_of: datetime, spot: datetime, resolve: datetime) -> M
         outcomes = historical[nearest] * values[-1]
         return MarketEstimate(dates[-1], sources, len(nearest), float(np.median(outcomes)),
                               np.quantile(outcomes, LEVELS), np.quantile(naive, LEVELS))
-    long_vol = np.std(daily[-252:], ddof=1)
-    short_vol = np.std(daily[-30:], ddof=1)
-    if not np.isfinite(long_vol) or long_vol <= 0:
-        raise ValueError("Missing return variance")
-    multiplier = float(np.clip(np.sqrt(short_vol / long_vol), 0.7, 2.0))
-    # Zero directional drift is fixed in advance. The plain benchmark uses the same
-    # as-of returns and horizon, without the short/long regime adjustment.
+    # The empirical horizon changes and their volatility denominator use the same
+    # available observations (up to 505 closes, hence up to 504 daily changes).
     changes = historical - np.median(historical)
-    return MarketEstimate(dates[-1], sources, len(left), center,
-                          np.quantile(center + multiplier * changes, LEVELS),
-                          np.quantile(center + changes, LEVELS))
+    naive = np.quantile(center + changes, LEVELS)
+    return _regime_estimate(dates[-1], sources, len(left), center, naive,
+                            np.std(daily[-30:], ddof=1), np.std(daily, ddof=1))
 
 
-def _mass(quantiles: dict[float, float], low: float, high: float, outcome: float, bins: int) -> float:
-    # Reconstruct the same question-specific, standardized CDF used by publication for
-    # these linear, open-both-ends Market Pulse subquestions. The peer term is
-    # common to both forecasts and cancels when comparing log scores.
-    from forecasting_tools import NumericDistribution, Percentile
-    dist = NumericDistribution(
-        declared_percentiles=[Percentile(percentile=prob, value=val) for prob, val in sorted(quantiles.items())],
-        open_lower_bound=True, open_upper_bound=True, lower_bound=low, upper_bound=high,
-        zero_point=None, cdf_size=bins+1,
-    )
-    cdf = [point.percentile for point in dist.get_cdf()]
-    if outcome < low:
+def numeric_cdf(question, quantiles):
+    from continuous_math import student_t_distribution
+
+    distribution = student_t_distribution(question, sorted(quantiles.items()))
+    return [point.percentile for point in distribution.get_cdf()]
+
+
+def _mass(quantiles: dict[float, float], low: float, high: float, outcome: float, bins: int,
+          zero_point: float | None = None) -> float:
+    from continuous_math import continuous_bucket
+
+    # Market Pulse archives include both linear and logarithmic axes.
+    question = SimpleNamespace(lower_bound=low, upper_bound=high, zero_point=zero_point, cdf_size=bins+1,
+                               open_lower_bound=True, open_upper_bound=True)
+    cdf = numeric_cdf(question, quantiles)
+    bucket = continuous_bucket(outcome, low, high, bins, zero_point)
+    if bucket == 0:
         return cdf[0]
-    if outcome > high:
-        return 1-cdf[-1]
-    index = min(bins-1, int(math.floor((outcome-low)*bins/(high-low))))
-    return cdf[index+1] - cdf[index]
+    if bucket == bins + 1:
+        return 1 - cdf[-1]
+    return cdf[bucket] - cdf[bucket-1]
 
 
 def benchmark(history=None) -> dict:
@@ -334,7 +311,7 @@ def benchmark(history=None) -> dict:
     cases = []
     def evaluate(row):
         estimate = model(row['post_id'], row['spot'] - timedelta(seconds=1), row['spot'], row['resolve'])
-        args = row['low'], row['high'], row['outcome'], row['bins']
+        args = row['low'], row['high'], row['outcome'], row['bins'], row.get('zero_point')
         naive = dict(zip(LEVELS, estimate.naive_quantiles))
         baseline = _mass(naive, *args)
         return dict(post_id=row['post_id'], question_id=row['question_id'], spot=row['spot'].isoformat(),

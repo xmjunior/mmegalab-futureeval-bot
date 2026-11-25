@@ -12,9 +12,10 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import requests
-from forecasting_tools import GeneralLlm, NumericDistribution, NumericQuestion, Percentile
+from forecasting_tools import GeneralLlm, NumericQuestion
 
 import market_prices as prices
+from market_prices import numeric_cdf
 from main import FreeForecastLlm
 
 PROJECT = 33131
@@ -93,15 +94,6 @@ def same_cdf(left, right):
     return len(left) == len(right) and max(abs(a - b) for a, b in zip(left, right)) < 0.00001
 
 
-def numeric_cdf(q, quantiles):
-    percentiles = [Percentile(percentile=p, value=v) for p, v in sorted(quantiles.items())]
-    forecast = NumericDistribution.from_question(percentiles, q)
-    values = [p.percentile for p in forecast.get_cdf()]
-    if len(values) != q.cdf_size or not all(0 <= a <= b <= 1 for a, b in zip(values, values[1:])):
-        raise ValueError("Invalid SDK continuous CDF")
-    return values
-
-
 def options_for(estimate, widths, as_of, resolve):
     return {"observations": estimate.sample_size, "quote_age_days": (as_of.date() - estimate.source_date).days,
             "days_until_measurement": (resolve.date() - as_of.date()).days, "choices": [
@@ -153,22 +145,41 @@ def checked_proof(proof):
     return routes
 
 
-def cross_quarter_menu():
+def q3_scorecard():
     evidence = json.loads(Path(__file__).with_name("market_pulse_q3.json").read_text())
-    groups = {}
+    rows = []
     for case in evidence["cases"]:
-        if case.get("status") != "scored":
+        if case["status"] != "scored":
             continue
-        group_id = str(case["model_mapped_q4"])
-        for width, mass in case["candidate_mass"].items():
-            groups.setdefault((group_id, float(width)), []).append(math.log(mass / case["baseline_mass"]))
+        group = case["model_mapped_q4"]
+        scale = case["scale"]
+        if not (scale["open_lower_bound"] and scale["open_upper_bound"]):
+            raise ValueError("Archived Market Pulse scale does not match the scorer")
+        spot = timestamp(case["spot"])
+        estimate = prices.model(group, timestamp(case["asof"]), spot, timestamp(case["resolve_period_end"]))
+        args = scale["range_min"], scale["range_max"], float(case["resolution"]), scale["inbound_outcome_count"], scale["zero_point"]
+        baseline = prices._mass(dict(zip(prices.LEVELS, estimate.naive_quantiles)), *args)
+        gains = {width: math.log(prices._mass(estimate.quantiles(width), *args) / baseline)
+                 for width in evidence["widths"][str(case["post_id"])]}
+        rows.append({"post_id": group, "spot": spot.isoformat(), "question_id": case["question_id"],
+                     "baseline_mass": baseline, "widths": gains})
+    return rows
+
+
+def cross_quarter_menu():
+    groups = {}
+    for row in q3_scorecard():
+        for width, gain in row["widths"].items():
+            periods = groups.setdefault((str(row["post_id"]), width), {})
+            if row["spot"] in periods:
+                raise ValueError("Duplicate archived Market Pulse period")
+            periods[row["spot"]] = gain
     result = {}
-    for (group, width), gains in groups.items():
-        # Require all six Q3 periods, a positive average, and a majority of individual wins.
+    for (group, width), periods in groups.items():
+        gains = periods.values()
         if len(gains) == 6 and sum(gains) > 0 and sum(v > 0 for v in gains) > len(gains)/2:
             result.setdefault(group, []).append(width)
-    log.info("Independent Q3 validation approved widths=%s. Community comparison=%s",
-             result, evidence["summary"])
+    log.info("Rescored Q3 cohort; approved widths=%s", result)
     return result
 
 

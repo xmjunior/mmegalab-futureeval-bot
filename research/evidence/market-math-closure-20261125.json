@@ -1,0 +1,270 @@
+{
+  "cutoff_date_utc": "2026-11-25",
+  "market_parent_sha": "199e336d333f74b47b71a1df607cc430107dab39",
+  "scope": "Frozen retrospective cohort. Distinct subquestions may share economic periods. No paid calls, hosted reviewers, publication or prospective predictions.",
+  "formula": "Natural log of candidate mass / matched empirical baseline mass in the resolved official bin. Both arms use the same Student-t(3) interpolation.",
+  "source_sha256": {
+    "continuous_math.py": "4d2c338ab782ee26ef823484f55b1241d60984f9ecf206a6e55a08fbfdbeb69f",
+    "market_prices.py": "571136a5bf9a2549735b259ff94fe5b24bb700bb051fd99d47ea6cae8dad3054",
+    "market_pulse.py": "ed856fdeb18ebdde7f0790b08d202bbe11281f633d5309a1d2e908c3649452f5",
+    "market_pulse_q3.json": "7d12a3cf804d57dde628cf697d0c40db76bf2fdff2f18d63b798d154b3ae0dcb",
+    "market_pulse_vintages.json": "c0d7b154508a3467059e5dfacebd747ff09ab6b3a1214de6ca37fb9fb58d0ce7"
+  },
+  "q3_source_verification": "All 12 archived Q3 baseline masses and each original candidate mass matched the old constructor when replayed with the archived question geometry (absolute tolerance 2e-10). Six HY ALFRED cutoffs and six VIX Cboe historical prefixes.",
+  "q4_source_verification": "All six ALFRED vintage CSV SHA-256 values and historical source dates, counts and old quantiles were verified against the pinned parent. All 22 original Q4 questions had terminal status, linear axes, open tails and the original bounds / bin counts when checked on the official group HTML. Only the six ALFRED cases were rescored in this Q4 evidence.",
+  "q3_unique_questions": 12,
+  "q3_periods": 6,
+  "q3_summary": {
+    "46010": {
+      "1.25": {
+        "n": 6,
+        "wins": 4,
+        "mean_log_gain": 0.016997788932496594
+      },
+      "1.5": {
+        "n": 6,
+        "wins": 2,
+        "mean_log_gain": -0.0012924872089623053
+      }
+    },
+    "46015": {
+      "1.0": {
+        "n": 6,
+        "wins": 3,
+        "mean_log_gain": 0.0077282959658091675
+      }
+    }
+  },
+  "q3_approved": {
+    "46010": [
+      1.25
+    ]
+  },
+  "q3_cases": [
+    {
+      "post_id": 46010,
+      "spot": "2026-07-13T03:00:00+00:00",
+      "question_id": 44666,
+      "baseline_mass": 0.01646756199999999,
+      "widths": {
+        "1.25": 0.07283909703326442,
+        "1.5": -0.03892397736893266
+      }
+    },
+    {
+      "post_id": 46010,
+      "spot": "2026-07-27T03:00:00+00:00",
+      "question_id": 44667,
+      "baseline_mass": 0.019472785300000017,
+      "widths": {
+        "1.25": -0.08153861428576874,
+        "1.5": 0.07737312100095026
+      }
+    },
+    {
+      "post_id": 46010,
+      "spot": "2026-08-10T03:00:00+00:00",
+      "question_id": 44668,
+      "baseline_mass": 0.027052900099999944,
+      "widths": {
+        "1.25": 0.1331692739247774,
+        "1.5": -0.04865492847956703
+      }
+    },
+    {
+      "post_id": 46010,
+      "spot": "2026-08-24T03:00:00+00:00",
+      "question_id": 44669,
+      "baseline_mass": 0.03032222570000004,
+      "widths": {
+        "1.25": 0.12737109662478496,
+        "1.5": -0.046892985780719924
+      }
+    },
+    {
+      "post_id": 46010,
+      "spot": "2026-09-07T03:00:00+00:00",
+      "question_id": 44670,
+      "baseline_mass": 0.028979198400000017,
+      "widths": {
+        "1.25": 0.13316568202003756,
+        "1.5": -0.04865551267828126
+      }
+    },
+    {
+      "post_id": 46010,
+      "spot": "2026-09-21T03:00:00+00:00",
+      "question_id": 44671,
+      "baseline_mass": 0.0016838442000000065,
+      "widths": {
+        "1.25": -0.28301980172211605,
+        "1.5": 0.09799936005277679
+      }
+    },
+    {
+      "post_id": 46015,
+      "spot": "2026-07-13T03:00:00+00:00",
+      "question_id": 44679,
+      "baseline_mass": 0.012381247400000017,
+      "widths": {
+        "1.0": 0.649959850041161
+      }
+    },
+    {
+      "post_id": 46015,
+      "spot": "2026-07-27T03:00:00+00:00",
+      "question_id": 44680,
+      "baseline_mass": 0.020581314900000036,
+      "widths": {
+        "1.0": 0.10059585663895874
+      }
+    },
+    {
+      "post_id": 46015,
+      "spot": "2026-08-10T03:00:00+00:00",
+      "question_id": 44681,
+      "baseline_mass": 0.02123716340000001,
+      "widths": {
+        "1.0": -0.8919230046037389
+      }
+    },
+    {
+      "post_id": 46015,
+      "spot": "2026-08-24T03:00:00+00:00",
+      "question_id": 44682,
+      "baseline_mass": 0.019830653500000017,
+      "widths": {
+        "1.0": -0.008277854069094289
+      }
+    },
+    {
+      "post_id": 46015,
+      "spot": "2026-09-07T03:00:00+00:00",
+      "question_id": 44683,
+      "baseline_mass": 0.014729372700000076,
+      "widths": {
+        "1.0": 0.34063565454086764
+      }
+    },
+    {
+      "post_id": 46015,
+      "spot": "2026-09-21T03:00:00+00:00",
+      "question_id": 44684,
+      "baseline_mass": 0.022645058699999998,
+      "widths": {
+        "1.0": -0.1446207267532992
+      }
+    }
+  ],
+  "q4_unique_questions": 6,
+  "q4_groups": {
+    "46010": {
+      "n": 3,
+      "development_mean_log_gain": {
+        "1.0": -0.04794036720291137,
+        "1.25": -0.014305195164998924,
+        "1.5": -0.027358607245577732
+      },
+      "held_out_question": 46709
+    },
+    "46014": {
+      "n": 3,
+      "development_mean_log_gain": {
+        "1.0": -0.013818756270498398,
+        "1.25": 0.01522332742540021,
+        "1.5": -0.008254066370204982
+      },
+      "held_out_question": 46238
+    }
+  },
+  "q4_cases": [
+    {
+      "post_id": 46010,
+      "question_id": 46212,
+      "spot": "2026-10-12T03:00:00+00:00",
+      "source_date": "2026-10-09",
+      "outcome": 3.38,
+      "sample_size": 495,
+      "baseline_mass": 0.005775593700000026,
+      "widths": {
+        "1.0": -0.14132594698802572,
+        "1.25": 0.13406095333773194,
+        "1.5": 0.2818147545216758
+      }
+    },
+    {
+      "post_id": 46010,
+      "question_id": 46213,
+      "spot": "2026-10-26T03:00:00+00:00",
+      "source_date": "2026-10-23",
+      "outcome": 3.42,
+      "sample_size": 495,
+      "baseline_mass": 0.020645361699999976,
+      "widths": {
+        "1.0": 0.04544521258220298,
+        "1.25": -0.16267134366772978,
+        "1.5": -0.3365319690128313
+      }
+    },
+    {
+      "post_id": 46010,
+      "question_id": 46709,
+      "spot": "2026-11-06T13:00:00+00:00",
+      "source_date": "2026-11-05",
+      "outcome": 3.76,
+      "sample_size": 494,
+      "baseline_mass": 0.005765434200000086,
+      "widths": {
+        "1.0": 0.0946474350361089,
+        "1.25": 0.3014156033138691,
+        "1.5": 0.3906200834601051
+      }
+    },
+    {
+      "post_id": 46014,
+      "question_id": 46236,
+      "spot": "2026-10-12T03:00:00+00:00",
+      "source_date": "2026-10-08",
+      "outcome": 5.0,
+      "sample_size": 494,
+      "baseline_mass": 0.006740117000000004,
+      "widths": {
+        "1.0": 0.004482575376019492,
+        "1.25": 0.17953287864350384,
+        "1.5": 0.25455688393875747
+      }
+    },
+    {
+      "post_id": 46014,
+      "question_id": 46237,
+      "spot": "2026-10-26T03:00:00+00:00",
+      "source_date": "2026-10-22",
+      "outcome": 4.86,
+      "sample_size": 494,
+      "baseline_mass": 0.01954508489999998,
+      "widths": {
+        "1.0": -0.03212008791701629,
+        "1.25": -0.14908622379270342,
+        "1.5": -0.27106501667916744
+      }
+    },
+    {
+      "post_id": 46014,
+      "question_id": 46238,
+      "spot": "2026-11-09T04:00:00+00:00",
+      "source_date": "2026-11-05",
+      "outcome": 4.92,
+      "sample_size": 494,
+      "baseline_mass": 0.02321993609999995,
+      "widths": {
+        "1.0": -0.022931375713169378,
+        "1.25": -0.1552200089625925,
+        "1.5": -0.2862072778815976
+      }
+    }
+  ],
+  "q3_q4_admissible_widths": {},
+  "production_qualification": "FAIL; Q3 admits only HY 1.25, and it fails Q4 development. VIX admits no Q3 width; Treasury has no qualifying Q3 width.",
+  "paid_calls": 0,
+  "submitted_forecasts": 0
+}
