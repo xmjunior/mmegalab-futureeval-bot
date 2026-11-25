@@ -1,5 +1,6 @@
 """Check whether the pinned Market Pulse validator has a prospective rehearsal window."""
 
+from collections import Counter
 from datetime import datetime, timedelta, timezone
 import os
 
@@ -12,12 +13,19 @@ def rehearsal_windows(market, account, now):
         raise ValueError("No family qualified in the pinned Q3 scorecard")
 
     count = 0
+    supported = getattr(market, "MARKET_QUESTION_TYPES", {"numeric"})
     for group_id in groups:
-        questions = account.group(int(group_id))
+        post = account.get(f"/posts/{int(group_id)}/")
+        projects = post["projects"]
+        if (post["id"] != int(group_id) or projects["default_project"]["id"] != market.PROJECT
+                or market.PROJECT not in {p["id"] for p in projects["tournament"]}):
+            raise ValueError(f"Unexpected Market Pulse project or post for {group_id}")
+        questions = post["group_of_questions"]["questions"]
         if not questions:
-            raise ValueError(f"Missing numeric questions for Market Pulse group {group_id}")
-        for question in questions.values():
-            row = question.api_json["question"]
+            raise ValueError(f"Missing questions for Market Pulse group {group_id}")
+        types = Counter(row["type"] for row in questions)
+        windows = Counter()
+        for row in questions:
             status = row["status"]
             if status in {"closed", "resolved", "annulled"}:
                 continue
@@ -25,7 +33,22 @@ def rehearsal_windows(market, account, now):
                 raise ValueError(f"Unrecognized Market Pulse status {status!r}")
             deadline = min(market.timestamp(row[field]) for field in ("spot_scoring_time", "scheduled_close_time"))
             if deadline > now + timedelta(minutes=5):
-                count += 1
+                windows[row["type"]] += 1
+        print(f"Project {market.PROJECT} group {group_id}: types={dict(types)} rehearsal_windows={dict(windows)}")
+        unsupported = set(types).difference(supported)
+        if unsupported:
+            raise ValueError(f"Pinned Market Pulse adapter does not support {sorted(unsupported)} in group {group_id}")
+        if "discrete" in types and int(group_id) not in getattr(market, "MARKET_DISCRETE_GROUPS", set()):
+            raise ValueError(f"Discrete geometry is unqualified for group {group_id}")
+        if windows:
+            # Production parses every row of the group before selecting a window.
+            # Exercise that same read-only contract before any hosted review.
+            parser = getattr(market, "parse_market_question", None)
+            if parser is not None:
+                for row in questions:
+                    if parser(post, row) is None:
+                        raise ValueError(f"Adapter rejected a question in group {group_id}")
+        count += sum(windows.values())
     return count
 
 

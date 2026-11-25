@@ -12,7 +12,7 @@ concurrency:
   group: market-pulse-33131
   cancel-in-progress: false
 env:
-  MARKET_CODE_SHA: "199e336d333f74b47b71a1df607cc430107dab39"
+  MARKET_CODE_SHA: "2bde30970b38075cfa1ca288d30796124fc6348f"
   ALLOW_CPU_FALLBACK: 'false'
 jobs:
   qualify:
