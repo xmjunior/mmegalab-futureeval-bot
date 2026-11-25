@@ -1,0 +1,47 @@
+name: Compare the frozen series reference class on closed events
+on:
+  push:
+    branches: [research/omega-predictive-challenge]
+    paths:
+      - 'research/omega/series_prior/evaluate.py'
+      - 'research/omega/series_prior/external.py'
+      - 'research/omega/series_prior/test_series_prior.py'
+      - '.github/workflows/series_prior.yaml'
+permissions:
+  contents: read
+concurrency:
+  group: omega-historical-series-prior
+  cancel-in-progress: false
+jobs:
+  closed-cases:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --disable-pip-version-check numpy==2.3.5
+      - name: Check the model and reproduce the frozen primary scores
+        working-directory: research/omega/series_prior
+        run: |
+          python -m unittest -v test_series_prior
+          python evaluate.py --out /tmp/series-primary.json
+          cmp results.json /tmp/series-primary.json
+      - name: Fetch and verify archived probabilities of the preselected best individual
+        working-directory: research/omega/series_prior
+        run: |
+          curl --fail --location --retry 1 --connect-timeout 12 --max-time 360 -sS https://www.forecastbench.org/assets/data/processed-forecast-sets/processed_forecast_sets.tar.gz -o /tmp/forecasts.tar.gz
+          python external.py /tmp/forecasts.tar.gz /tmp/series-external.json
+          python evaluate.py --external /tmp/series-external.json --out /tmp/series-comparison.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frozen-closed-series-comparison
+          path: |
+            /tmp/series-primary.json
+            /tmp/series-comparison.json
+            /tmp/series-external.json
+          if-no-files-found: error
+          retention-days: 14

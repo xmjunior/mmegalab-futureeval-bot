@@ -1,0 +1,165 @@
+{
+  "all_training_issued_events_embargoed": 9983,
+  "columns": [
+    "issued",
+    "source",
+    "id",
+    "target",
+    "family",
+    "y"
+  ],
+  "complete_rows_sha256": "4e0dbe765b7ae103aa5d0592dab2ac08aaaa8db861e018cf418802e1ecbea623",
+  "counts": {
+    "listed": 19965,
+    "outside_scoring_window": 10000,
+    "prior_archived_event": 6716,
+    "scored": 2914,
+    "unresolved_or_nonbinary": 335
+  },
+  "licence": "ForecastBench data \u00a9 Forecasting Research Institute, CC BY-SA 4.0; derived dataset and results under the same license. https://www.forecastbench.org/datasets/ and https://creativecommons.org/licenses/by-sa/4.0/",
+  "official_repo": "https://github.com/forecastingresearch/forecastbench-datasets",
+  "prior_unique_events": 8027,
+  "protocol_commit": "35fffcdb115e3828a17f131809cb4ffd52327feb",
+  "resolution_revision": "86b92ba06ed34d606d633bff3e99af54dd447d3a",
+  "rounds": {
+    "2025-10-26": {
+      "issue_revision": "25842c81680d083cf97fce2d07dbf3f645ce13ac",
+      "issue_sha256": "5095f9d7fdd714b2321b38e13e74de67d43aa1f3ab5d3034d0f629da28892242"
+    },
+    "2025-11-09": {
+      "issue_revision": "40ed3e3b3c7ba6b5a54fc8385af37dfda25f2cef",
+      "issue_sha256": "078bae3ff4beef5e73e6c96ef642d19ede730d3d31e213c128bbf0bb79f63e6e"
+    },
+    "2025-11-23": {
+      "issue_revision": "66801b37101fc8684b5c13fbaa2862089f30f721",
+      "issue_sha256": "784ac0f8c7b0a87270f0302b8bee5680a0bce9b1cc041c3d6f5d7ab58cc84960"
+    },
+    "2025-12-07": {
+      "issue_revision": "fe9d07d9b0801282c82f19b4809c62a6815ec8cf",
+      "issue_sha256": "4c84055929a8f162aa5188626b7508dee86e3d16d9e1925be5c8eff67549ad58"
+    },
+    "2025-12-21": {
+      "issue_revision": "d80a279a8dd3135c189093fbaed4bb3b10717a98",
+      "issue_sha256": "554f84f0cc326949edfca94028f70a5e18a8b19fb9f437b0ebf19cf32745ca91"
+    },
+    "2026-01-04": {
+      "counts": {
+        "listed": 1994,
+        "outside_scoring_window": 1000,
+        "prior_archived_event": 418,
+        "scored": 533,
+        "unresolved_or_nonbinary": 43
+      },
+      "issue_revision": "f5dd46a24eb7a1e58c4d04715385aaf869088d0d",
+      "issue_sha256": "6e2a23bdb27d3449e80752e82db4d37ae74680145c188033ff5ae9b1a02de5e1",
+      "resolution_sha256": "995850fd3f030013b5541afaba0a14aa1ef72a71cbeb6d2adb0e0d63393b0bf8"
+    },
+    "2026-01-18": {
+      "counts": {
+        "listed": 1997,
+        "outside_scoring_window": 1000,
+        "prior_archived_event": 383,
+        "scored": 585,
+        "unresolved_or_nonbinary": 29
+      },
+      "issue_revision": "168c377a24292e49899acdf97173291ddc928ad9",
+      "issue_sha256": "5b6b3108134e02b823f9a6486bb5b1753d4f2e5eb2332e5dedf4768279d6285f",
+      "resolution_sha256": "47f7620808df544fb02125ad5451b28072846c7b73c14532f46109218a0c1a2a"
+    },
+    "2026-02-01": {
+      "counts": {
+        "listed": 1997,
+        "outside_scoring_window": 1000,
+        "prior_archived_event": 192,
+        "scored": 774,
+        "unresolved_or_nonbinary": 31
+      },
+      "issue_revision": "0adce8eb892d2027ff2ff05aab0c5270e77e7166",
+      "issue_sha256": "92d3c6fe92cdacdbbc3856b4b76d72ec1bff1608826af286df6307a027bc0dd7",
+      "resolution_sha256": "1077601d4b8bdf22ffce2815080e930c22bf86738f3fd72feec74c34a2e70b53"
+    },
+    "2026-02-15": {
+      "counts": {
+        "listed": 1996,
+        "outside_scoring_window": 1000,
+        "scored": 959,
+        "unresolved_or_nonbinary": 37
+      },
+      "issue_revision": "4ffc4cd2a7cce104e77a226943082eaa68fb0f36",
+      "issue_sha256": "080fbfdcc3862fe6805dbd746bfb24e180f69a47a2ce359f78c918ff5ed3affb",
+      "resolution_sha256": "bb1aba142449d9a40872bcb167bd82841b20f6056aa84105e7affe1dedd7b236"
+    },
+    "2026-03-01": {
+      "counts": {
+        "listed": 1999,
+        "outside_scoring_window": 1000,
+        "prior_archived_event": 950,
+        "scored": 12,
+        "unresolved_or_nonbinary": 37
+      },
+      "issue_revision": "afd182c6bcfdab3e7132b0ac82c6470d7e08e1f9",
+      "issue_sha256": "fa12fb34a0e76c5912fd7d25e534a7147e8cb87284ea0a3fb309a78d4d62e405",
+      "resolution_sha256": "ef6ec1c229b397ef5befd3b06a36a866d41f6534185bcedabd0545ecd9561e34"
+    },
+    "2026-03-15": {
+      "counts": {
+        "listed": 1998,
+        "outside_scoring_window": 1000,
+        "prior_archived_event": 955,
+        "scored": 12,
+        "unresolved_or_nonbinary": 31
+      },
+      "issue_revision": "6da47e9f1fe71fe1a2dd8319fc0750d13559b673",
+      "issue_sha256": "4de06c2ef88a64ba3cd205b9ddbbbd123d482ab770e0535adf8c8fb097d15078",
+      "resolution_sha256": "a338de52ad230db7e5b1c331b30d10b64c950e25b38d841dd8d60017eebe8045"
+    },
+    "2026-03-29": {
+      "counts": {
+        "listed": 1998,
+        "outside_scoring_window": 1000,
+        "prior_archived_event": 975,
+        "scored": 6,
+        "unresolved_or_nonbinary": 17
+      },
+      "issue_revision": "b3a43f921f612400634cdb265d81d26e62200b2e",
+      "issue_sha256": "e43601443384d86d2d7cee455e2d987bc9c8056b3c94f0d50ca1ee4c4d0f42f2",
+      "resolution_sha256": "98101589d5fe285a1ce03153249ceab9cf9e0bf0097589e665cbb3470302b38c"
+    },
+    "2026-04-12": {
+      "counts": {
+        "listed": 1995,
+        "outside_scoring_window": 1000,
+        "prior_archived_event": 914,
+        "scored": 12,
+        "unresolved_or_nonbinary": 69
+      },
+      "issue_revision": "3e89727778c3b558f1ea6cd46d355cfd124d8b40",
+      "issue_sha256": "792208b93fc3aaf7e5d9cf9c013ee28517f130a4077dccbcf6a50b7f3695985a",
+      "resolution_sha256": "e6e6a4f24ae8257c289b7ff6dabc386fad342dced9ea5348b5dd00fb00ffea63"
+    },
+    "2026-04-26": {
+      "counts": {
+        "listed": 1993,
+        "outside_scoring_window": 1000,
+        "prior_archived_event": 962,
+        "scored": 6,
+        "unresolved_or_nonbinary": 25
+      },
+      "issue_revision": "06b5af219177421d4e766ec961a88e71ae841216",
+      "issue_sha256": "ce1b582bd5b1bdb3c7b8a65e775c4f335b28b52e756963ccbe88a949b4081750",
+      "resolution_sha256": "6fd065eced1d7ddc01ce8132799c43aac108254c0ba14446aaebaec9268ce3f8"
+    },
+    "2026-05-10": {
+      "counts": {
+        "listed": 1998,
+        "outside_scoring_window": 1000,
+        "prior_archived_event": 967,
+        "scored": 15,
+        "unresolved_or_nonbinary": 16
+      },
+      "issue_revision": "2ef1a9abea032964788416072a7f476bb969cc4b",
+      "issue_sha256": "892c7637abb8a32996f9b90446af5b0bb486a7f7af9a2b94beda87a9508f444a",
+      "resolution_sha256": "f257084124bb51087927b0226d32b6963cc14242cf07c132bd1a28b1970e9e36"
+    }
+  }
+}
