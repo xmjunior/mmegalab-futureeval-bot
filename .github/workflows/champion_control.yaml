@@ -29,7 +29,7 @@ concurrency:
   cancel-in-progress: false
 env:
   ARENA_SHA: "b7ae51518d9ea78add74cd6b02ba9685576efbb2"
-  RECOVERY_SHA: "8b6e3f028991fe112e2aae1998afb0f1656dcc7c"
+  RECOVERY_SHA: "2b517cd0736c44b5c9b04fa21cc8e097c4e26ba0"
   RECOVERY_MODE: ${{ inputs.mode }}
   RECOVERY_CYCLE: ${{ inputs.recovery_cycle || '0' }}
   RECOVERY_ERRORS: ${{ inputs.recovery_errors || '0' }}
@@ -208,7 +208,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ env.RESEARCH_SHA }}
+          ref: ${{ env.RECOVERY_SHA }}
           persist-credentials: false
       - name: Recover a missed polling window only if it contains an unanswered question
         env:
@@ -216,6 +216,7 @@ jobs:
           METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
           ENABLED: ${{ github.ref_name == 'main' }}
         run: |
+          test "$(git rev-parse HEAD)" = "$RECOVERY_SHA"
           if [ "$ENABLED" = "true" ]; then
             python research/watchdog.py --dispatch
           else

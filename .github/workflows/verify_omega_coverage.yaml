@@ -1,0 +1,44 @@
+name: Verify FutureEval recovery deployment references
+on:
+  push:
+    branches: [verify/omega-coverage-v2]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check timer and hourly guard use the same recovery revision
+        id: selection
+        run: |
+          ruby -ryaml - <<'RB'
+          workflow = YAML.load_file(".github/workflows/champion_control.yaml")
+          sha = workflow.fetch("env").fetch("RECOVERY_SHA")
+          abort "Invalid recovery revision" unless /\A[0-9a-f]{40}\z/.match?(sha)
+          abort "Unexpected guard pin" unless sha == "2b517cd0736c44b5c9b04fa21cc8e097c4e26ba0"
+          abort "Research collector pin changed" unless workflow.fetch("env").fetch("RESEARCH_SHA") == "9e3cecf3189ffcc70e3b3f9b6db1137b4a09ac6f"
+          checkout_refs = workflow.fetch("jobs").fetch("evaluate").fetch("steps").map { |s| s.dig("with", "ref") }
+          abort "Research collector checkout changed" unless checkout_refs.include?('$' + '{{ env.RESEARCH_SHA }}')
+          %w[coverage recovery-preflight recovery-backoff recovery-wake recovery-seed].each do |job|
+            checkout = workflow.fetch("jobs").fetch(job).fetch("steps").select { |s| s["uses"] == "actions/checkout@v4" }
+            abort "Unexpected checkout in #{job}" unless checkout.size == 1 && checkout.first.dig("with","ref") == '$' + '{{ env.RECOVERY_SHA }}'
+          end
+          File.open(ENV.fetch("GITHUB_OUTPUT"), "a") { |f| f.puts "sha=#{sha}" }
+          RB
+      - uses: actions/checkout@v4
+        with:
+          path: guard
+          ref: ${{ steps.selection.outputs.sha }}
+          persist-credentials: false
+      - name: Confirm the selected revision and unchanged server-side clock
+        working-directory: guard
+        env:
+          EXPECTED: ${{ steps.selection.outputs.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED"
+          echo "d2b3b70a805c0988c592f3fd8f49ce67da148829330d32bcb4c3c95abeeb1030  research/recovery_clock.py" | sha256sum --check
+          test -f research/evidence/seasonal-coverage-20261125.json
