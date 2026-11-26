@@ -1,6 +1,6 @@
 # Control de competiciones de megalab-mario-bot
 
-Observación UTC: 2026-11-25T23:00:24.704279+00:00. [Ejecución 45717834024](https://github.com/xmjunior/mmegalab-futureeval-bot/actions/runs/45717834024) por `workflow_dispatch`. [Código del control](https://github.com/xmjunior/mmegalab-futureeval-bot/commit/9e3cecf3189ffcc70e3b3f9b6db1137b4a09ac6f).
+Observación UTC: 2026-11-26T02:15:06.263200+00:00. [Ejecución 45741104037](https://github.com/xmjunior/mmegalab-futureeval-bot/actions/runs/45741104037) por `schedule`. [Código del control](https://github.com/xmjunior/mmegalab-futureeval-bot/commit/9e3cecf3189ffcc70e3b3f9b6db1137b4a09ac6f).
 
 | Torneo | Participación en la API | Pronósticos aceptados | Oportunidades desde el alta | Puesto | Peer Score | Comentarios privados vinculados |
 |---|---|---:|---:|---:|---:|---:|
