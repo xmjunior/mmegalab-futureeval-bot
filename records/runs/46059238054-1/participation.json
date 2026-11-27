@@ -1,0 +1,404 @@
+{
+  "observed_at": "2026-11-27T19:48:47.080636+00:00",
+  "account": {
+    "id": 313890,
+    "username": "megalab-mario-bot",
+    "is_bot": true,
+    "is_primary_bot": true,
+    "date_joined": "2026-11-24T12:35:27.315240Z"
+  },
+  "projects": {
+    "FutureEval": {
+      "own_filter_post_ids": [
+        46633,
+        46635,
+        46636,
+        46637,
+        46638,
+        46639,
+        46752,
+        46753,
+        46754,
+        46755,
+        46756,
+        46757,
+        46758
+      ],
+      "own_filter_post_total": 13,
+      "mismatching_post_ids": [],
+      "question_history_missing_count": 0,
+      "own_history_without_post": {},
+      "project": 33121,
+      "slug": "fall-futureeval-2026",
+      "canonical_slug": "fall-futureeval-2026",
+      "api_has_participated": true,
+      "dates": {
+        "start_date": "2026-09-28T00:00:00Z",
+        "close_date": "2027-03-05T00:00:00Z",
+        "forecasting_end_date": "2027-01-06T00:00:00Z"
+      },
+      "states": {
+        "closed": 137,
+        "resolved": 54
+      },
+      "questions": 191,
+      "forecasted_questions": 13,
+      "forecast_events": 13,
+      "duplicate_questions": [],
+      "opportunities_overlapping_account_lifetime": 16,
+      "unanswered_current": 0,
+      "current_windows": [],
+      "next_visible_open": [],
+      "submitted": [
+        {
+          "id": 47015,
+          "post": 46758,
+          "state": "closed",
+          "opens": "2026-11-27T12:00:00+00:00",
+          "closes": "2026-11-27T15:00:00+00:00",
+          "own_count": 1,
+          "own_times": [
+            "2026-11-27T12:12:47.123937+00:00"
+          ]
+        },
+        {
+          "id": 47014,
+          "post": 46757,
+          "state": "closed",
+          "opens": "2026-11-27T09:00:00+00:00",
+          "closes": "2026-11-27T12:00:00+00:00",
+          "own_count": 1,
+          "own_times": [
+            "2026-11-27T09:41:42.278525+00:00"
+          ]
+        },
+        {
+          "id": 47013,
+          "post": 46756,
+          "state": "closed",
+          "opens": "2026-11-27T00:00:00+00:00",
+          "closes": "2026-11-27T03:00:00+00:00",
+          "own_count": 1,
+          "own_times": [
+            "2026-11-27T00:22:25.628148+00:00"
+          ]
+        },
+        {
+          "id": 47012,
+          "post": 46755,
+          "state": "closed",
+          "opens": "2026-11-26T15:00:00+00:00",
+          "closes": "2026-11-26T18:00:00+00:00",
+          "own_count": 1,
+          "own_times": [
+            "2026-11-26T15:06:51.052677+00:00"
+          ]
+        },
+        {
+          "id": 47011,
+          "post": 46754,
+          "state": "closed",
+          "opens": "2026-11-26T12:00:00+00:00",
+          "closes": "2026-11-26T15:00:00+00:00",
+          "own_count": 1,
+          "own_times": [
+            "2026-11-26T13:25:30.507058+00:00"
+          ]
+        },
+        {
+          "id": 47010,
+          "post": 46753,
+          "state": "closed",
+          "opens": "2026-11-26T03:00:00+00:00",
+          "closes": "2026-11-26T06:00:00+00:00",
+          "own_count": 1,
+          "own_times": [
+            "2026-11-26T03:14:40.813928+00:00"
+          ]
+        },
+        {
+          "id": 47009,
+          "post": 46752,
+          "state": "closed",
+          "opens": "2026-11-25T21:00:00+00:00",
+          "closes": "2026-11-26T00:00:00+00:00",
+          "own_count": 1,
+          "own_times": [
+            "2026-11-25T22:08:50.608405+00:00"
+          ]
+        },
+        {
+          "id": 46899,
+          "post": 46639,
+          "state": "closed",
+          "opens": "2026-11-25T09:00:00+00:00",
+          "closes": "2026-11-25T12:00:00+00:00",
+          "own_count": 1,
+          "own_times": [
+            "2026-11-25T09:05:42.227492+00:00"
+          ]
+        },
+        {
+          "id": 46898,
+          "post": 46638,
+          "state": "closed",
+          "opens": "2026-11-25T06:00:00+00:00",
+          "closes": "2026-11-25T09:00:00+00:00",
+          "own_count": 1,
+          "own_times": [
+            "2026-11-25T06:32:57.173364+00:00"
+          ]
+        },
+        {
+          "id": 46897,
+          "post": 46637,
+          "state": "closed",
+          "opens": "2026-11-25T03:00:00+00:00",
+          "closes": "2026-11-25T06:00:00+00:00",
+          "own_count": 1,
+          "own_times": [
+            "2026-11-25T03:05:31.293305+00:00"
+          ]
+        },
+        {
+          "id": 46896,
+          "post": 46636,
+          "state": "closed",
+          "opens": "2026-11-25T00:00:00+00:00",
+          "closes": "2026-11-25T03:00:00+00:00",
+          "own_count": 1,
+          "own_times": [
+            "2026-11-25T00:34:02.628066+00:00"
+          ]
+        },
+        {
+          "id": 46895,
+          "post": 46635,
+          "state": "closed",
+          "opens": "2026-11-24T21:00:00+00:00",
+          "closes": "2026-11-25T00:00:00+00:00",
+          "own_count": 1,
+          "own_times": [
+            "2026-11-24T23:11:00.832892+00:00"
+          ]
+        },
+        {
+          "id": 46893,
+          "post": 46633,
+          "state": "closed",
+          "opens": "2026-11-24T15:00:00+00:00",
+          "closes": "2026-11-24T18:00:00+00:00",
+          "own_count": 1,
+          "own_times": [
+            "2026-11-24T17:45:55.946887+00:00"
+          ]
+        }
+      ],
+      "comments": [
+        {
+          "id": 1364042,
+          "created_at": "2026-11-25T22:08:50.643406+00:00",
+          "post": 46752,
+          "author_id": 313890,
+          "is_private": false,
+          "included_forecast": true
+        },
+        {
+          "id": 1364515,
+          "created_at": "2026-11-26T03:14:40.840451+00:00",
+          "post": 46753,
+          "author_id": 313890,
+          "is_private": false,
+          "included_forecast": true
+        },
+        {
+          "id": 1365446,
+          "created_at": "2026-11-26T13:25:30.554716+00:00",
+          "post": 46754,
+          "author_id": 313890,
+          "is_private": false,
+          "included_forecast": true
+        },
+        {
+          "id": 1365653,
+          "created_at": "2026-11-26T15:06:51.074070+00:00",
+          "post": 46755,
+          "author_id": 313890,
+          "is_private": false,
+          "included_forecast": true
+        },
+        {
+          "id": 1367979,
+          "created_at": "2026-11-27T00:22:25.650246+00:00",
+          "post": 46756,
+          "author_id": 313890,
+          "is_private": false,
+          "included_forecast": true
+        },
+        {
+          "id": 1368936,
+          "created_at": "2026-11-27T09:41:42.301099+00:00",
+          "post": 46757,
+          "author_id": 313890,
+          "is_private": true,
+          "included_forecast": true
+        },
+        {
+          "id": 1369301,
+          "created_at": "2026-11-27T12:12:47.149680+00:00",
+          "post": 46758,
+          "author_id": 313890,
+          "is_private": true,
+          "included_forecast": true
+        },
+        {
+          "id": 1358345,
+          "created_at": "2026-11-24T17:46:00.631149+00:00",
+          "post": 46633,
+          "author_id": 313890,
+          "is_private": false,
+          "included_forecast": true
+        },
+        {
+          "id": 1360290,
+          "created_at": "2026-11-24T23:11:00.864506+00:00",
+          "post": 46635,
+          "author_id": 313890,
+          "is_private": false,
+          "included_forecast": true
+        },
+        {
+          "id": 1360707,
+          "created_at": "2026-11-25T00:34:02.653939+00:00",
+          "post": 46636,
+          "author_id": 313890,
+          "is_private": false,
+          "included_forecast": true
+        },
+        {
+          "id": 1361015,
+          "created_at": "2026-11-25T03:05:31.319324+00:00",
+          "post": 46637,
+          "author_id": 313890,
+          "is_private": false,
+          "included_forecast": true
+        },
+        {
+          "id": 1361948,
+          "created_at": "2026-11-25T06:32:57.199835+00:00",
+          "post": 46638,
+          "author_id": 313890,
+          "is_private": false,
+          "included_forecast": true
+        },
+        {
+          "id": 1362291,
+          "created_at": "2026-11-25T09:05:42.251717+00:00",
+          "post": 46639,
+          "author_id": 313890,
+          "is_private": false,
+          "included_forecast": true
+        }
+      ],
+      "leaderboards": [
+        {
+          "leaderboard": 991,
+          "score_type": "spot_peer_tournament",
+          "ranked_entries": 613,
+          "coverage_max": 53,
+          "self_entry_key": null,
+          "matched_entries_by_own_user_id": 0,
+          "officially_finalized": false,
+          "own_entry": null
+        }
+      ]
+    },
+    "MiniBench": {
+      "own_filter_post_ids": [],
+      "own_filter_post_total": 0,
+      "mismatching_post_ids": [],
+      "question_history_missing_count": 0,
+      "own_history_without_post": {},
+      "project": 33169,
+      "slug": "minibench",
+      "canonical_slug": "minibench",
+      "api_has_participated": false,
+      "dates": {
+        "start_date": "2026-11-16T00:00:00Z",
+        "close_date": "2026-12-04T00:00:00Z",
+        "forecasting_end_date": "2026-11-18T21:43:57Z"
+      },
+      "states": {
+        "closed": 59,
+        "resolved": 1
+      },
+      "questions": 60,
+      "forecasted_questions": 0,
+      "forecast_events": 0,
+      "duplicate_questions": [],
+      "opportunities_overlapping_account_lifetime": 0,
+      "unanswered_current": 0,
+      "current_windows": [],
+      "next_visible_open": [],
+      "submitted": [],
+      "comments": [],
+      "leaderboards": [
+        {
+          "leaderboard": 1046,
+          "score_type": "spot_peer_tournament",
+          "ranked_entries": 444,
+          "coverage_max": 1,
+          "self_entry_key": null,
+          "matched_entries_by_own_user_id": 0,
+          "officially_finalized": false,
+          "own_entry": null
+        }
+      ]
+    },
+    "MarketPulse": {
+      "own_filter_post_ids": [],
+      "own_filter_post_total": 0,
+      "mismatching_post_ids": [],
+      "question_history_missing_count": 0,
+      "own_history_without_post": {},
+      "project": 33131,
+      "slug": "market-pulse-26q4",
+      "canonical_slug": "market-pulse-26q4",
+      "api_has_participated": false,
+      "dates": {
+        "start_date": "2026-10-07T17:00:00Z",
+        "close_date": "2027-01-06T18:00:00Z",
+        "forecasting_end_date": "2026-12-31T00:00:00Z"
+      },
+      "states": {
+        "resolved": 45,
+        "closed": 8,
+        "upcoming": 16
+      },
+      "questions": 69,
+      "forecasted_questions": 0,
+      "forecast_events": 0,
+      "duplicate_questions": [],
+      "opportunities_overlapping_account_lifetime": 0,
+      "unanswered_current": 0,
+      "current_windows": [],
+      "next_visible_open": [
+        "2026-11-30T16:00:00+00:00"
+      ],
+      "submitted": [],
+      "comments": [],
+      "leaderboards": [
+        {
+          "leaderboard": 1004,
+          "score_type": "spot_peer_tournament",
+          "ranked_entries": 286,
+          "coverage_max": 43,
+          "self_entry_key": null,
+          "matched_entries_by_own_user_id": 0,
+          "officially_finalized": false,
+          "own_entry": null
+        }
+      ]
+    }
+  }
+}
