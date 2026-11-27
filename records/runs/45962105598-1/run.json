@@ -1,0 +1,13 @@
+{
+  "TREASURY": "success",
+  "MINI": "success",
+  "AUDIT": "success",
+  "PROMO": "success",
+  "ARENA": "success",
+  "ARENA_SHA": "b7ae51518d9ea78add74cd6b02ba9685576efbb2",
+  "RESEARCH_SHA": "9e3cecf3189ffcc70e3b3f9b6db1137b4a09ac6f",
+  "GITHUB_SHA": "f077ed4543c07d23394e769aac2dcab8e5f79bc6",
+  "GITHUB_EVENT_NAME": "workflow_dispatch",
+  "GITHUB_RUN_ID": "45962105598",
+  "GITHUB_RUN_ATTEMPT": "1"
+}
